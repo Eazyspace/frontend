@@ -1,4 +1,3 @@
-import { CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoginScreen from "./screens/LoginScreen";
 import { ezBlue } from "./utils/colors";

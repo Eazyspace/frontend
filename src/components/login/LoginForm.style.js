@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ezBlue } from "../../utils/colors";
 
 export const StyledLoginForm = styled.div`
-  min-width: 393px;
+  min-width: 20em;
   display: flex;
   flex-direction: column;
   align-items: stretch;

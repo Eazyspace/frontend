@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
 export const StyledLoginScreen = styled.div`
-  height: 100vh;
-  max-width: 100vw;
+  width: 100vw;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
   flex-direction: row;
   justify-content: center;
   align-items: center;
