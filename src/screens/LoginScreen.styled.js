@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ezBlue, ezGrey } from "../../utils/colors";
+import { ezBlue, ezGrey } from "../utils/colors";
 import { Link } from "react-router-dom";
 
 export const StyledLoginScreen = styled.div`

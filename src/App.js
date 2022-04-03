@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import { ezBlue } from "./utils/colors";
 
@@ -16,7 +17,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <LoginScreen />
+      <HomeScreen/>
     </ThemeProvider>
   );
 }

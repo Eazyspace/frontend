@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { ezBlue } from "../../utils/colors";
+import { ezBlue } from "../utils/colors";
 
-function Brand() {
+const Brand=()=> {
   return styled.h1`
     color: ${ezBlue};
     font-size: 120px;
