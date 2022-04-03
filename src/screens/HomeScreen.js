@@ -5,19 +5,7 @@ import {TextField,Button} from '@mui/material'
 import Room from '../components/Room';
 
 var domain = [
-  "Ground",
-  "Floor 1",
-  "Floor 2",
-  "Floor 3",
-  "Floor 4",
-  "Floor 5",
-  "Floor 6",
-  "Floor 7",
-  "Floor 8",
-  "Floor 9",
-  "Floor 10",
-  "Floor 11",
-  "Floor 12",
+  0,1,2,3,4,5,6,7,8,9,10,11,12
 
 ];
 const HomeScreen=()=>{
@@ -40,8 +28,8 @@ const HomeScreen=()=>{
             <Content>
                <Navfloor>
                   {domain.map((flr)=>(
-                     <FloorBtn onClick={()=>setFloor(flr)}>
-                        {flr}
+                    <FloorBtn onClick={()=>setFloor(flr)}>
+                        {flr!=0? ("Floor "+flr): "Ground"}
                      </FloorBtn>
                   ))}
                </Navfloor>
