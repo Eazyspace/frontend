@@ -6,7 +6,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyledBookingScreen,
   StyledBookingForm,
@@ -18,46 +18,36 @@ import {
   SuccessTitle,
 } from "./BookingScreen.styled";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
+import bookingRequestAPI from "../api/bookingRequestAPI";
 
 const BookingForm = (props) => {
   const { step, switchStep, onSubmit, onChange, userInput } = props;
   const {
-    date,
     startTime,
     endTime,
     info: { eventName, organization, numOfAttendants, description },
   } = userInput;
+
   return (
     <StyledBookingForm onSubmit={onSubmit}>
       <FormTitle>
         {step === 1
-          ? "Firstly, we need a date"
+          ? "Firstly, we need the date and time"
           : step === 2
-          ? "Now we need the time"
-          : step === 3
           ? "Almost there"
           : ""}
       </FormTitle>
       {step === 1 && (
-        <input
-          type="date"
-          name="date"
-          value={date}
-          required
-          onChange={onChange}
-        />
-      )}
-      {step === 2 && (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <input
-            type="time"
+            type="datetime-local"
             name="startTime"
             value={startTime}
             required
             onChange={onChange}
           />
           <input
-            type="time"
+            type="datetime-local"
             name="endTime"
             value={endTime}
             required
@@ -65,7 +55,7 @@ const BookingForm = (props) => {
           />
         </div>
       )}
-      {step === 3 && (
+      {step === 2 && (
         <AdditionalInformation>
           <TextField
             label="Name of event"
@@ -73,6 +63,7 @@ const BookingForm = (props) => {
             id="event-name"
             name="eventName"
             value={eventName}
+            autoComplete="off"
             onChange={onChange}
           />
           <TextField
@@ -109,29 +100,29 @@ const BookingForm = (props) => {
           />
         </AdditionalInformation>
       )}
-      <ButtonGroup>
-        {step !== 1 && (
+      {step === 1 ? (
+        <ButtonGroup>
           <StyledButton variant="outlined" value="back" onClick={switchStep}>
             Back
           </StyledButton>
-        )}
-        {step !== 3 ? (
           <StyledButton variant="contained" value="next" onClick={switchStep}>
             Next
           </StyledButton>
-        ) : (
-          <StyledLink to="/booking/success">
-            <StyledButton variant="contained" value="finish" onClick={onSubmit}>
-              Finish
-            </StyledButton>
-          </StyledLink>
-        )}
-      </ButtonGroup>
+        </ButtonGroup>
+      ) : (
+        <StyledLink to="/booking/success">
+          <StyledButton variant="contained" value="finish" onClick={onSubmit}>
+            Finish
+          </StyledButton>
+        </StyledLink>
+      )}
     </StyledBookingForm>
   );
 };
 
 const BookingScreen = (props) => {
+  const userId = 1;
+  const roomId = 31;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
     date: "",
@@ -144,6 +135,7 @@ const BookingScreen = (props) => {
       description: "",
     },
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSwitchStep = (e) => {
     if (e.target.value === "next") {
@@ -156,8 +148,7 @@ const BookingScreen = (props) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    console.log(value);
-    if (name === "date" || name === "startTime" || name === "endTime")
+    if (name === "startTime" || name === "endTime")
       setUserInputForm({ ...userInputForm, [name]: value });
     else
       setUserInputForm({
@@ -165,9 +156,37 @@ const BookingScreen = (props) => {
         info: { ...userInputForm.info, [name]: value },
       });
   };
-  const handleSubmit = (e) => {
-    console.log(userInputForm);
+
+  const sendRequest = async (params) => {
+    try {
+      const response = await bookingRequestAPI.sendBookingRequest({
+        userId: userId,
+        roomId: roomId,
+        ...params,
+        ...params.info,
+      });
+
+      console.log(response);
+    } catch (error) {
+      alert("ERROR: " + error);
+    }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(userInputForm);
+    userInputForm.startTime = new Date(userInputForm.startTime).toISOString();
+    userInputForm.endTime = new Date(userInputForm.endTime).toISOString();
+
+    setSubmitted(true);
+
+    sendRequest(userInputForm);
+    setUserInputForm(userInputForm);
+  };
+
+  useEffect(() => {
+    if (submitted) console.log("SEND REQUEST");
+  }, [submitted]);
 
   return (
     <StyledBookingScreen>

@@ -24,7 +24,6 @@ export const StyledBookingForm = styled.form`
   align-items: stretch;
   gap: 2em;
   box-shadow: ${shadow2_low};
-  text-align: center;
 `;
 
 export const FormTitle = styled.h3`
