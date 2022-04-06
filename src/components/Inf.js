@@ -22,6 +22,7 @@ const ButtonChoose=styled.button`
    border:none;
    outline:none;
    color:#fff;
+   visibility: ${props => props.variant =="hidden" ? "hidden": "visible" };
    background: #1F75FF;
    &:hover{
       color:#1F75FF; 
@@ -34,18 +35,18 @@ const Inf=({RoomInfo})=>{
     
       return(
          <InfoForm>
-             <Typography fontWeight="fontWeightBold" variant="h4" flex={1} marginBottom={5} >{"Room "+(RoomInfo?.roomId||"")}</Typography>
+             <Typography fontWeight="fontWeightBold" variant="h4" flex={1} marginBottom={5} >{RoomInfo!=""? ("Room: "+RoomInfo.roomId): "Please select your room" }</Typography>
              <Rowline >
-               <Typography variant="h6">{"Room size:"}</Typography>
-               <Typography variant="h6">{RoomInfo?.roomLength+"x"+RoomInfo?.roomWidth+RoomInfo?.roomLength}</Typography>
+               <Typography variant="h6">{RoomInfo!=""? "Room size:":""}</Typography>
+               <Typography variant="h6">{RoomInfo!=""?(RoomInfo?.roomLength+"x"+RoomInfo?.roomWidth):""}</Typography>
              </Rowline>
              <Rowline>
-               <Typography variant="h6">{"Capacity:"}</Typography>
-               <Typography variant="h6">{RoomInfo?.maxCapacity}</Typography>
+               <Typography variant="h6">{RoomInfo!=""? "Capacity:": ""}</Typography>
+               <Typography variant="h6">{RoomInfo!=""? RoomInfo?.maxCapacity:""}</Typography>
              </Rowline>
-             <Typography variant="h6" flex={1}>{"Description:"}</Typography>
+             <Typography variant="h6" flex={1}>{RoomInfo!=""? "Description:":""}</Typography>
              <Typography variant="body1" width={410} flex={4}>{RoomInfo.description}</Typography>
-             <ButtonChoose  alignSelf={'center'}>Book This Room</ButtonChoose>
+             <ButtonChoose  alignSelf={'center'} variant={RoomInfo==""? "hidden":""}  >{"Book this room"}</ButtonChoose>
          </InfoForm>
       )
 }

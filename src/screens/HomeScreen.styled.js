@@ -57,9 +57,10 @@ export const FloorBtn=styled.button`
    margin-left:1rem;
    margin-top:1rem;
    margin-right:7rem;
+   text-align: left;
    font-size: 20px;
-   height: 40px;
-   width: 100px;
+   height: 50px;
+   width: 80%;    
    border-radius: 10px;
    border:none;
    outline:none;

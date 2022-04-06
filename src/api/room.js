@@ -2,7 +2,7 @@ import { serialize } from "../utils/utils";
 
 const { default: axios } = require("axios");
 
-const BASE_URI = "http://localhost:6969";
+const BASE_URI = "https://eazyspace-website.herokuapp.com";
 
 
 export const getRoomClient ={

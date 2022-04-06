@@ -2,31 +2,29 @@ import React,{useState,useEffect} from 'react';
 import { Grid,Paper } from '@mui/material';
 import styled from "styled-components";
 import Inf from '../components/Inf';
+import Box from '@mui/material/Box';
 import { getRoomClient } from '../api/room';
 const { default: axios } = require("axios");
 const ButtonBox=styled.button`
-   height: 80px;
-   width: 200px;
+   height: 5rem;
+   width: 100%;
    border-radius: 10px;
    border:none;
    outline:none;
    background: #fff;
    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
-   &:hover{
+   &:focus{
       color:#fff; 
       background: #1F75FF;
     }
 `
 const Info=styled.div`
-    flex:${props => props.variant =='info' ? 2:3 };
-    align-items: center;
-    height:800px;
+    //align-items: center;
+    margin-top:2rem;
+    margin-left:2rem;
 `
-const RoomContent=styled.div`
-    display:flex;
-    flex-direction: row;
-    
-`
+
+
 
 const Room=({FloorNum})=>{
     var RoomList=[];
@@ -52,20 +50,24 @@ const Room=({FloorNum})=>{
        SetRoom(room)
     }
     return(
-       <RoomContent>
-         <Info >
-            <Grid container spacing={3} >
-            {RoomList.map((room)=>(
-                <Grid item xs={12} sm={6} md={4}>
-                        <ButtonBox onClick={()=>showRoom(room)}>{room.roomName}</ButtonBox>
+       <Grid container >
+            <Grid item  xs={12} sm={12} md={5}  >
+                <Grid  container columns={{ xs: 4, sm: 8, md: 12 }} >
+                  
+                        {RoomList.map((room,index)=>(
+                        <Grid item xs={12} sm={6} md={4} key={index}   >
+                            <Info>
+                                <ButtonBox onClick={()=>showRoom(room)}>{room.roomName}</ButtonBox>
+                            </Info>
+                        </Grid>
+                        ))}
+                   
                 </Grid>
-            ))}
-            </Grid>
-         </Info>
-         <Info variant="info">
+           </Grid>
+           <Grid xs={0} sm={0} md={7} height={'800px'} alignItems={'center'} >
              <Inf RoomInfo={RoomInf}/>
-         </Info>
-       </RoomContent>
+           </Grid>
+       </Grid>
     )
 }
 export default Room;
