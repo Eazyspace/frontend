@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ezBlue, ezGrey } from "../utils/colors";
 import { Link } from "react-router-dom";
+import { shadow2_high } from "../utils/shadows";
 
 export const StyledLoginScreen = styled.div`
   width: 100vw;
@@ -39,8 +40,7 @@ export const StyledLoginForm = styled.div`
   padding: 40px 30px;
   gap: 30px;
   border-radius: 12px;
-  box-shadow: 6px 2px 16px 0px rgb(136, 165, 191, 0.4),
-    -6px -2px 16px rgba(255, 255, 255, 0.2);
+  box-shadow: ${shadow2_high};
 `;
 
 export const LoginTitle = styled.h4`
@@ -57,7 +57,7 @@ export const RegisterLine = styled.p`
   font-weight: 500;
 `;
 
-export const RegisterNow = styled(Link)`
+export const RegisterLink = styled(Link)`
   color: ${ezBlue};
   text-decoration: none;
 `;
