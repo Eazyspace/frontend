@@ -1,18 +1,77 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { ezBlue } from "./utils/colors";
+import { ezBlack, ezBlue } from "./utils/colors";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Montserrat",
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      "Segoe UI",
+      "Roboto",
+      "Oxygen",
+      "Ubuntu",
+      "Cantarell",
+      "Fira Sans",
+      "Droid Sans",
+      "Helvetica Neue",
+      "Montserrat",
+      "sans-serif",
+      "Open Sans",
+    ].join(", "),
+    htmlFontSize: 15,
+    body1: {
+      background: "white",
+      fontFamily: "Montserrat, sans-serif",
+      fontWeight: "400",
+      lineHeight: "24px",
+      color: ezBlack,
+    },
+    p: {
+      marginBottom: "1rem",
+    },
+    allVariants: {
+      fontFamily: "Montserrat, sans-serif",
+      fontWeight: "700",
+      lineHeight: "1.3",
+    },
+    h1: {
+      marginTop: 0,
+      fontSize: "3.052rem",
+    },
+    h2: {
+      fontSize: "2.441rem",
+      fontWeight: "bold",
+      letterSpacing: 1,
+    },
+    h3: {
+      fontSize: "1.953rem",
+      fontWeight: "bold",
+      letterSpacing: 1,
+    },
+    h4: {
+      fontSize: "1.563rem",
+      fontWeight: "600",
+      letterSpacing: "0.15px",
+    },
+    h5: {
+      fontSize: "1.25rem",
+      fontWeight: "600",
+      letterSpacing: "0.15px",
+    },
+    small: {
+      fontSize: "0.8rem",
+      fontWeight: "500",
+    },
   },
   palette: {
     primary: {
       main: ezBlue,
+      dark: ezBlack,
     },
   },
   components: {
@@ -21,6 +80,8 @@ const theme = createTheme({
         root: {
           borderRadius: 10,
           textTransform: "none",
+          fontFamily: "Open Sans",
+          fontWeight: "bold",
         },
       },
     },
