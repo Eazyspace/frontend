@@ -1,5 +1,5 @@
 import axios from "axios";
-class BookingRequestAPI {
+class RequestClient {
   sendBookingRequest = async ({
     userId,
     roomId,
@@ -15,11 +15,12 @@ class BookingRequestAPI {
       startTime,
       endTime,
       description,
+      ...params,
     });
   };
 }
 
-const bookingRequestAPI = new BookingRequestAPI();
-
 // export default getRequestAPI = () => {return new BookingRequestAPI()}
-export default bookingRequestAPI;
+export const getRequestClient = () => {
+  return new RequestClient();
+};

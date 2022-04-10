@@ -9,6 +9,8 @@ export const InfoForm = styled.div`
   justify-content: stretch;
   height: 100%;
 `;
+
+
 export const Rowline = styled.div`
   display: flex;
   flex-direction: row;

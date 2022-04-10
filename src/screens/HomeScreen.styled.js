@@ -18,7 +18,7 @@ export const HomeLogo = styled(Typography)`
   color: ${ezBlue};
   text-align: center;
 `;
-export const UsertitleButton = styled.button`
+export const UserTitleButton = styled.button`
   display: flex;
   gap: 15px;
   padding: 11px 18px;
@@ -35,14 +35,9 @@ export const UsertitleButton = styled.button`
   }
 `;
 export const Navfloor = styled.nav`
-  flex-shrink: 1;
   box-shadow: ${ezShadow2_low};
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 13px;
-  padding: 46px 32px;
+  padding: 24px;
 `;
 export const HomeView = styled.div`
   display: flex;
