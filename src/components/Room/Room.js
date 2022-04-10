@@ -39,9 +39,13 @@ const RoomContent = styled.div`
 const Room = ({ floorNum }) => {
   const [roomList, setRoomList] = useState([]);
   const [loading, setLoading] = useState(true);
+  // useState(initialValue)
   const [selectedRoom, setSelectedRoom] = useState(null);
   const roomClient = getRoomClient();
 
+  useEffect(() => {
+    // init command
+  }, []);
   // useCallBack
   useEffect(() => {
     fetchRoomList();
