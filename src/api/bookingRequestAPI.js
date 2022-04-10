@@ -1,5 +1,4 @@
-const { default: axios } = require("axios");
-
+import axios from "axios";
 class BookingRequestAPI {
   sendBookingRequest = async ({
     userId,

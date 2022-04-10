@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   HomeLogo,
@@ -30,7 +30,7 @@ const HomeScreen = () => {
         <Navfloor>
           {domain.map((flr) => (
             <FloorBtn onClick={() => setFloor(flr)}>
-              {flr != 0 ? "Floor " + flr : "Ground"}
+              {flr !== 0 ? "Floor " + flr : "Ground"}
             </FloorBtn>
           ))}
         </Navfloor>

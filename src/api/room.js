@@ -1,9 +1,11 @@
 import { serialize } from "../utils/utils";
+import axios from "axios";
 
-const { default: axios } = require("axios");
-
-export const getRoomClient = {
-  async getListRoom() {
+class RoomClient {
+  getListRoom({}) {
     return axios.get(`/room`);
-  },
+  }
+}
+export const getRoomClient = () => {
+  return new RoomClient();
 };
