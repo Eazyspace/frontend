@@ -1,72 +1,78 @@
 import { Typography } from "@mui/material";
 import styled from "styled-components";
-import {TextField,Button} from '@mui/material';
+import { ezBlack, ezBlue } from "../utils/colors";
+import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
 
 export const Navbar = styled.nav`
-    background: #fff;
-    height: 80px;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: rgb(0,0,128,0.1) 0px 8px 10px;
-   
+  background: white;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: ${ezShadow2_high};
+  padding: 12px 25px;
+`;
+export const HomeLogo = styled(Typography)`
+  margin: 0px;
+  letter-spacing: 0.3rem;
+  color: ${ezBlue};
+  text-align: center;
+`;
+export const UsertitleButton = styled.button`
+  display: flex;
+  gap: 15px;
+  padding: 11px 18px;
+  font-size: 20px;
+  color: ${ezBlack};
+  background-color: transparent;
+  border: none;
+  border-radius: 110px;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(102, 102, 102, 0.2);
+  }
+`;
+export const Navfloor = styled.nav`
+  flex-shrink: 1;
+  box-shadow: ${ezShadow2_low};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 46px 32px;
+`;
+export const HomeView = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 900px;
+`;
+export const Roomfloor = styled.div`
+  flex: 4;
+  margin-top: 30px;
+  margin-left: 30px;
+`;
+export const Info = styled.div`
+  flex: 4;
+  align-items: center;
+`;
 
-`
-export const HomeLogo=styled.div`
-   font-size: 35px;
-   font-family: 'Montserrat', sans-serif;
-   color: #0000FF;
-   margin-left: 1rem;
-   letter-spacing: 0.3rem;
-
-
-`
-export const Usertitle=styled.div`
-   font-size:20px;
-   color: #000;
-   margin-right: 1rem;
-`
-export const Navfloor=styled.nav`
-    border-radius: 10px;
-    box-shadow: rgb(0,0,128,0.1) 10px 1px 10px;
-    flex:1;
-    height: 100%;
-    display:flex;
-    flex-direction: column;
-`
-export const HomeView=styled.div`
-   display: flex;
-   flex-direction: column;
-`
-export const Content=styled.div`
-    display: flex;
-    flex-direction: row;
-    height:900px;
-`
-export const Roomfloor=styled.div`
-    flex:4;
-    margin-top: 30px;
-    margin-left: 30px;
-
-`
-export const Info=styled.div`
-    flex:4;
-    align-items: center;
-`
-export const FloorBtn=styled.button`
-   margin-left:1rem;
-   margin-top:1rem;
-   margin-right:7rem;
-   font-size: 20px;
-   height: 40px;
-   width: 100px;
-   border-radius: 10px;
-   border:none;
-   outline:none;
-   background: #fff;
-   &:hover{
-      color:#1F75FF; 
-      background: #E8E9EB;
-    }
-
-`
+export const FloorBtn = styled.button`
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  &:hover {
+    background: rgba(31, 117, 255, 0.1);
+  }
+`;

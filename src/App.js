@@ -1,10 +1,11 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { ezBlack, ezBlue } from "./utils/colors";
+import { ezBlue } from "./utils/colors";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
+import { ezShadow1_low } from "./utils/shadows";
 
 const theme = createTheme({
   typography: {
@@ -25,11 +26,9 @@ const theme = createTheme({
     ].join(", "),
     htmlFontSize: 15,
     body1: {
-      background: "white",
       fontFamily: "Montserrat, sans-serif",
       fontWeight: "400",
       lineHeight: "24px",
-      color: ezBlack,
     },
     p: {
       marginBottom: "1rem",
@@ -71,7 +70,6 @@ const theme = createTheme({
   palette: {
     primary: {
       main: ezBlue,
-      dark: ezBlack,
     },
   },
   components: {
@@ -82,6 +80,7 @@ const theme = createTheme({
           textTransform: "none",
           fontFamily: "Open Sans",
           fontWeight: "bold",
+          padding: "10px 0px",
         },
       },
     },
@@ -89,7 +88,17 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontFamily: "Open Sans",
-          borderRadius: 10,
+          borderRadius: "20px",
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          fontSize: "1.25rem",
+          fontWeight: "600",
+          letterSpacing: "0.15px",
+          boxShadow: ezShadow1_low,
         },
       },
     },
