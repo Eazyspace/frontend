@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ezBlue, ezGrey } from "../utils/colors";
 import { Link } from "react-router-dom";
-import { shadow2_high } from "../utils/shadows";
+import { ezShadow2_high } from "../utils/shadows";
 
 export const StyledLoginScreen = styled.div`
   width: 100vw;
@@ -40,7 +40,7 @@ export const StyledLoginForm = styled.div`
   padding: 40px 30px;
   gap: 30px;
   border-radius: 12px;
-  box-shadow: ${shadow2_high};
+  box-shadow: ${ezShadow2_high};
 `;
 
 export const LoginTitle = styled.h4`

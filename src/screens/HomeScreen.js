@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import {
   Navbar,
   HomeLogo,
-  Usertitle,
+  UsertitleButton,
   Navfloor,
   HomeView,
   FloorBtn,
   Content,
   Roomfloor,
-  Info,
 } from "./HomeScreen.styled";
 import Room from "../components/Room";
+import { TextField, Typography } from "@mui/material";
 
 var domain = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const HomeScreen = () => {
@@ -23,14 +23,23 @@ const HomeScreen = () => {
   return (
     <HomeView>
       <Navbar>
-        <HomeLogo>EazySpace</HomeLogo>
-        <Usertitle>Vu Duc Huy</Usertitle>
+        <HomeLogo variant="h1">EazySpace</HomeLogo>
+        <UsertitleButton
+          onClick={() => {
+            console.log("click");
+          }}
+        >
+          <Typography variant="h5">Vu Duc Huy</Typography>
+        </UsertitleButton>
       </Navbar>
       <Content>
         <Navfloor>
+          <TextField label="Search" />
           {domain.map((flr) => (
             <FloorBtn onClick={() => setFloor(flr)}>
-              {flr !== 0 ? "Floor " + flr : "Ground"}
+              <Typography variant="h5">
+                {flr !== 0 ? "Floor " + flr : "Ground"}
+              </Typography>
             </FloorBtn>
           ))}
         </Navfloor>

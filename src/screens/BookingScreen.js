@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  Divider,
   MenuItem,
   TextField,
   Toolbar,
@@ -9,16 +10,24 @@ import {
 import { useEffect, useState } from "react";
 import {
   StyledBookingScreen,
-  StyledBookingForm,
+  StyledForm,
   ButtonGroup,
   StyledButton,
   AdditionalInformation,
   FormTitle,
   StyledLink,
   SuccessTitle,
+  RowLine,
+  UserAndRoom,
+  ContentSection,
+  DescriptionField,
 } from "./BookingScreen.styled";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
 import bookingRequestAPI from "../api/bookingRequestAPI";
+import { ezBlack, ezGrey } from "../utils/colors";
+import ProfileAvatar from "../components/ProfileAvatar";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import RoomAvatar from "../components/RoomAvatar";
 
 const BookingForm = (props) => {
   const { step, switchStep, onSubmit, onChange, userInput } = props;
@@ -29,7 +38,7 @@ const BookingForm = (props) => {
   } = userInput;
 
   return (
-    <StyledBookingForm onSubmit={onSubmit}>
+    <StyledForm onSubmit={onSubmit}>
       <FormTitle>
         {step === 1
           ? "Firstly, we need the date and time"
@@ -37,7 +46,7 @@ const BookingForm = (props) => {
           ? "Almost there"
           : ""}
       </FormTitle>
-      {step === 1 && (
+      {step === 1 ? (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
           <input
             type="datetime-local"
@@ -54,8 +63,7 @@ const BookingForm = (props) => {
             onChange={onChange}
           />
         </div>
-      )}
-      {step === 2 && (
+      ) : step === 2 ? (
         <AdditionalInformation>
           <TextField
             label="Name of event"
@@ -99,24 +107,143 @@ const BookingForm = (props) => {
             onChange={onChange}
           />
         </AdditionalInformation>
+      ) : (
+        <></>
       )}
-      {step === 1 ? (
+      {step !== 3 && (
         <ButtonGroup>
-          <StyledButton variant="outlined" value="back" onClick={switchStep}>
-            Back
-          </StyledButton>
+          {step !== 1 && (
+            <StyledButton variant="text" value="back" onClick={switchStep}>
+              Back
+            </StyledButton>
+          )}
           <StyledButton variant="contained" value="next" onClick={switchStep}>
             Next
           </StyledButton>
         </ButtonGroup>
-      ) : (
-        <StyledLink to="/booking/success">
-          <StyledButton variant="contained" value="finish" onClick={onSubmit}>
-            Finish
-          </StyledButton>
-        </StyledLink>
       )}
-    </StyledBookingForm>
+    </StyledForm>
+  );
+};
+
+const SummaryAndConfirmForm = (props) => {
+  const { roomId, userInput, switchStep, onSubmit } = props;
+  const {
+    startTime,
+    endTime,
+    info: { eventName, organization, numOfAttendants, description },
+  } = userInput;
+
+  return (
+    <StyledForm variant="summary">
+      <Typography variant="h4" sx={{ textAlign: "center" }}>
+        We made it! Here is a small recap.
+      </Typography>
+      <UserAndRoom>
+        <ProfileAvatar />
+        <MoreHorizIcon sx={{ color: ezGrey }} />
+        <RoomAvatar roomId={roomId} />
+      </UserAndRoom>
+      <RowLine>
+        <Typography variant="body1" color={ezGrey}>
+          Date
+        </Typography>
+        <Typography variant="body1" color={ezBlack}>
+          {new Date(startTime).toDateString()}
+        </Typography>
+      </RowLine>
+      <Divider />
+      <RowLine>
+        <Typography variant="body1" color={ezGrey}>
+          Time
+        </Typography>
+        <Typography variant="body1" color={ezBlack}>
+          {new Date(startTime).toLocaleTimeString([], {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+          })}{" "}
+          -{" "}
+          {new Date(endTime).toLocaleTimeString([], {
+            hour12: false,
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Typography>
+      </RowLine>
+      <Divider />
+      <RowLine>
+        <Typography variant="body1" color={ezGrey}>
+          Event name
+        </Typography>
+        <Typography variant="body1" color={ezBlack}>
+          {eventName}
+        </Typography>
+      </RowLine>
+      <Divider />
+      {organization !== "" && (
+        <>
+          <RowLine>
+            <Typography variant="body1" color={ezGrey}>
+              Organization
+            </Typography>
+            <Typography variant="body1" color={ezBlack}>
+              {eventName}
+            </Typography>
+          </RowLine>
+          <Divider />
+        </>
+      )}
+      <RowLine>
+        <Typography variant="body1" color={ezGrey}>
+          Number of participants
+        </Typography>
+        <Typography variant="body1" color={ezBlack}>
+          {numOfAttendants}
+        </Typography>
+      </RowLine>
+      <Divider />
+      <DescriptionField>
+        <Typography variant="body1" color={ezGrey}>
+          Description
+        </Typography>
+        <Typography variant="body1" color={ezBlack}>
+          {description}
+        </Typography>
+      </DescriptionField>
+      <ButtonGroup>
+        <StyledButton value="back" onClick={switchStep}>
+          Back to filling
+        </StyledButton>
+        <StyledButton variant="contained" onClick={onSubmit}>
+          Confirm booking
+        </StyledButton>
+      </ButtonGroup>
+    </StyledForm>
+  );
+};
+
+const SuccessForm = (props) => {
+  return (
+    <StyledForm>
+      <SuccessTitle>
+        <h3>Congratulations</h3>
+        <h4>
+          You have successfully sent a booking request! <br />
+          Please give us some time to process.
+        </h4>
+      </SuccessTitle>
+      <AccessAlarmRoundedIcon
+        sx={{ fontSize: "100px" }}
+        style={{ alignSelf: "center", color: "#FF8F79" }}
+      />
+      <StyledLink to="/">
+        <StyledButton variant="contained">View the request status</StyledButton>
+      </StyledLink>
+      <StyledLink to="/">
+        <StyledButton variant="text">Back to browsing rooms</StyledButton>
+      </StyledLink>
+    </StyledForm>
   );
 };
 
@@ -125,7 +252,6 @@ const BookingScreen = (props) => {
   const roomId = 31;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
-    date: "",
     startTime: "",
     endTime: "",
     info: {
@@ -138,9 +264,31 @@ const BookingScreen = (props) => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSwitchStep = (e) => {
-    if (e.target.value === "next") {
-      if (step < 3) setStep(step + 1);
-    } else {
+    let value = e.target.value;
+    console.log(userInputForm);
+    if (value === "next") {
+      switch (step) {
+        case 1: {
+          let { startTime, endTime } = userInputForm;
+
+          if (startTime !== "" && endTime !== "") setStep(step + 1);
+          else alert("ERROR: No datetime");
+
+          break;
+        }
+        case 2: {
+          let { eventName, numOfAttendants, description } = userInputForm;
+
+          if (eventName !== "" && numOfAttendants !== "" && description !== "")
+            setStep(step + 1);
+          else alert("ERROR: No info");
+
+          break; 
+        }
+        default:
+          break;
+      }
+    } else if (value === "back") {
       setStep(step - 1);
     }
   };
@@ -157,13 +305,13 @@ const BookingScreen = (props) => {
       });
   };
 
-  const sendRequest = async (params) => {
+  const sendRequest = async () => {
     try {
       const response = await bookingRequestAPI.sendBookingRequest({
         userId: userId,
         roomId: roomId,
-        ...params,
-        ...params.info,
+        ...userInputForm,
+        ...userInputForm.info,
       });
 
       console.log(response);
@@ -180,7 +328,7 @@ const BookingScreen = (props) => {
 
     setSubmitted(true);
 
-    sendRequest(userInputForm);
+    sendRequest();
     setUserInputForm(userInputForm);
   };
 
@@ -200,40 +348,30 @@ const BookingScreen = (props) => {
           >
             EazySpace
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button sx={{ backgroundColor: "transparent", color: "white" }}>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
-      {props.success ? (
-        <StyledBookingForm>
-          <SuccessTitle>
-            <h3>Congratulations</h3>
-            <h4>
-              You have successfully sent a booking request! <br />
-              Please give us some time to process.
-            </h4>
-          </SuccessTitle>
-          <AccessAlarmRoundedIcon
-            sx={{ fontSize: "100px" }}
-            style={{ alignSelf: "center", color: "#FF8F79" }}
+      <ContentSection>
+        {props.success ? (
+          <SuccessForm />
+        ) : step !== 3 ? (
+          <BookingForm
+            step={step}
+            switchStep={handleSwitchStep}
+            onChange={handleChange}
+            userInput={userInputForm}
           />
-          <StyledLink to="/">
-            <StyledButton variant="contained">
-              View the request status
-            </StyledButton>
-          </StyledLink>
-          <StyledLink to="/">
-            <StyledButton variant="text">Back to browsing rooms</StyledButton>
-          </StyledLink>
-        </StyledBookingForm>
-      ) : (
-        <BookingForm
-          step={step}
-          switchStep={handleSwitchStep}
-          onSubmit={handleSubmit}
-          onChange={handleChange}
-          userInput={userInputForm}
-        />
-      )}
+        ) : (
+          <SummaryAndConfirmForm
+            roomId={roomId}
+            userInput={userInputForm}
+            switchStep={handleSwitchStep}
+            onSubmit={handleSubmit}
+          />
+        )}
+      </ContentSection>
     </StyledBookingScreen>
   );
 };
