@@ -2,33 +2,36 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { ButtonChoose, InfoForm, Rowline } from "./Inf.styled";
 
-const Inf = ({ RoomInfo }) => {
+const Inf = ({ RoomInfo: roomInfo }) => {
   return (
     <InfoForm>
-      <Typography variant="h2" flex={1} marginBottom={5}>
-        {"Room " + (RoomInfo?.roomId || "")}
+      <Typography variant="h2" flex={1}>
+        {"Room " + (roomInfo?.roomId || "")}
       </Typography>
       <Rowline>
         <Typography variant="h5">{"Room size:"}</Typography>
         <Typography variant="h5">
-          {RoomInfo.roomLength !== "undefined" &&
-            RoomInfo?.roomLength +
+          {roomInfo.roomLength !== "undefined" &&
+            roomInfo?.roomLength +
               "x" +
-              RoomInfo?.roomWidth +
-              RoomInfo?.roomLength}
+              roomInfo?.roomWidth +
+              roomInfo?.roomLength}
         </Typography>
       </Rowline>
       <Rowline>
         <Typography variant="h5">{"Capacity:"}</Typography>
-        <Typography variant="h5">{RoomInfo?.maxCapacity}</Typography>
+        <Typography variant="h5">{roomInfo?.maxCapacity}</Typography>
       </Rowline>
-      <Typography variant="h5" flex={1}>
-        {"Description:"}
+      <Typography variant="h5">{"Description:"}</Typography>
+      <Typography variant="body1" width={410}>
+        {roomInfo.description}
       </Typography>
-      <Typography variant="body1" width={410} flex={4}>
-        {RoomInfo.description}
-      </Typography>
-      <ButtonChoose variant="contained">Book This Room</ButtonChoose>
+      <ButtonChoose
+        style={{ position: "fixed", bottom: 0 }}
+        variant="contained"
+      >
+        Book This Room
+      </ButtonChoose>
     </InfoForm>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, Typography } from "@mui/material";
+import { Drawer, Grid, Paper, Typography } from "@mui/material";
 import styled from "styled-components";
 import Inf from "../Inf";
 import { getRoomClient } from "../../api/room";
@@ -28,20 +28,21 @@ const ActiveButtonBox = styled(ButtonBox)`
 const Info = styled.div`
   flex: ${(props) => (props.variant == "info" ? 2 : 3)};
   align-items: center;
-  height: 800px;
 `;
+//   height: 800px;
+
 const RoomContent = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
 const Room = ({ floorNum }) => {
-  const [roomInfo, setRoomInfo] = useState("");
   const [roomList, setRoomList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const roomClient = getRoomClient();
 
+  // useCallBack
   useEffect(() => {
     fetchRoomList();
   }, [floorNum]);
@@ -50,8 +51,12 @@ const Room = ({ floorNum }) => {
     setLoading(true);
     try {
       const response = await roomClient.getListRoom({ floorId: floorNum });
-      setRoomList(response.data);
-    } catch (error) {}
+      if (response.status === "OK") setRoomList(response.data);
+      // snackbar
+      else console.error(response.message);
+    } catch (error) {
+      console.error(error.message);
+    }
     setLoading(false);
   };
   const showRoom = (room) => {
@@ -60,7 +65,7 @@ const Room = ({ floorNum }) => {
   useEffect(() => console.log(selectedRoom), [selectedRoom]);
   return loading ? (
     <BackdropLoading showBackdrop={true} />
-  ) : (
+  ) : roomList?.length ? (
     <RoomContent>
       <Info>
         <Grid container spacing={2}>
@@ -68,26 +73,34 @@ const Room = ({ floorNum }) => {
             ? roomList.map((room) => (
                 <Grid key={room.roomId} item xs={12} md={3} lg={3}>
                   {selectedRoom?.roomId !== room.roomId ? (
-                    <ButtonBox
-                      active={room.roomId === selectedRoom?.roomId}
-                      onClick={() => showRoom(room)}
-                    >
+                    <ButtonBox onClick={() => showRoom(room)}>
                       <Typography variant="h5">{room.roomName}</Typography>
                     </ButtonBox>
                   ) : (
                     <ActiveButtonBox>
                       <Typography variant="h5">{room.roomName}</Typography>
-                      </ActiveButtonBox>
+                    </ActiveButtonBox>
                   )}
                 </Grid>
               ))
             : "Chưa có dữ liệu phòng"}
         </Grid>
       </Info>
-      {/* <Info variant="info">
-        <Inf RoomInfo={roomInfo} />
-      </Info> */}
+      {!!selectedRoom?.roomId && (
+        <Drawer
+          style={{ zIndex: 999 }}
+          open={true}
+          anchor="right"
+          onClose={() => showRoom(null)}
+        >
+          <Info variant="info">
+            <Inf RoomInfo={selectedRoom} />
+          </Info>
+        </Drawer>
+      )}
     </RoomContent>
+  ) : (
+    <Typography>Không tìm thấy dữ liệu phòng</Typography>
   );
 };
 export default Room;

@@ -7,7 +7,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
 
-const theme = createTheme({
+var theme = createTheme({
   typography: {
     fontFamily: [
       "-apple-system",

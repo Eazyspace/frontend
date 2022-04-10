@@ -3,13 +3,12 @@ import styled from "styled-components";
 
 export const InfoForm = styled.div`
   display: flex;
-  margin-top: 3rem;
-  margin-left: 10rem;
+  margin-top: 7em;
+  margin-left: 5em;
   flex-direction: column;
   justify-content: stretch;
-  height: 100%;
+  height: 70%;
 `;
-
 
 export const Rowline = styled.div`
   display: flex;

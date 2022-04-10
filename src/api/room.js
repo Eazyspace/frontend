@@ -22,7 +22,7 @@ class RoomClient {
       let response = await axios.get(`/room`, { params: { q } });
       if (response.status === 200) {
         return response.data;
-      }
+      } else return response.message;
     } catch (e) {
       console.log(e);
     }

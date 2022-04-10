@@ -37,26 +37,34 @@ const HomeScreen = () => {
         <Navfloor>
           <TextField label="Search" />
           <div
-            style={{ maxHeight: "70vh", overflow: "scroll", marginTop: "1em" }}
+            style={{ maxHeight: "70vh", overflow: "scroll", marginTop: "2em" }}
           >
             {domain.map((flr) => (
-              <FloorBtn
+              <div
                 style={{
-                  color: floorNum === flr ? ezBlue : "inherit",
                   display: "block",
-                  marginBottom: "1em",
                 }}
-                key={flr}
-                onClick={() => handleSetFloor(flr)}
               >
-                <Typography variant="h5">
-                  {flr !== 0 ? "Floor " + flr : "Ground"}
-                </Typography>
-              </FloorBtn>
+                <FloorBtn
+                  style={{
+                    color: floorNum === flr ? ezBlue : "inherit",
+                    marginBottom: "1em",
+                  }}
+                  key={flr}
+                  onClick={() => handleSetFloor(flr)}
+                >
+                  <Typography variant="h5">
+                    {flr !== 0 ? "Floor " + flr : "Ground"}
+                  </Typography>
+                </FloorBtn>
+              </div>
             ))}
           </div>
         </Navfloor>
-        <Roomfloor>{floorNum && <Room floorNum={floorNum} />}</Roomfloor>
+        {/* !! <=> Boolean(floorNum) */}
+        <Roomfloor>
+          {!!(floorNum > -1) ? <Room floorNum={floorNum} /> : <></>}
+        </Roomfloor>
       </Content>
     </HomeView>
   );

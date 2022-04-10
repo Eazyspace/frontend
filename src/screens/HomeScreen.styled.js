@@ -5,12 +5,13 @@ import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
 
 export const Navbar = styled.nav`
   background: white;
-  height: 80px;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: ${ezShadow2_high};
   padding: 12px 25px;
+  z-index: 1000;
 `;
 export const HomeLogo = styled(Typography)`
   margin: 0px;
@@ -46,8 +47,9 @@ export const HomeView = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
-  height: 900px;
 `;
+//   height: 900px;
+
 export const Roomfloor = styled.div`
   flex: 4;
   margin-top: 30px;
