@@ -4,21 +4,23 @@ import styled from 'styled-components';
 const InfoForm=styled.div`
     display: flex;
     margin-top: 3rem;
-    margin-left: 10rem;
+    margin-left:40%;
+    margin-right: 1rem;
     flex-direction: column;
-    height: 70%;
+    align-self: flex-end;
+    height: 50%;
 `
 const Rowline=styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 400px;
+    width: 100%;
     flex: 1;
 `
 const ButtonChoose=styled.button`
    height: 40px;
    border-radius: 10px;
-   width: 400px;
+   width: 100%;
    border:none;
    outline:none;
    color:#fff;

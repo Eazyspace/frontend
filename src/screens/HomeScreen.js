@@ -1,20 +1,23 @@
 
+
 import React, { Component,useState } from 'react'
 import { Navbar,HomeLogo,Usertitle,Navfloor,HomeView,FloorBtn,Content, Roomfloor, Info} from './HomeScreen.styled'
-import {TextField,Button} from '@mui/material'
+import {TextField,Button, Typography} from '@mui/material'
 import Room from '../components/Room';
 import { Grid,Paper } from '@mui/material';
 var domain = [
   1,2,3,4,5,6,7,8,9,10,11,12
 
 ];
+
 const HomeScreen=()=>{
    const [floorNum,SetFloor]=useState("");
+   const [floorClick,SetColor]=useState("");
 
    const setFloor=(flr)=>{
-       SetFloor(flr)
-   }
-   
+       SetFloor(flr);
+      
+   } 
    return(
          <HomeView>
             <Navbar>
@@ -25,12 +28,12 @@ const HomeScreen=()=>{
                  Vu Duc Huy
               </Usertitle>
             </Navbar>
-            <Grid container >
+            <Grid container height={'90%'} >
                <Grid item  xs={0} sm={0} md={1.5} lg={1} >
                   <Navfloor>
                   {domain.map((flr)=>(
                     <FloorBtn onClick={()=>setFloor(flr)}>
-                        {flr!=1? ("Floor "+flr): "Ground"}
+                       <Typography alignItems={'center'}>{flr!=1? ("Floor "+flr): "Ground"}</Typography> 
                      </FloorBtn> 
                   ))}
                   </Navfloor>

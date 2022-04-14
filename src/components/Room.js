@@ -13,10 +13,15 @@ const ButtonBox=styled.button`
    outline:none;
    background: #fff;
    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
+   transition-duration: 0.1s;
    &:focus{
       color:#fff; 
       background: #1F75FF;
     }
+   &:hover{
+    outline-style: solid;
+    outline-color:#1F75FF;
+   }
 `
 const Info=styled.div`
     //align-items: center;
@@ -50,7 +55,7 @@ const Room=({FloorNum})=>{
        SetRoom(room)
     }
     return(
-       <Grid container >
+       <Grid container height={'100%'} >
             <Grid item  xs={12} sm={12} md={5}  >
                 <Grid  container columns={{ xs: 4, sm: 8, md: 12 }} >
                   
@@ -64,7 +69,7 @@ const Room=({FloorNum})=>{
                    
                 </Grid>
            </Grid>
-           <Grid xs={0} sm={0} md={7} height={'800px'} alignItems={'center'} >
+           <Grid xs={0} sm={0} md={7} height={'100%'} alignItems={'flex-end'} >
              <Inf RoomInfo={RoomInf}/>
            </Grid>
        </Grid>
