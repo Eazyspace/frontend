@@ -9,6 +9,7 @@ import Popup from "reactjs-popup";
 import ModalPopup from './ModalPopup';
 import zIndex from '@mui/material/styles/zIndex';
 import RoomAvatar from './RoomAvatar';
+import {useScrollLock} from './scrollLock'
 const Bigbox=styled.div`
      box-shadow: ${ezShadow2_high};
      overflow: scroll;
@@ -101,7 +102,9 @@ var domain=[
 
 const ProfileInfo=()=>{
     const [showpopUp, setPopUp] = useState(false);
+    const { lockScroll, unlockScroll } = useScrollLock();
     const showPopUp=(state)=>{
+        lockScroll();
         setPopUp(state)
     }
     
@@ -120,7 +123,7 @@ const ProfileInfo=()=>{
                   </FlatList>
               ))
           }
-           <Popup modal open={showpopUp} onClose={() => showPopUp(false)} overlayStyle={ {background: "rgba(0,0,0,0.1)",zIndex:1100}} className='popup-content' display='block'>
+           <Popup modal open={showpopUp} onClose={() => showPopUp(false)} overlayStyle={ {background: "rgba(0,0,0,0.1)",zIndex:1100}} className='popup-content'>
              <ModalPopup/>
            </Popup>
         </Bigbox>

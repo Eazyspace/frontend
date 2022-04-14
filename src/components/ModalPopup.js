@@ -11,7 +11,10 @@ const Pop=styled.div`
     box-shadow: ${ezShadow2_high};
     border-radius: 10px;
     background-color: white;
-    width: ${props => props.contents}px; ;
+    width: ${props => props.contents}px; 
+    max-height: calc(100vh );
+    overflow-y: auto;
+ 
 `
 const Row=styled.div`
     justify-content: space-between;
