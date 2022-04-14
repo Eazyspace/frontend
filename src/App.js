@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
+import ProfileScreen from "./screens/ProfileScreen";
 
 var theme = createTheme({
   typography: {
@@ -113,7 +114,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<HomeScreen />} />
+          <Route path="/" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"

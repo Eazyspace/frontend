@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 import styled from "styled-components";
 import { ezBlack, ezBlue } from "../utils/colors";
 import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
-
 export const Navbar = styled.nav`
   background: white;
   height: 70px;
@@ -47,6 +46,8 @@ export const HomeView = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
+  height: ;
+  background: #ff0000;
 `;
 //   height: 900px;
 
