@@ -5,11 +5,14 @@ export const ProfileTab=styled.div`
      box-shadow: ${ezShadow2_high};
      display: flex;
      flex-direction: column;
+     height: ${props => props.contents}px;
+     margin-top:3rem;
+     margin-left:2rem;
+     margin-right:2rem;
     
 `
-export const ProfileInfo=styled.div`
-     flex:4;
-     box-shadow: ${ezShadow2_high};
+export const ProfileInf=styled.div`
+     flex:7;
      display: flex;
      flex-direction: column;
      

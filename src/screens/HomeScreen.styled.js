@@ -4,7 +4,6 @@ import { ezBlack, ezBlue } from "../utils/colors";
 import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
 export const Navbar = styled.nav`
   background: white;
-  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,8 +45,7 @@ export const HomeView = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
-  height: ;
-  background: #ff0000;
+  height: ${props => props.contents}px; ;
 `;
 //   height: 900px;
 
