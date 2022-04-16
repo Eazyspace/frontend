@@ -1,9 +1,20 @@
-import { Avatar } from "@mui/material";
+import styled from "styled-components";
+import { Avatar, Typography } from "@mui/material";
+import { ezShadow1_low } from "../utils/shadows";
 import { ezBlue } from "../utils/colors";
+
+const StyledAvatar = styled(Avatar)`
+  &.MuiAvatar-root {
+    background-color: ${ezBlue};
+    box-shadow: ${ezShadow1_low};
+  }
+`;
 
 function RoomAvatar({ roomId, ...props }) {
   return (
-    <Avatar sx={{ backgroundColor: ezBlue, padding: "10px" }}>I.{roomId}</Avatar>
+    <StyledAvatar {...props}>
+      <Typography variant="h5">I.{roomId}</Typography>
+    </StyledAvatar>
   );
 }
 

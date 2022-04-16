@@ -1,4 +1,8 @@
-import { ArrowLeftRounded, ArrowRightRounded } from "@mui/icons-material";
+import {
+  ArrowLeftRounded,
+  ArrowRightRounded,
+  CalendarTodayRounded,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,18 +12,118 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ProfileAvatar from "../../components/ProfileAvatar";
+import RoomAvatar from "../../components/RoomAvatar";
+import StatusChip from "../../components/StatusChip";
 import {
+  appBarHeight,
   StyledAdminScreen,
   StyledAppBar,
-  Main,
+  StyledMainContent,
   StyledDrawer,
   DrawerHeader,
   FloorButton,
+  OpeningDrawerButton,
+  StyledRequestCard,
+  FloorList,
+  DeadlineChip,
+  VerticalLine,
 } from "./AdminScreen.styled";
+
+function RequestCard({ roomId, userId, startTime, endTime }) {
+  return (
+    <StyledRequestCard>
+      <RoomAvatar roomId={roomId} sx={{ padding: "1em" }} />
+      <Grid container rowSpacing={1} columnSpacing={2}>
+        <Grid item xs="auto">
+          <DeadlineChip label="2 days" size="small" />
+        </Grid>
+        <Grid item xs={10} sx={{ display: "flex", gap: 1 }}>
+          <CalendarTodayRounded />
+          <Typography variant="h5">Sun. Apr 3rd, 2022</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h3">NẺD VS WIBU: DAWN OF THE LAME</Typography>
+        </Grid>
+        <Grid
+          item
+          xs="auto"
+          sx={{ display: "flex", gap: 2, alignItems: "center" }}
+        >
+          <ProfileAvatar sx={{ width: 20, height: 20 }}>H</ProfileAvatar>
+          <Typography variant="p" sx={{ margin: "auto 0px" }}>
+            Vu Duc Huy
+          </Typography>
+        </Grid>
+        <Grid item xs="auto">
+          <VerticalLine />
+        </Grid>
+        <Grid item xs={7} alignSelf="center">
+          <Typography
+            variant="p"
+            sx={{ margin: "auto 0px", fontWeight: "bold" }}
+          >
+            Council of Wibus
+          </Typography>
+        </Grid>
+      </Grid>
+    </StyledRequestCard>
+  );
+}
+
+function MainContent({ openedDrawer, floorId }) {
+  
+
+  return (
+    <StyledMainContent openedDrawer={openedDrawer}>
+      <Typography variant="h2" color="primary">
+        Room requests
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item>
+          <StatusChip
+            label="Pending"
+            variant="outlined"
+            color="primary"
+            clickable
+            onClick={() => {
+              console.log("Pending filter");
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <StatusChip
+            label="Approved"
+            variant="outlined"
+            color="primary"
+            clickable
+            onClick={() => {
+              console.log("Approved filter");
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <StatusChip
+            label="Declined"
+            variant="outlined"
+            color="primary"
+            clickable
+            onClick={() => {
+              console.log("Declined filter");
+            }}
+          />
+        </Grid>
+      </Grid>
+      <RequestCard />
+    </StyledMainContent>
+  );
+}
 
 function AdminScreen() {
   const [openedDrawer, setOpenedDrawer] = useState(true);
+  const [floorList, setFloorList] = useState([]);
+  const [currentFloorId, setCurrentFloorId] = useState(0);
 
   const openingDrawer = () => {
     setOpenedDrawer(true);
@@ -28,12 +132,32 @@ function AdminScreen() {
     setOpenedDrawer(false);
   };
 
+  useEffect(() => {
+    setFloorList([
+      {
+        floorId: 1,
+        floorName: "Tầng trệt",
+        description: "Có hội trường, rộng...",
+      },
+      {
+        floorId: 2,
+        floorName: "Tầng 2",
+        description: "Có gì đó hong nhớ...",
+      },
+      {
+        floorId: 3,
+        floorName: "Tầng 3",
+        description: "Có phòng học của APCS + CLC",
+      },
+    ]);
+  }, []);
+
   return (
     <StyledAdminScreen>
       <StyledAppBar>
         <Toolbar>
           <Typography
-            variant="h3"
+            variant="h1"
             component="div"
             sx={{ flexGrow: 1 }}
             style={{ padding: "15px 0px" }}
@@ -50,7 +174,10 @@ function AdminScreen() {
           <Grid
             container
             direction="column"
-            sx={{ height: "100%", padding: "20px 10px 10px 10px" }}
+            sx={{
+              height: "100%",
+              padding: `${appBarHeight - 45}px 10px 10px 10px`,
+            }}
           >
             <Grid item xs={1} />
             <Grid item xs={10}>
@@ -60,68 +187,25 @@ function AdminScreen() {
                 </IconButton>
               </DrawerHeader>
               <TextField label="Search" />
-              <FloorButton>
-                <Typography variant="h5">Ground</Typography>
-              </FloorButton>
+              <FloorList>
+                {floorList.map(({ floorId, floorName, description }) => (
+                  <FloorButton key={floorId}>
+                    <Typography variant="h5">{floorName}</Typography>
+                  </FloorButton>
+                ))}
+              </FloorList>
             </Grid>
           </Grid>
         </StyledDrawer>
-        <Main open={openedDrawer}>
-          <IconButton
-            aria-label="open-drawer"
-            onClick={openingDrawer}
-            sx={{ ...(openedDrawer && { display: "none" }) }}
-          >
-            <ArrowRightRounded />
-          </IconButton>
-          <p>
-            Mollit sint minim velit labore. Ullamco ad quis non esse consequat
-            ut velit laboris. Qui nulla fugiat Lorem exercitation occaecat sunt
-            irure cupidatat elit irure laboris ut sint reprehenderit. Mollit
-            proident exercitation anim consequat do in sint. Sint nisi aliqua
-            labore consectetur eiusmod excepteur nostrud minim esse cupidatat
-            excepteur fugiat amet adipisicing. Mollit sint eiusmod reprehenderit
-            aliquip id elit. Reprehenderit nulla sint labore nisi nisi quis
-            voluptate. Laborum voluptate ut velit laboris commodo incididunt.
-            Non nisi velit occaecat quis ea consequat aliquip eu et elit.
-            Pariatur ipsum veniam amet ullamco veniam nisi et veniam esse magna
-            eu. Dolor et cupidatat sunt incididunt non do minim ipsum. Amet anim
-            id labore occaecat pariatur voluptate nostrud adipisicing aliquip
-            ipsum ullamco laboris pariatur. Deserunt consectetur cillum
-            consequat qui incididunt ex aliqua et amet. Duis laboris incididunt
-            est culpa fugiat commodo sit duis tempor. Sunt excepteur et proident
-            exercitation quis est nisi eu aliqua. Reprehenderit dolore cupidatat
-            sint do duis qui voluptate aliquip voluptate aliquip consequat
-            consectetur voluptate et. Elit anim deserunt magna magna sit nulla
-            excepteur aliqua ut sunt in velit. Officia excepteur eiusmod Lorem
-            est exercitation duis aute ad irure consectetur non pariatur nostrud
-            nisi. Laboris laborum culpa dolor reprehenderit. Sint velit
-            consectetur commodo sit magna dolor ex consequat. Laborum ipsum
-            irure magna est sunt in velit laboris sint culpa proident eu
-            exercitation dolor. Lorem et ullamco tempor fugiat consectetur enim
-            quis do. Sunt nisi ex enim elit nulla. Reprehenderit aute sit sint
-            tempor sint adipisicing cillum sunt. Cupidatat qui magna esse culpa
-            in. Laboris in labore ut ut dolore ullamco ad ut aute laborum sunt.
-            Labore nostrud labore in deserunt reprehenderit commodo ad magna.
-            Fugiat est aliqua dolore eiusmod dolore proident enim aute. Proident
-            culpa ipsum et reprehenderit occaecat magna amet nulla sunt id.
-            Adipisicing fugiat et ea minim commodo ex ex in minim est. Nostrud
-            laboris do adipisicing voluptate fugiat. Minim ipsum culpa ut ea
-            quis. Incididunt consectetur ut tempor est minim.
-          </p>
-          <p>
-            Nisi sint laborum magna pariatur enim cupidatat sint. Est culpa id
-            veniam dolore consectetur qui. Tempor veniam id consectetur dolore
-            in pariatur velit ullamco tempor quis irure aute. Duis enim
-            excepteur pariatur consectetur.
-          </p>
-          <p>
-            Nisi sint laborum magna pariatur enim cupidatat sint. Est culpa id
-            veniam dolore consectetur qui. Tempor veniam id consectetur dolore
-            in pariatur velit ullamco tempor quis irure aute. Duis enim
-            excepteur pariatur consectetur.
-          </p>
-        </Main>
+        <OpeningDrawerButton
+          aria-label="open-drawer"
+          onClick={openingDrawer}
+          open={openedDrawer}
+          sx={{ ...(openedDrawer && { display: "none" }) }}
+        >
+          <ArrowRightRounded />
+        </OpeningDrawerButton>
+        <MainContent openedDrawer={openedDrawer} floorId={currentFloorId} />
       </Box>
     </StyledAdminScreen>
   );
