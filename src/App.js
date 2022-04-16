@@ -85,11 +85,11 @@ const theme = createTheme({
         },
       },
     },
-    MuiTextField: {
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
           fontFamily: "Open Sans",
-          borderRadius: "20px",
+          borderRadius: "10px",
         },
       },
     },

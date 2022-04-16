@@ -1,8 +1,16 @@
-import { AppBar, Box, Drawer, IconButton, Card, Chip } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  IconButton,
+  Card,
+  Chip,
+  Button,
+} from "@mui/material";
 import styled from "styled-components";
-import { ezGreyLight } from "../../utils/colors";
+import { ezBlack, ezGreyLight } from "../../utils/colors";
 import "../../utils/shadows";
-import { ezShadow1_low, ezShadow2_low } from "../../utils/shadows";
+import { ezShadow1_low } from "../../utils/shadows";
 
 /** Some const values */
 export const drawerWidth = 200;
@@ -33,7 +41,6 @@ export const StyledDrawer = styled(Drawer)`
   &.MuiDrawer-paper {
     width: ${drawerWidth}px;
     box-sizing: border-box;
-    box-shadow: ${ezShadow2_low};
   }
 `;
 export const DrawerHeader = styled.div`
@@ -48,17 +55,20 @@ export const FloorList = styled.div`
   flex-direction: column;
   gap: 13px;
 `;
-export const FloorButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  background: transparent;
-  cursor: pointer;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
-  &:hover {
-    background: rgba(31, 117, 255, 0.1);
+export const FloorButton = styled(Button)`
+  &.MuiButton-root {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: ${ezBlack};
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    &:hover {
+      background: rgba(31, 117, 255, 0.1);
+    }
   }
 `;
 

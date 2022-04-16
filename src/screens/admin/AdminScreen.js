@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import floorAPI from "../../api/floor";
 import ProfileAvatar from "../../components/ProfileAvatar";
 import RoomAvatar from "../../components/RoomAvatar";
 import StatusChip from "../../components/StatusChip";
@@ -73,8 +74,6 @@ function RequestCard({ roomId, userId, startTime, endTime }) {
 }
 
 function MainContent({ openedDrawer, floorId }) {
-  
-
   return (
     <StyledMainContent openedDrawer={openedDrawer}>
       <Typography variant="h2" color="primary">
@@ -131,8 +130,16 @@ function AdminScreen() {
   const closingDrawer = () => {
     setOpenedDrawer(false);
   };
+  const changeFloor = (e) => {
+    console.log(e.target.value);
+  };
+  const getFloorList = async () => {
+    return await floorAPI.getAllFloors();
+  };
 
   useEffect(() => {
+    const floorList = getFloorList();
+    console.log(floorList);
     setFloorList([
       {
         floorId: 1,
@@ -169,44 +176,48 @@ function AdminScreen() {
           </Button>
         </Toolbar>
       </StyledAppBar>
-      <Box sx={{ display: "flex", height: "100%" }}>
-        <StyledDrawer variant="persistent" anchor="left" open={openedDrawer}>
-          <Grid
-            container
-            direction="column"
-            sx={{
-              height: "100%",
-              padding: `${appBarHeight - 45}px 10px 10px 10px`,
-            }}
-          >
-            <Grid item xs={1} />
-            <Grid item xs={10}>
-              <DrawerHeader>
-                <IconButton aria-label="close-drawer" onClick={closingDrawer}>
-                  <ArrowLeftRounded />
-                </IconButton>
-              </DrawerHeader>
-              <TextField label="Search" />
-              <FloorList>
-                {floorList.map(({ floorId, floorName, description }) => (
-                  <FloorButton key={floorId}>
-                    <Typography variant="h5">{floorName}</Typography>
-                  </FloorButton>
-                ))}
-              </FloorList>
+      {floorList.length > 0 && (
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <StyledDrawer variant="persistent" anchor="left" open={openedDrawer}>
+            <Grid
+              container
+              direction="column"
+              sx={{
+                height: "100%",
+                padding: `${appBarHeight - 45}px 10px 10px 10px`,
+              }}
+            >
+              <Grid item xs={1} />
+              <Grid item xs={10}>
+                <DrawerHeader>
+                  <IconButton aria-label="close-drawer" onClick={closingDrawer}>
+                    <ArrowLeftRounded />
+                  </IconButton>
+                </DrawerHeader>
+                <TextField label="Search" />
+                <FloorList>
+                  {floorList.map(({ floorId, floorName }) => (
+                    <FloorButton key={floorId} onClick={changeFloor}>
+                      <Typography variant="h5" value={floorId}>
+                        {floorName}
+                      </Typography>
+                    </FloorButton>
+                  ))}
+                </FloorList>
+              </Grid>
             </Grid>
-          </Grid>
-        </StyledDrawer>
-        <OpeningDrawerButton
-          aria-label="open-drawer"
-          onClick={openingDrawer}
-          open={openedDrawer}
-          sx={{ ...(openedDrawer && { display: "none" }) }}
-        >
-          <ArrowRightRounded />
-        </OpeningDrawerButton>
-        <MainContent openedDrawer={openedDrawer} floorId={currentFloorId} />
-      </Box>
+          </StyledDrawer>
+          <OpeningDrawerButton
+            aria-label="open-drawer"
+            onClick={openingDrawer}
+            open={openedDrawer}
+            sx={{ ...(openedDrawer && { display: "none" }) }}
+          >
+            <ArrowRightRounded />
+          </OpeningDrawerButton>
+          <MainContent openedDrawer={openedDrawer} floorId={currentFloorId} />
+        </Box>
+      )}
     </StyledAdminScreen>
   );
 }
