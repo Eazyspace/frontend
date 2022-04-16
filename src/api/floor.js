@@ -2,12 +2,14 @@ const { default: axios } = require("axios");
 
 class FloorAPI {
   getAllFloors = async () => {
-    return await axios.get("/floor").then((res) => {
-      if (res.statusText === "OK") {
-        let floorList = res.data.data;
-        return floorList;
-      }
-    });
+    try {
+      let response = await axios.get("/floor");
+
+      if (response.status === 200) return response.data;
+      else return response.message;
+    } catch (e) {
+      console.log(e);
+    }
   };
 }
 

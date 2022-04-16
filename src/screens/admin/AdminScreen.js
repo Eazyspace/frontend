@@ -123,6 +123,7 @@ function AdminScreen() {
   const [openedDrawer, setOpenedDrawer] = useState(true);
   const [floorList, setFloorList] = useState([]);
   const [currentFloorId, setCurrentFloorId] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const openingDrawer = () => {
     setOpenedDrawer(true);
@@ -134,30 +135,23 @@ function AdminScreen() {
     console.log(e.target.value);
   };
   const getFloorList = async () => {
-    return await floorAPI.getAllFloors();
+    try {
+      const response = await floorAPI.getAllFloors();
+
+      if (response.status === "OK") {
+        setFloorList(response.data);
+        setLoading(false);
+      } else console.error(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    const floorList = getFloorList();
-    console.log(floorList);
-    setFloorList([
-      {
-        floorId: 1,
-        floorName: "Tầng trệt",
-        description: "Có hội trường, rộng...",
-      },
-      {
-        floorId: 2,
-        floorName: "Tầng 2",
-        description: "Có gì đó hong nhớ...",
-      },
-      {
-        floorId: 3,
-        floorName: "Tầng 3",
-        description: "Có phòng học của APCS + CLC",
-      },
-    ]);
+    getFloorList();
   }, []);
+
+  if (loading) return <h1>Loading</h1>;
 
   return (
     <StyledAdminScreen>
