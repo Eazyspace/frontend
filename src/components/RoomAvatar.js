@@ -6,6 +6,7 @@ import { ezBlue } from "../utils/colors";
 const StyledAvatar = styled(Avatar)`
   &.MuiAvatar-root {
     background-color: ${ezBlue};
+    padding: 10px;
     box-shadow: ${ezShadow1_low};
   }
 `;
