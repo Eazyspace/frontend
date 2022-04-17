@@ -2,13 +2,17 @@ import {
   ArrowBackIosNewRounded,
   ArrowForwardIosRounded,
   CalendarTodayRounded,
+  CheckRounded,
+  ClearRounded,
+  MoreHorizRounded,
 } from "@mui/icons-material";
 import {
   Box,
   Button,
+  DialogContent,
+  Divider,
   Grid,
   IconButton,
-  Modal,
   TextField,
   Toolbar,
   Typography,
@@ -32,14 +36,27 @@ import {
   FloorList,
   DeadlineChip,
   VerticalLine,
+  UserAndRoom,
+  RowLine,
+  DescriptionField,
+  ApproveButton,
+  DeclineButton,
+  StyledDialog,
+  ResponseNoteBox,
+  RequestStatusIcon,
 } from "./AdminScreen.styled";
+import { ezBlack, ezGrey } from "../../utils/colors";
 
 function RequestCard({
-  request: { roomId, userId, eventName, startTime, endTime },
+  request: { requestId, roomId, userId, eventName, startTime, endTime },
   onClickCard,
 }) {
   return (
-    <StyledRequestCard onClick={onClickCard}>
+    <StyledRequestCard
+      onClick={() => {
+        onClickCard(requestId);
+      }}
+    >
       <RoomAvatar roomId={roomId} sx={{ padding: "1em" }} />
       <Grid container rowSpacing={1} columnSpacing={2}>
         <Grid item xs="auto">
@@ -65,7 +82,7 @@ function RequestCard({
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h4" noWrap>
+          <Typography variant="h4" noWrap sx={{ textAlign: "left" }}>
             NẺD VS WJBU: DAWN OF THE LAME
           </Typography>
         </Grid>
@@ -129,13 +146,13 @@ function MainContent({
           </Grid>
         ))}
       </Grid>
-      {requestList.map((req) => (
-        <RequestCard
-          key={req.requestId}
-          request={req}
-          onClickCard={onShowRequestDetail}
-        />
-      ))}
+      <Grid container item spacing={2}>
+        {requestList.map((req) => (
+          <Grid item key={req.requestId}>
+            <RequestCard request={req} onClickCard={onShowRequestDetail} />
+          </Grid>
+        ))}
+      </Grid>
     </StyledMainContent>
   );
 }
@@ -143,10 +160,13 @@ function MainContent({
 function AdminScreen() {
   const [openedDrawer, setOpenedDrawer] = useState(true);
   const [floorList, setFloorList] = useState([]);
-  const [currentFloorId, setCurrentFloorId] = useState(0);
+  const [currentFloorId, setCurrentFloorId] = useState(1);
   const [loading, setLoading] = useState(true);
   const [requestList, setRequestList] = useState([]);
   const [status, setStatus] = useState(1);
+  const [openRequestDetail, setOpenRequestDetail] = useState(false);
+  const [currentRequest, setCurrentRequest] = useState(null);
+  const [responseNote, setResponseNote] = useState("");
 
   const openingDrawer = () => {
     setOpenedDrawer(true);
@@ -164,6 +184,30 @@ function AdminScreen() {
     setStatus(newStatus);
     getRequestList(currentFloorId, newStatus);
   };
+  const handleOnShowRequestDetail = (requestId) => {
+    console.log("Clicked on a request card!");
+    console.table(requestList.find((ele) => ele.requestId === requestId));
+    setCurrentRequest(requestList.find((ele) => ele.requestId === requestId));
+    setOpenRequestDetail(true);
+  };
+  const handleResponseNoteChange = (e) => {
+    setResponseNote(e.target.value);
+  };
+  const handleResponseSubmit = (e) => {
+    if (e.target.name === "approve") {
+      bookingRequestAPI.approveRequest({
+        requestId: currentRequest.requestId,
+        responseNote: responseNote,
+      });
+    } else if (e.target.name === "decline") {
+      bookingRequestAPI.declineRequest({
+        requestId: currentRequest.requestId,
+        responseNote: responseNote,
+      });
+    }
+    setOpenRequestDetail(false);
+  };
+  // API calls
   const getFloorList = async () => {
     try {
       const response = await floorAPI.getAllFloors();
@@ -271,14 +315,196 @@ function AdminScreen() {
             onChangeStatus={(newStatus) => {
               changeStatus(newStatus);
             }}
+            onShowRequestDetail={(requestId) => {
+              handleOnShowRequestDetail(requestId);
+            }}
           />
         </Box>
       ) : (
         <h1>Loading main content...</h1>
       )}
-      <Modal open={true}>
-
-      </Modal>
+      {openRequestDetail && (
+        <StyledDialog
+          open={openRequestDetail}
+          onBackdropClick={() => {
+            setOpenRequestDetail(false);
+          }}
+          scroll="body"
+        >
+          <DialogContent>
+            <UserAndRoom>
+              <ProfileAvatar>H</ProfileAvatar>
+              <MoreHorizRounded sx={{ color: ezGrey }} />
+              <RoomAvatar roomId={currentRequest.roomId} />
+            </UserAndRoom>
+            {currentRequest.status !== 1 && (
+              <>
+                <RequestStatusIcon
+                  variant={currentRequest.status === 2 ? "approve" : "decline"}
+                >
+                  {currentRequest.status === 2 ? (
+                    <CheckRounded fontSize="large" />
+                  ) : (
+                    <ClearRounded fontSize="large"/>
+                  )}
+                </RequestStatusIcon>
+                <ResponseNoteBox
+                  variant={currentRequest.status === 2 ? "approve" : "decline"}
+                >
+                  <Typography variant="h5">Response note</Typography>
+                  <Typography variant="body">
+                    {currentRequest.responseNote}
+                  </Typography>
+                </ResponseNoteBox>
+              </>
+            )}
+            <Grid
+              container
+              direction="column"
+              rowSpacing={2}
+              sx={{ padding: "30px 0px" }}
+            >
+              <Grid item>
+                <RowLine>
+                  <Typography variant="body1" color={ezGrey}>
+                    Date
+                  </Typography>
+                  <Typography variant="body1" color={ezBlack}>
+                    {new Date(currentRequest.startTime).toDateString()}
+                  </Typography>
+                </RowLine>
+              </Grid>
+              <Grid item>
+                <Divider />
+              </Grid>
+              <Grid item>
+                <RowLine>
+                  <Typography variant="body1" color={ezGrey}>
+                    Time
+                  </Typography>
+                  <Typography variant="body1" color={ezBlack}>
+                    {new Date(currentRequest.startTime).toLocaleTimeString([], {
+                      hour12: false,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}{" "}
+                    -{" "}
+                    {new Date(currentRequest.endTime).toLocaleTimeString([], {
+                      hour12: false,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Typography>
+                </RowLine>
+              </Grid>
+              <Grid item>
+                <Divider />
+              </Grid>
+              <Grid item>
+                <RowLine>
+                  <Typography variant="body1" color={ezGrey}>
+                    Event name
+                  </Typography>
+                  <Typography variant="body1" color={ezBlack} noWrap>
+                    {/* {currentRequest.eventName} */}
+                    NẺD VS WJBU: DAWN OF THE LAME
+                  </Typography>
+                </RowLine>
+              </Grid>
+              <Grid item>
+                <Divider />
+              </Grid>
+              {currentRequest.hasOwnProperty("organization") &&
+                currentRequest.organization !== "" && (
+                  <>
+                    <Grid item>
+                      <RowLine>
+                        <Typography variant="body1" color={ezGrey}>
+                          Organization
+                        </Typography>
+                        <Typography variant="body1" color={ezBlack}>
+                          {currentRequest.eventName}
+                        </Typography>
+                      </RowLine>
+                    </Grid>
+                    <Grid item>
+                      <Divider />
+                    </Grid>
+                  </>
+                )}
+              <Grid item>
+                <RowLine>
+                  <Typography variant="body1" color={ezGrey}>
+                    Number of attendants
+                  </Typography>
+                  <Typography variant="body1" color={ezBlack}>
+                    {currentRequest.numOfAttendants}
+                  </Typography>
+                </RowLine>{" "}
+              </Grid>
+              <Grid item>
+                <Divider />{" "}
+              </Grid>
+              <Grid item>
+                <DescriptionField>
+                  <Typography variant="body1" color={ezGrey}>
+                    Description
+                  </Typography>
+                  <Typography variant="body1" color={ezBlack}>
+                    {currentRequest.description}
+                  </Typography>
+                </DescriptionField>
+              </Grid>
+            </Grid>
+            {currentRequest.status === 1 && (
+              <Grid
+                container
+                direction="column"
+                spacing={2}
+                sx={{ padding: "0px 2em" }}
+              >
+                <Grid
+                  container
+                  item
+                  direction="row"
+                  justifyContent="space-between"
+                  spacing={2}
+                >
+                  <Grid item>
+                    <DeclineButton
+                      variant="contained"
+                      name="decline"
+                      onClick={handleResponseSubmit}
+                    >
+                      Decline
+                    </DeclineButton>
+                  </Grid>
+                  <Grid item>
+                    <ApproveButton
+                      variant="contained"
+                      name="approve"
+                      onClick={handleResponseSubmit}
+                    >
+                      Approve
+                    </ApproveButton>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Note for the user"
+                    multiline
+                    required
+                    name="responseNote"
+                    value={responseNote}
+                    onChange={handleResponseNoteChange}
+                    sx={{ width: "100%" }}
+                  />
+                </Grid>
+              </Grid>
+            )}
+          </DialogContent>
+        </StyledDialog>
+      )}
     </StyledAdminScreen>
   );
 }

@@ -28,6 +28,18 @@ class BookingRequestAPI {
       console.error(e);
     }
   };
+  approveRequest = async ({ requestId, responseNote }) => {
+    return await axios.post("/admin/accept-request", {
+      requestId: requestId,
+      responseNote: responseNote,
+    });
+  };
+  declineRequest = async ({ requestId, responseNote }) => {
+    return await axios.post("/admin/decline-request", {
+      requestId: requestId,
+      responseNote: responseNote,
+    });
+  };
 }
 
 const bookingRequestAPI = new BookingRequestAPI();

@@ -3,12 +3,21 @@ import {
   Box,
   Drawer,
   IconButton,
-  Card,
   Chip,
   Button,
+  Dialog,
 } from "@mui/material";
 import styled from "styled-components";
-import { ezBlack, ezBlue, ezGreyLight } from "../../utils/colors";
+import {
+  ezBlack,
+  ezBlue,
+  ezBlue_blurred,
+  ezGreen,
+  ezGreen_blurred,
+  ezGreyLight,
+  ezRed,
+  ezRed_blurred,
+} from "../../utils/colors";
 import "../../utils/shadows";
 import { ezShadow1_low } from "../../utils/shadows";
 
@@ -66,11 +75,11 @@ export const FloorButton = styled(Button)`
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     &:hover {
-      background: rgba(31, 117, 255, 0.1);
+      background: ${ezBlue_blurred};
     }
   }
   &.MuiButton-contained {
-    background: rgba(31, 117, 255, 0.1);
+    background: ${ezBlue_blurred};
     color: ${ezBlue};
     box-shadow: none;
   }
@@ -99,7 +108,7 @@ export const StyledRequestCard = styled(Button)`
     flex-direction: row;
     align-items: center;
     gap: 2em;
-    padding: 20px;
+    padding: 20px 30px;
     color: ${ezBlack};
     min-height: 8em;
     border-radius: 12px;
@@ -119,4 +128,85 @@ export const VerticalLine = styled.div`
   background-color: ${ezGreyLight};
   width: 1px;
   height: 100%;
+`;
+
+/** REQUEST DETAIL DIALOG */
+export const StyledDialog = styled(Dialog)`
+  & .MuiDialogContent-root {
+    min-width: 333px;
+    padding: 40px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1em;
+  }
+  & .MuiDialog-paper {
+    border-radius: 12px;
+  }
+`;
+export const UserAndRoom = styled.div`
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+`;
+export const RequestStatusIcon = styled(Box)`
+  align-self: center;
+  height: 52px;
+  width: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: ${(props) =>
+    props.variant === "approve" ? ezGreen : ezRed};
+  color: white;
+`;
+export const ResponseNoteBox = styled(Box)`
+  min-width: 20em;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 25px;
+  border-radius: 15px;
+  color: white;
+  background-color: ${(props) =>
+    props.variant === "approve" ? ezGreen_blurred : ezRed_blurred};
+`;
+export const RowLine = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 3em;
+`;
+export const DescriptionField = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+`;
+export const ApproveButton = styled(Button)`
+  &.MuiButton-root {
+    padding: 1em 2em;
+    background-color: ${ezGreen};
+    color: white;
+    &:hover {
+      background-color: ${ezGreen_blurred};
+    }
+  }
+`;
+export const DeclineButton = styled(Button)`
+  &.MuiButton-root {
+    padding: 1em 2em;
+    background-color: ${ezRed};
+    color: white;
+    &:hover {
+      background: ${ezRed_blurred};
+    }
+  }
 `;
