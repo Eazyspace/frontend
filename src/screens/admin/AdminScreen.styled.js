@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import styled from "styled-components";
-import { ezBlack, ezGreyLight } from "../../utils/colors";
+import { ezBlack, ezBlue, ezGreyLight } from "../../utils/colors";
 import "../../utils/shadows";
 import { ezShadow1_low } from "../../utils/shadows";
 
@@ -63,17 +63,23 @@ export const FloorButton = styled(Button)`
     outline: none;
     background: transparent;
     color: ${ezBlack};
-    cursor: pointer;
     -webkit-transition-duration: 0.4s;
     transition-duration: 0.4s;
     &:hover {
       background: rgba(31, 117, 255, 0.1);
     }
   }
+  &.MuiButton-contained {
+    background: rgba(31, 117, 255, 0.1);
+    color: ${ezBlue};
+    box-shadow: none;
+  }
 `;
 
 /** MAIN CONTENT */
 export const StyledMainContent = styled.main`
+  max-height: 100%;
+  overflow-y: auto;
   flex-grow: 1;
   z-index: 1;
   padding: 20px;
@@ -87,13 +93,15 @@ export const StyledMainContent = styled.main`
 `;
 
 /** REQUEST CARD */
-export const StyledRequestCard = styled(Card)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2em;
-  padding: 20px;
-  &.MuiPaper-root {
+export const StyledRequestCard = styled(Button)`
+  &.MuiButton-root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2em;
+    padding: 20px;
+    color: ${ezBlack};
+    min-height: 8em;
     border-radius: 12px;
     box-shadow: ${ezShadow1_low};
   }
