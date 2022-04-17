@@ -18,6 +18,29 @@ class RequestClient {
       ...params,
     });
   };
+  async getListRequest({
+    userId,
+    roomId,
+    startTime,
+    endTime,
+    description,
+  }) {
+    try {
+      let q = JSON.stringify({
+        userId,
+        roomId,
+        startTime,
+        endTime,
+        description,
+      });
+      let response = await axios.get(`/request`, { params: { q } });
+      if (response.status === 200) {
+        return response.data;
+      } else return response.message;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
 
 // export default getRequestAPI = () => {return new BookingRequestAPI()}
