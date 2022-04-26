@@ -23,7 +23,7 @@ import {
   DescriptionField,
 } from "./BookingScreen.styled";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
-import bookingRequestAPI from "../api/bookingRequestAPI";
+import { getRequestClient } from "../api/request";
 import { ezBlack, ezGrey } from "../utils/colors";
 import ProfileAvatar from "../components/ProfileAvatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -251,6 +251,7 @@ const BookingScreen = (props) => {
   const userId = 1;
   const roomId = 31;
   const [step, setStep] = useState(1);
+  const requestClient = getRequestClient();
   const [userInputForm, setUserInputForm] = useState({
     startTime: "",
     endTime: "",
@@ -283,7 +284,7 @@ const BookingScreen = (props) => {
             setStep(step + 1);
           else alert("ERROR: No info");
 
-          break; 
+          break;
         }
         default:
           break;
@@ -307,7 +308,7 @@ const BookingScreen = (props) => {
 
   const sendRequest = async () => {
     try {
-      const response = await bookingRequestAPI.sendBookingRequest({
+      const response = await requestClient.sendBookingRequest({
         userId: userId,
         roomId: roomId,
         ...userInputForm,

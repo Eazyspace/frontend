@@ -1,6 +1,5 @@
-const { default: axios } = require("axios");
-
-class BookingRequestAPI {
+import axios from "axios";
+class RequestClient {
   sendBookingRequest = async ({
     userId,
     roomId,
@@ -15,6 +14,7 @@ class BookingRequestAPI {
       startTime,
       endTime,
       description,
+      ...params,
     });
   };
   getRequestList = async (floorId, status) => {
@@ -42,7 +42,7 @@ class BookingRequestAPI {
   };
 }
 
-const bookingRequestAPI = new BookingRequestAPI();
-
 // export default getRequestAPI = () => {return new BookingRequestAPI()}
-export default bookingRequestAPI;
+export const getRequestClient = () => {
+  return new RequestClient();
+};

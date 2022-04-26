@@ -7,8 +7,9 @@ import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
 import AdminScreen from "./screens/admin/AdminScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
-const theme = createTheme({
+var theme = createTheme({
   typography: {
     fontFamily: [
       "-apple-system",
@@ -121,7 +122,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<HomeScreen />} />
+          <Route path="/" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"

@@ -2,15 +2,14 @@ import { Typography } from "@mui/material";
 import styled from "styled-components";
 import { ezBlack, ezBlue } from "../utils/colors";
 import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
-
 export const Navbar = styled.nav`
   background: white;
-  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: ${ezShadow2_high};
   padding: 12px 25px;
+  z-index: 1000;
 `;
 export const HomeLogo = styled(Typography)`
   margin: 0px;
@@ -18,7 +17,7 @@ export const HomeLogo = styled(Typography)`
   color: ${ezBlue};
   text-align: center;
 `;
-export const UsertitleButton = styled.button`
+export const UserTitleButton = styled.button`
   display: flex;
   gap: 15px;
   padding: 11px 18px;
@@ -35,14 +34,9 @@ export const UsertitleButton = styled.button`
   }
 `;
 export const Navfloor = styled.nav`
-  flex-shrink: 1;
   box-shadow: ${ezShadow2_low};
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 13px;
-  padding: 46px 32px;
+  padding: 24px;
 `;
 export const HomeView = styled.div`
   display: flex;
@@ -51,8 +45,10 @@ export const HomeView = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: row;
-  height: 900px;
+  height: ${props => props.contents}px; ;
 `;
+//   height: 900px;
+
 export const Roomfloor = styled.div`
   flex: 4;
   margin-top: 30px;
