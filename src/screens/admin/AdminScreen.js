@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import floorAPI from "../../api/floor";
-import bookingRequestAPI from "../../api/bookingRequestAPI";
 import ProfileAvatar from "../../components/ProfileAvatar";
 import RoomAvatar from "../../components/RoomAvatar";
 import StatusChip from "../../components/StatusChip";
@@ -47,6 +46,7 @@ import {
   RequestStatusIcon,
 } from "./AdminScreen.styled";
 import { ezBlack, ezGrey } from "../../utils/colors";
+import requestAPI from "../../api/request";
 
 function RequestCard({
   request: { requestId, roomId, userId, eventName, startTime, endTime },
@@ -170,7 +170,7 @@ function AdminScreen() {
   const [floorList, setFloorList] = useState([]);
   const [currentFloorId, setCurrentFloorId] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [loadingRequestList, setLoadingRequestList] = useState(true);
+  const [loadingRequestList, setLoadingRequestList] = useState(false);
   const [requestList, setRequestList] = useState([]);
   const [status, setStatus] = useState(1);
   const [openRequestDetail, setOpenRequestDetail] = useState(false);
@@ -191,11 +191,11 @@ function AdminScreen() {
     setLoadingRequestList(false);
   };
   const changeStatus = (newStatus) => {
-    setLoadingRequestList(true);
+    // setLoadingRequestList(true);
     console.log(`Set status to ${newStatus}`);
     setStatus(newStatus);
     getRequestList(currentFloorId, newStatus);
-    setLoadingRequestList(false);
+    // setLoadingRequestList(false);
   };
   const handleOnShowRequestDetail = (requestId) => {
     console.log("Clicked on a request card!");
@@ -208,12 +208,12 @@ function AdminScreen() {
   };
   const handleResponseSubmit = (e) => {
     if (e.target.name === "approve") {
-      bookingRequestAPI.approveRequest({
+      requestAPI.approveRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
     } else if (e.target.name === "decline") {
-      bookingRequestAPI.declineRequest({
+      requestAPI.declineRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
@@ -235,7 +235,7 @@ function AdminScreen() {
   };
   const getRequestList = async (floorId, status) => {
     try {
-      let response = await bookingRequestAPI.getRequestList(floorId, status);
+      let response = await requestAPI.getRequestList(floorId, status);
 
       if (response.status === "OK") {
         console.log("Request list got from API: ");

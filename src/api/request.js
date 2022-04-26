@@ -42,7 +42,6 @@ class RequestClient {
   };
 }
 
-// export default getRequestAPI = () => {return new BookingRequestAPI()}
-export const getRequestClient = () => {
-  return new RequestClient();
-};
+const requestAPI = new RequestClient();
+
+export default requestAPI;
