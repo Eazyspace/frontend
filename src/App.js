@@ -121,8 +121,8 @@ function App() {
         <Routes>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
-          {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<ProfileScreen />} />
+          <Route path="" exact element={<HomeScreen />} />
+          <Route exact path="profile" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"
@@ -133,8 +133,7 @@ function App() {
             path="booking/success"
             element={<BookingScreen success={true} />}
           />
-          <Route exact path="/admin" element={<AdminScreen />} />
-          {/* </Route> */}
+          <Route exact path="admin" element={<AdminScreen />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
