@@ -1,20 +1,18 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import { HomeLogo, Navbar, UserTitleButton } from "../components/Header.styled";
 
 function Header() {
   return (
-    <AppBar>
-      <Toolbar>
-        <Typography
-          variant="h3"
-          component="div"
-          sx={{ flexGrow: 1 }}
-          style={{ padding: "15px 0px" }}
-        >
-          EazySpace
-        </Typography>
-        <Button color="inherit">Login</Button>
-      </Toolbar>
-    </AppBar>
+    <Navbar>
+      <HomeLogo variant="h1">EazySpace</HomeLogo>
+      <UserTitleButton
+        onClick={() => {
+          console.log("click");
+        }}
+      >
+        <Typography variant="h5">Vu Duc Huy</Typography>
+      </UserTitleButton>
+    </Navbar>
   );
 }
 

@@ -1,4 +1,3 @@
-import { serialize } from "../utils/utils";
 import axios from "axios";
 
 class RoomClient {

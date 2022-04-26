@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import {
-  Navbar,
-  HomeLogo,
-  UserTitleButton,
   Navfloor,
   HomeView,
   FloorBtn,
@@ -10,8 +7,9 @@ import {
   Roomfloor,
 } from "./HomeScreen.styled";
 import Room from "../components/Room/Room";
-import { Grid, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { ezBlue } from "../utils/colors";
+import Header from "../components/Header";
 
 var domain = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const HomeScreen = () => {
@@ -23,16 +21,7 @@ const HomeScreen = () => {
 
   return (
     <HomeView>
-      <Navbar>
-        <HomeLogo variant="h1">EazySpace</HomeLogo>
-        <UserTitleButton
-          onClick={() => {
-            console.log("click");
-          }}
-        >
-          <Typography variant="h5">Vu Duc Huy</Typography>
-        </UserTitleButton>
-      </Navbar>
+      <Header />
       <Content>
         <Navfloor>
           <TextField label="Search" />
