@@ -23,7 +23,7 @@ import { ezShadow1_low } from "../../utils/shadows";
 
 /** Some const values */
 export const drawerWidth = 200;
-export const appBarHeight = 90;
+export const appBarHeight = 70;
 
 /** Screen */
 export const StyledAdminScreen = styled(Box)`
@@ -33,11 +33,12 @@ export const StyledAdminScreen = styled(Box)`
 export const StyledAppBar = styled(AppBar)`
   height: ${appBarHeight}px;
   z-index: 999;
+  background-color: white;
+  color: ${ezBlue};
 `;
 export const OpeningDrawerButton = styled(IconButton)`
   align-self: flex-start;
   z-index: 2;
-  position: absolute;
   top: 20px;
   left: calc(10px - ${drawerWidth}px);
 `;

@@ -9,6 +9,7 @@ import {
 import {
   Box,
   Button,
+  CircularProgress,
   DialogContent,
   Divider,
   Grid,
@@ -124,6 +125,7 @@ function MainContent({
   status,
   onChangeStatus,
   onShowRequestDetail,
+  loadingRequestList,
 }) {
   return (
     <StyledMainContent openedDrawer={openedDrawer}>
@@ -147,11 +149,17 @@ function MainContent({
         ))}
       </Grid>
       <Grid container item spacing={2}>
-        {requestList.map((req) => (
-          <Grid item key={req.requestId}>
-            <RequestCard request={req} onClickCard={onShowRequestDetail} />
+        {!loadingRequestList ? (
+          requestList.map((req) => (
+            <Grid item key={req.requestId}>
+              <RequestCard request={req} onClickCard={onShowRequestDetail} />
+            </Grid>
+          ))
+        ) : (
+          <Grid item justifySelf="center" alignSelf="center">
+            <CircularProgress />
           </Grid>
-        ))}
+        )}
       </Grid>
     </StyledMainContent>
   );
@@ -162,6 +170,7 @@ function AdminScreen() {
   const [floorList, setFloorList] = useState([]);
   const [currentFloorId, setCurrentFloorId] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [loadingRequestList, setLoadingRequestList] = useState(true);
   const [requestList, setRequestList] = useState([]);
   const [status, setStatus] = useState(1);
   const [openRequestDetail, setOpenRequestDetail] = useState(false);
@@ -175,14 +184,18 @@ function AdminScreen() {
     setOpenedDrawer(false);
   };
   const changeFloor = (floorId) => {
+    setLoadingRequestList(true);
     console.log(`Set floor ID to ${floorId}`);
     setCurrentFloorId(floorId);
     getRequestList(floorId, status);
+    setLoadingRequestList(false);
   };
   const changeStatus = (newStatus) => {
+    setLoadingRequestList(true);
     console.log(`Set status to ${newStatus}`);
     setStatus(newStatus);
     getRequestList(currentFloorId, newStatus);
+    setLoadingRequestList(false);
   };
   const handleOnShowRequestDetail = (requestId) => {
     console.log("Clicked on a request card!");
@@ -236,13 +249,27 @@ function AdminScreen() {
 
   useEffect(() => {
     setLoading(true);
+    setLoadingRequestList(true);
     getFloorList();
     getRequestList(currentFloorId, status);
     setLoading(false);
+    setLoadingRequestList(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <h1>Loading</h1>;
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
 
   return (
     <StyledAdminScreen>
@@ -256,9 +283,7 @@ function AdminScreen() {
           >
             EazySpace
           </Typography>
-          <Button sx={{ backgroundColor: "transparent", color: "white" }}>
-            Login
-          </Button>
+          <Button sx={{ backgroundColor: "transparent" }}>Login</Button>
         </Toolbar>
       </StyledAppBar>
       {floorList.length > 0 ? (
@@ -279,7 +304,7 @@ function AdminScreen() {
                     <ArrowBackIosNewRounded />
                   </IconButton>
                 </DrawerHeader>
-                <TextField label="Search" />
+                <TextField label="Search" size="small" />
                 <FloorList>
                   {floorList.map(({ floorId, floorName }) => (
                     <FloorButton
@@ -318,10 +343,21 @@ function AdminScreen() {
             onShowRequestDetail={(requestId) => {
               handleOnShowRequestDetail(requestId);
             }}
+            loadingRequestList={loadingRequestList}
+            onReloadRequestList={setLoadingRequestList}
           />
         </Box>
       ) : (
-        <h1>Loading main content...</h1>
+        <Box
+          sx={{
+            display: "flex",
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
       )}
       {openRequestDetail && (
         <StyledDialog
@@ -345,7 +381,7 @@ function AdminScreen() {
                   {currentRequest.status === 2 ? (
                     <CheckRounded fontSize="large" />
                   ) : (
-                    <ClearRounded fontSize="large"/>
+                    <ClearRounded fontSize="large" />
                   )}
                 </RequestStatusIcon>
                 <ResponseNoteBox

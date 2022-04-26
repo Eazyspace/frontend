@@ -6,7 +6,7 @@ import { ezBlue } from "../utils/colors";
 const StyledAvatar = styled(Avatar)`
   &.MuiAvatar-root {
     background-color: ${ezBlue};
-    padding: 10px;
+    padding: 1em;
     box-shadow: ${ezShadow1_low};
   }
 `;
@@ -14,7 +14,7 @@ const StyledAvatar = styled(Avatar)`
 function RoomAvatar({ roomId, ...props }) {
   return (
     <StyledAvatar {...props}>
-      <Typography variant="h5">I.{roomId}</Typography>
+      <Typography variant="h4">I.{roomId}</Typography>
     </StyledAvatar>
   );
 }
