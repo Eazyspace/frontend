@@ -1,8 +1,12 @@
 import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ezBlack, ezBlue } from "../utils/colors";
 import { ezShadow2_high } from "../utils/shadows";
 
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
 export const Navbar = styled.nav`
   background: white;
   display: flex;
