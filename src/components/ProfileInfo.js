@@ -100,7 +100,7 @@ const ProfileInfo = () => {
   const fetchRequest = async () => {
     setLoading(true);
     try {
-      const response = await requestClient.getListRequest({ userId: 1 });
+      const response = await requestClient.getRequestList({ userId: 1 });
       if (response.status === "OK") setRequest(response.data);
       // snackbar
       else console.error(response.message);
