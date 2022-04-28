@@ -114,7 +114,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<ProfileScreen />} />
+          <Route path="/" element={<RegisterScreen />} />
           <Route
             exact
             path="booking"
