@@ -48,16 +48,18 @@ const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const logInInputAccount = () => {
+  const logInInputAccount = async () => {
     console.log("Log in account");
     // console.table({
     //   username: username,
     //   password: password,
     // });
-    userAPI.postUsernameAndPassword({
+    let res = await userAPI.postUsernameAndPassword({
       username: username,
       password: password,
     });
+    if (res.status === "OK") console.log(res);
+    else console.error(res.error);
   };
   const handleChangeInput = (e) => {
     let target = e.target;
