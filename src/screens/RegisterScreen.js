@@ -1,15 +1,18 @@
-import { StyledRegisterScreen,RegisterForm,RegisterContent, RegisterTitle } from "./RegisterScreen.styled";
+import { StyledRegisterScreen,RegisterForm,RegisterContent, RegisterTitle,Stepcircle, Stepbar } from "./RegisterScreen.styled";
 import { Navbar,HomeLogo, HomeView, FloorBtn, Content,UserTitleButton} from "./HomeScreen.styled";
 import { Typography,TextField,Button } from "@mui/material";
 import useWindowDimensions from "../components/Windowdimension"
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { ezBlue,ezGrey } from "../utils/colors";
+
 function RegisterScreen() {
   const { height, width } = useWindowDimensions();
   const [step, setStep]=useState(0)
   const [direct, setDirect]=useState(false)
   console.log(step);
+
   const nextStep=()=>{
     setDirect(true);
     setStep(step+1)
@@ -21,9 +24,9 @@ function RegisterScreen() {
   const Regist1=()=>{
     return(
       <motion.div
-      initial={direct? {x:100, opacity:0} :  {x:-100, opacity:0}}
+      initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
       animate={{ x: 0,opacity:1}}
-      transition={{ type: "spring", stiffness: 100 }}
+      transition={{ duration: 0.5 }}
       >
           <RegisterForm>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your basic Info</Typography>
@@ -44,9 +47,9 @@ function RegisterScreen() {
   const Regist2=()=>{
     return(
       <motion.div
-             initial={direct? {x:100, opacity:0} :  {x:-100, opacity:0}}
+             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
              animate={{ x: 0,opacity:1}}
-             transition={{ type: "spring", stiffness: 100 }}
+             transition={{ duration:  0.5 }}
         >
         <RegisterForm>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your academic Info</Typography>
@@ -76,9 +79,9 @@ function RegisterScreen() {
   const Regist3=()=>{
     return(
       <motion.div
-             initial={direct? {x:100, opacity:0} :  {x:-100, opacity:0}}
+             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
              animate={{ x: 0,opacity:1}}
-             transition={{ type: "spring", stiffness: 100 }}
+             transition={{ duration:  0.5 }}
         >
         <RegisterForm>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your acount Info</Typography>
@@ -106,9 +109,9 @@ function RegisterScreen() {
   }
   const Regist4=()=>{
    return( <motion.div
-             initial={direct? {x:100, opacity:0} :  {x:-100, opacity:0}}
+             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
              animate={{ x: 0,opacity:1}}
-             transition={{ type: "spring", stiffness: 100 }}
+             transition={{ duration:  0.5 }}
         >
          <RegisterForm>
             <Typography variant="h5" textAlign={'center'} margin={'2vh'} >We have sent an activation link to your email v***@gmail.com. 
@@ -133,7 +136,23 @@ function RegisterScreen() {
           <Typography variant="h5">Log in</Typography>
         </UserTitleButton>
       </Navbar>
+
       <RegisterContent>
+        <div style={{display:'flex',flexDirection:'row', marginTop:'3rem'}}>
+          <Stepcircle contents={ezBlue}/>
+          <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+            <Stepbar  contents={step>0? ezBlue:ezGrey}/>
+          </div>
+          <Stepcircle contents={step>0? ezBlue:ezGrey}/>
+          <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+            <Stepbar contents={step>1? ezBlue:ezGrey}/>
+          </div>
+          <Stepcircle contents={step>1? ezBlue:ezGrey}/>
+          <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+            <Stepbar contents={step>2? ezBlue:ezGrey}/>
+          </div>
+          <Stepcircle  contents={step>2? ezBlue:ezGrey}/>
+        </div>
          {step===0? <Regist1/> :step==1? <Regist2/>:step==2? <Regist3/> :step==3? <Regist4/>:<div/> }
       </RegisterContent>
     </StyledRegisterScreen>

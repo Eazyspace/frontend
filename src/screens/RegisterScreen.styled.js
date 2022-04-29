@@ -24,3 +24,18 @@ export const RegisterContent=styled.div`
   flex-direction: column;
   align-items: center;
 `
+export const Stepcircle=styled.div`
+  border-radius: 50%;
+  width: 3vh;
+  height: 3vh;
+  background:  ${props => props.contents};
+
+
+`
+export const Stepbar=styled.div`
+  width: 10vw;
+  height: 1vh;
+  background:  ${props => props.contents};
+
+
+`
