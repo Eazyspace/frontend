@@ -1,13 +1,32 @@
-import { serialize } from "../utils/utils";
+import axios from "axios";
 
-const { default: axios } = require("axios");
-
-const BASE_URI = "https://eazyspace-website.herokuapp.com";
-
-
-export const getRoomClient ={
-    async getListRoom() {
-    return axios.get(`${BASE_URI}/room`);
-   
-   }
+class RoomClient {
+  async getListRoom({
+    roomId,
+    roomName,
+    floorId,
+    roomLength,
+    roomWidth,
+    capacity,
+  }) {
+    try {
+      let q = JSON.stringify({
+        roomId,
+        roomName,
+        floorId,
+        roomLength,
+        roomWidth,
+        capacity,
+      });
+      let response = await axios.get(`/room`, { params: { q } });
+      if (response.status === 200) {
+        return response.data;
+      } else return response.message;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
+export const getRoomClient = () => {
+  return new RoomClient();
+};

@@ -5,11 +5,12 @@ import {
   StyledLoginForm,
   LoginTitle,
   RegisterLine,
-  RegisterNow,
+  RegisterLink,
   BrandAndMotto,
 } from "./LoginScreen.styled";
 import { Button, TextField } from "@mui/material";
 import Brand from "../components/Brand";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   return (
@@ -17,9 +18,11 @@ const LoginForm = () => {
       <LoginTitle>Welcome back!</LoginTitle>
       <TextField label="Username" />
       <TextField label="Password" />
-      <Button variant="contained">Log in</Button>
+      <Button variant="contained" component={Link} to="/">
+        Log in
+      </Button>
       <RegisterLine>
-        Don't have an account? <RegisterNow to="/">Register here</RegisterNow>
+        Don't have an account? <RegisterLink to="/register">Register here</RegisterLink>
       </RegisterLine>
     </StyledLoginForm>
   );
