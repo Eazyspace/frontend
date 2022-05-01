@@ -123,7 +123,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="" exact element={<HomeScreen />} />
-          <Route exact path="profile" element={<ProfileScreen />} />
+          <Route exact path="user" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"

@@ -1,20 +1,19 @@
+import AuthHeader from "../utils/auth-header";
+
 const { default: axios } = require("axios");
 
 class UserClient {
-  postUsernameAndPassword = async ({ username, password }) => {
-    console.table({
-      academicId: username,
-      password: password,
-    });
+  getAllUserInfo = async () => {
     try {
-      let response = await axios.post("/user/login", {
-        academicId: username,
-        password: password,
-      });
+      let response = await axios
+        .get("/user", { headers: { Authorization: AuthHeader } })
+        .catch((e) => {
+          console.error(e);
+        });
 
       if (response.status === 200) return response.data;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
     }
   };
 }
