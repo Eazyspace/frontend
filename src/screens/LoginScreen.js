@@ -12,6 +12,7 @@ import { Button, TextField } from "@mui/material";
 import Brand from "../components/Brand";
 import authAPI from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import userAPI from "../api/user";
 
 const LoginForm = ({ username, password, onChange, onLogIn }) => {
   return (
@@ -55,7 +56,7 @@ const LoginScreen = (props) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const logInInputAccount = async () => {
+  const logIn = async () => {
     console.group("Log in account");
     let res = await authAPI.logIn(username, password);
     console.log(res);
@@ -71,10 +72,19 @@ const LoginScreen = (props) => {
   };
   const handleOnLogIn = async (e) => {
     e.preventDefault();
-    if (await logInInputAccount()) {
-      navigate("/user");
+    if (await logIn()) {
+      let res = await userAPI.getAllUserInfo();
+
+      if (res.status === "OK") {
+        console.log(res.data[0]);
+        let userInfo = res.data[0];
+
+        if (userInfo.role === 3) navigate("admin");
+        else navigate("/");
+      }
     } else {
       // Handle log in failed
+      alert("LOG IN FAILED");
     }
   };
   const handleChangeInput = (e) => {
