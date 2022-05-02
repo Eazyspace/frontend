@@ -1,8 +1,15 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { ButtonChoose, InfoForm, Rowline } from "./Inf.styled";
+import { useNavigate } from "react-router-dom";
 
 const Inf = ({ RoomInfo: roomInfo }) => {
+  const navigate = useNavigate();
+
+  const handleBookThisRoom = () => {
+    navigate(`/booking`, { state: { roomId: roomInfo.roomId } });
+  };
+
   return (
     <InfoForm>
       <Typography variant="h2" flex={1}>
@@ -29,6 +36,7 @@ const Inf = ({ RoomInfo: roomInfo }) => {
       <ButtonChoose
         style={{ position: "fixed", bottom: 0 }}
         variant="contained"
+        onClick={handleBookThisRoom}
       >
         Book This Room
       </ButtonChoose>

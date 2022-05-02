@@ -28,6 +28,8 @@ import { ezBlack, ezGrey } from "../utils/colors";
 import ProfileAvatar from "../components/ProfileAvatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RoomAvatar from "../components/RoomAvatar";
+import { useLocation } from "react-router-dom";
+import userAPI from "../api/user";
 
 const BookingForm = (props) => {
   const { step, switchStep, onSubmit, onChange, userInput } = props;
@@ -248,8 +250,9 @@ const SuccessForm = (props) => {
 };
 
 const BookingScreen = (props) => {
-  const userId = 1;
-  const roomId = 31;
+  const { state } = useLocation();
+  const { roomId } = state; // ? Not sure if it works ?
+  const userId = -1;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
     startTime: "",
@@ -332,9 +335,27 @@ const BookingScreen = (props) => {
     setUserInputForm(userInputForm);
   };
 
+  const getUserId = async () => {
+    try {
+      let res = await userAPI.getAllUserInfo();
+
+      if (res.status === "OK") {
+        console.log(res.data[0]);
+        let userInfo = res.data[0];
+        return userInfo.userId;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     if (submitted) console.log("SEND REQUEST");
   }, [submitted]);
+
+  useEffect(() => {
+    userId = getUserId(); // TODO: Get the user ID and init userId
+  }, []);
 
   return (
     <StyledBookingScreen>
