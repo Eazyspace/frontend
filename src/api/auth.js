@@ -18,7 +18,7 @@ class AuthClient {
           }
         })
         .catch((error) => {
-          console.error(error);
+          return error;
         });
     } catch (e) {
       console.log(e);
@@ -26,6 +26,9 @@ class AuthClient {
   };
   logOut = async () => {
     sessionStorage.removeItem("jwtToken");
+  };
+  checkLoggedIn = () => {
+    return (sessionStorage.getItem("jwtToken") !== null);
   };
 }
 

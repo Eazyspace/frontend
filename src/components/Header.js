@@ -34,7 +34,7 @@ function Header({ loggedIn }) {
       <StyledLink to="/">
         <HomeLogo variant="h1">EazySpace</HomeLogo>
       </StyledLink>
-      <StyledLink to="/user">
+      <StyledLink to={loggedIn ? "/user" : "/login"}>
         <UserTitleButton>
           <Typography variant="h5">{userName}</Typography>
         </UserTitleButton>

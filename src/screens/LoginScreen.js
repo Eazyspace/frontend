@@ -14,7 +14,13 @@ import authAPI from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import userAPI from "../api/user";
 
-const LoginForm = ({ username, password, onChange, onLogIn }) => {
+const LoginForm = ({
+  username,
+  password,
+  onChange,
+  onLogIn,
+  onAccountIsInvalid,
+}) => {
   return (
     <StyledLoginForm>
       <LoginTitle>Welcome back!</LoginTitle>
@@ -28,6 +34,7 @@ const LoginForm = ({ username, password, onChange, onLogIn }) => {
             onLogIn(e);
           }
         }}
+        error={onAccountIsInvalid}
       />
       <TextField
         label="Password"
@@ -40,6 +47,7 @@ const LoginForm = ({ username, password, onChange, onLogIn }) => {
             onLogIn(e);
           }
         }}
+        error={onAccountIsInvalid}
       />
       <Button variant="contained" onClick={onLogIn}>
         Log in
@@ -55,19 +63,18 @@ const LoginForm = ({ username, password, onChange, onLogIn }) => {
 const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [accountIsInvalid, setAccountIsInvalid] = useState(false);
   const navigate = useNavigate();
 
   const logIn = async () => {
     console.group("Log in account");
     let res = await authAPI.logIn(username, password);
     console.log(res);
+    console.groupEnd();
     if (res.status === "OK") {
       sessionStorage.setItem("jwtToken", res.data.token);
-      console.groupEnd();
       return true;
     } else {
-      console.error("Cannot log in");
-      console.groupEnd();
       return false;
     }
   };
@@ -85,7 +92,8 @@ const LoginScreen = () => {
       }
     } else {
       // Handle log in failed
-      alert("LOG IN FAILED");
+      setAccountIsInvalid(true);
+      // alert("LOG IN FAILED");
     }
   };
   const handleChangeInput = (e) => {
@@ -105,7 +113,7 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("jwtToken")) navigate("/");
+    if (authAPI.checkLoggedIn()) navigate("/");
   }, []);
 
   return (
@@ -119,6 +127,7 @@ const LoginScreen = () => {
         password={password}
         onChange={handleChangeInput}
         onLogIn={handleOnLogIn}
+        onAccountIsInvalid={accountIsInvalid}
       />
     </StyledLoginScreen>
   );
