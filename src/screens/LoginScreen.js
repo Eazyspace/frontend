@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyledLoginScreen,
   Motto,
@@ -32,6 +32,7 @@ const LoginForm = ({ username, password, onChange, onLogIn }) => {
       <TextField
         label="Password"
         name="password"
+        type="password"
         value={password}
         onChange={onChange}
         onKeyDown={(e) => {
@@ -51,7 +52,7 @@ const LoginForm = ({ username, password, onChange, onLogIn }) => {
   );
 };
 
-const LoginScreen = (props) => {
+const LoginScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -102,6 +103,10 @@ const LoginScreen = (props) => {
         break;
     }
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("jwtToken")) navigate("/");
+  }, []);
 
   return (
     <StyledLoginScreen>

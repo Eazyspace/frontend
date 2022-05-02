@@ -6,7 +6,7 @@ class UserClient {
   getAllUserInfo = async () => {
     try {
       let response = await axios
-        .get("/user", { headers: { Authorization: AuthHeader } })
+        .get("/user", { headers: { Authorization: AuthHeader() } })
         .catch((e) => {
           console.error(e);
         });
