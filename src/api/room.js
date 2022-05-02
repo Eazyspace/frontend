@@ -27,6 +27,6 @@ class RoomClient {
     }
   }
 }
-export const getRoomClient = () => {
-  return new RoomClient();
-};
+
+const roomAPI = new RoomClient();
+export default roomAPI;
