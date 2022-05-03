@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Grid, Paper, Typography } from "@mui/material";
+import { Drawer, Grid, Typography } from "@mui/material";
 import styled from "styled-components";
 import Inf from "../Inf";
-import { getRoomClient } from "../../api/room";
-import axios from "axios";
+import roomAPI from "../../api/room";
 import BackdropLoading from "../utils/backdrop-loading";
 import { ezBlue } from "../../utils/colors";
 const ButtonBox = styled.button`
@@ -41,7 +40,6 @@ const Room = ({ floorNum }) => {
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const roomClient = getRoomClient();
 
   useEffect(() => {
     // init command
@@ -54,7 +52,7 @@ const Room = ({ floorNum }) => {
   const fetchRoomList = async () => {
     setLoading(true);
     try {
-      const response = await roomClient.getListRoom({ floorId: floorNum });
+      const response = await roomAPI.getListRoom({ floorId: floorNum });
       if (response.status === "OK") setRoomList(response.data);
       // snackbar
       else console.error(response.message);

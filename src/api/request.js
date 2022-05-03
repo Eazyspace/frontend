@@ -8,8 +8,7 @@ class RequestClient {
     description,
     ...params
   }) => {
-    const url = "/room/book";
-    return await axios.post(url, {
+    return await axios.post("/room/book", {
       userId,
       roomId,
       startTime,
@@ -18,32 +17,31 @@ class RequestClient {
       ...params,
     });
   };
-  async getListRequest({
-    userId,
-    roomId,
-    startTime,
-    endTime,
-    description,
-  }) {
+  getRequestList = async (floorId, status) => {
     try {
-      let q = JSON.stringify({
-        userId,
-        roomId,
-        startTime,
-        endTime,
-        description,
-      });
-      let response = await axios.get(`/request`, { params: { q } });
-      if (response.status === 200) {
-        return response.data;
-      } else return response.message;
+      let q = JSON.stringify({ floorId, status });
+      let response = await axios.get("/request", { params: { q } });
+
+      if (response.status === 200) return response.data;
+      else return response.message;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
-  }
+  };
+  approveRequest = async ({ requestId, responseNote }) => {
+    return await axios.post("/admin/accept-request", {
+      requestId: requestId,
+      responseNote: responseNote,
+    });
+  };
+  declineRequest = async ({ requestId, responseNote }) => {
+    return await axios.post("/admin/decline-request", {
+      requestId: requestId,
+      responseNote: responseNote,
+    });
+  };
 }
 
-// export default getRequestAPI = () => {return new BookingRequestAPI()}
-export const getRequestClient = () => {
-  return new RequestClient();
-};
+const requestAPI = new RequestClient();
+
+export default requestAPI;

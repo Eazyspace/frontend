@@ -1,3 +1,4 @@
+
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -6,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
+import AdminScreen from "./screens/admin/AdminScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
 var theme = createTheme({
@@ -40,31 +42,38 @@ var theme = createTheme({
       lineHeight: "1.3",
     },
     h1: {
+      fontSize: "36.62px",
+      fontWeight: "bolder",
+      letterSpacing: 1,
       marginTop: 0,
-      fontSize: "3.052rem",
     },
     h2: {
-      fontSize: "2.441rem",
+      fontSize: "29.3px",
       fontWeight: "bold",
       letterSpacing: 1,
     },
     h3: {
-      fontSize: "1.953rem",
+      fontSize: "23.44px",
       fontWeight: "bold",
-      letterSpacing: 1,
+      letterSpacing: "0.15px",
     },
     h4: {
-      fontSize: "1.563rem",
+      fontSize: "18.75px",
       fontWeight: "600",
       letterSpacing: "0.15px",
     },
     h5: {
-      fontSize: "1.25rem",
+      fontSize: "15px",
+      fontWeight: "600",
+      letterSpacing: "0.15px",
+    },
+    h6: {
+      fontSize: "12px",
       fontWeight: "600",
       letterSpacing: "0.15px",
     },
     small: {
-      fontSize: "0.8rem",
+      fontSize: "12px",
       fontWeight: "500",
     },
   },
@@ -85,20 +94,20 @@ var theme = createTheme({
         },
       },
     },
-    MuiTextField: {
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
           fontFamily: "Open Sans",
-          borderRadius: "20px",
+          borderRadius: "10px",
+          "&:hover": {
+            borderStyle: "hidden",
+          },
         },
       },
     },
     MuiAvatar: {
       styleOverrides: {
         root: {
-          fontSize: "1.25rem",
-          fontWeight: "600",
-          letterSpacing: "0.15px",
           boxShadow: ezShadow1_low,
         },
       },
@@ -125,7 +134,7 @@ function App() {
             path="booking/success"
             element={<BookingScreen success={true} />}
           />
-          {/* </Route> */}
+          <Route exact path="admin" element={<AdminScreen />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

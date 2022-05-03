@@ -1,20 +1,45 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  HomeLogo,
+  Navbar,
+  UserTitleButton,
+  StyledLink,
+} from "../components/Header.styled";
+import userAPI from "../api/user";
 
-function Header() {
+function Header({ loggedIn }) {
+  const [userName, setUserName] = useState("Log in");
+
+  const getUserInfo = async () => {
+    try {
+      let res = await userAPI.getAllUserInfo();
+
+      if (res.status === "OK") {
+        console.log(res.data[0]);
+        let userInfo = res.data[0];
+        // setUserName(userInfo.name);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    if (loggedIn === true) getUserInfo();
+  }, [loggedIn]);
+
   return (
-    <AppBar>
-      <Toolbar>
-        <Typography
-          variant="h3"
-          component="div"
-          sx={{ flexGrow: 1 }}
-          style={{ padding: "15px 0px" }}
-        >
-          EazySpace
-        </Typography>
-        <Button color="inherit">Login</Button>
-      </Toolbar>
-    </AppBar>
+    <Navbar>
+      <StyledLink to="/">
+        <HomeLogo variant="h1">EazySpace</HomeLogo>
+      </StyledLink>
+      <StyledLink to={loggedIn ? "/user" : "/login"}>
+        <UserTitleButton>
+          <Typography variant="h5">{userName}</Typography>
+        </UserTitleButton>
+      </StyledLink>
+    </Navbar>
   );
 }
 
