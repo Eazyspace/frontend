@@ -130,7 +130,7 @@ const BookingForm = (props) => {
 };
 
 const SummaryAndConfirmForm = (props) => {
-  const { userId, roomId, userInput, switchStep, onSubmit } = props;
+  const { roomId, userInput, switchStep, onSubmit } = props;
   const {
     startTime,
     endTime,
@@ -143,7 +143,7 @@ const SummaryAndConfirmForm = (props) => {
         We made it! Here is a small recap.
       </Typography>
       <UserAndRoom>
-        <ProfileAvatar />
+        <ProfileAvatar name="LI" />
         <MoreHorizIcon sx={{ color: ezGrey }} />
         <RoomAvatar roomId={roomId} />
       </UserAndRoom>
@@ -191,7 +191,7 @@ const SummaryAndConfirmForm = (props) => {
               Organization
             </Typography>
             <Typography variant="body1" color={ezBlack}>
-              {eventName}
+              {organization}
             </Typography>
           </RowLine>
           <Divider />
@@ -253,7 +253,7 @@ const SuccessForm = (props) => {
 const BookingScreen = (props) => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { roomId } = state; // ? Not sure if it works ?
+  const { roomId } = state;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
     startTime: "",
@@ -265,6 +265,7 @@ const BookingScreen = (props) => {
       description: "",
     },
   });
+  const [userInfo, setUserInfo] = useState();
   const [submitted, setSubmitted] = useState(false);
 
   const handleSwitchStep = (e) => {
@@ -311,15 +312,8 @@ const BookingScreen = (props) => {
 
   const sendRequest = async () => {
     try {
-      const userId = await getUserId();
-      console.log({
-        userId: userId,
-        roomId: roomId,
-        ...userInputForm,
-        ...userInputForm.info,
-      });
       const response = await requestAPI.sendBookingRequest({
-        userId: userId,
+        userId: userInfo.userId,
         roomId: roomId,
         ...userInputForm,
         ...userInputForm.info,
@@ -348,14 +342,14 @@ const BookingScreen = (props) => {
     setUserInputForm(userInputForm);
   };
 
-  const getUserId = async () => {
+  const getUserInfo = async () => {
     try {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
         // console.log(res.data[0]);
         let userInfo = res.data[0];
-        return userInfo.userId;
+        setUserInfo(userInfo);
       }
     } catch (e) {
       console.error(e);
@@ -367,7 +361,8 @@ const BookingScreen = (props) => {
   }, [submitted]);
 
   useEffect(() => {
-    console.log(roomId);
+    // console.log("ROOM ID: " + roomId);
+    getUserInfo();
   }, []);
 
   return (
@@ -399,7 +394,7 @@ const BookingScreen = (props) => {
           />
         ) : (
           <SummaryAndConfirmForm
-            userId={getUserId()}
+            userInfo={userInfo}
             roomId={roomId}
             userInput={userInputForm}
             switchStep={handleSwitchStep}
