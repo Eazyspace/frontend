@@ -6,6 +6,9 @@ import {
   TextField,
   Toolbar,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
@@ -28,7 +31,7 @@ import { ezBlack, ezGrey } from "../utils/colors";
 import ProfileAvatar from "../components/ProfileAvatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RoomAvatar from "../components/RoomAvatar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import userAPI from "../api/user";
 
 const BookingForm = (props) => {
@@ -76,23 +79,21 @@ const BookingForm = (props) => {
             autoComplete="off"
             onChange={onChange}
           />
-          <TextField
-            label="Organization"
-            select
-            inputProps={{ name: "organization" }}
-            value={organization}
-            onChange={onChange}
-          >
-            <MenuItem key={1} value="VNXK">
-              VNXK
-            </MenuItem>
-            <MenuItem key={2} value="SAB">
-              SAB
-            </MenuItem>
-            <MenuItem key={3} value="FAC">
-              FAC
-            </MenuItem>
-          </TextField>
+          <FormControl fullWidth>
+            <InputLabel id="organization-select-label">Organization</InputLabel>
+            <Select
+              labelId="organization-select-label"
+              id="organization-select"
+              inputProps={{ name: "organization" }}
+              value={organization}
+              label="Organization"
+              onChange={onChange}
+            >
+              <MenuItem value="VNXK">VNXK</MenuItem>
+              <MenuItem value="SAB">SAB</MenuItem>
+              <MenuItem value="FAC">FAC</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             label="Number of attendants"
             required
@@ -129,7 +130,7 @@ const BookingForm = (props) => {
 };
 
 const SummaryAndConfirmForm = (props) => {
-  const { roomId, userInput, switchStep, onSubmit } = props;
+  const { userId, roomId, userInput, switchStep, onSubmit } = props;
   const {
     startTime,
     endTime,
@@ -239,7 +240,7 @@ const SuccessForm = (props) => {
         sx={{ fontSize: "100px" }}
         style={{ alignSelf: "center", color: "#FF8F79" }}
       />
-      <StyledLink to="/">
+      <StyledLink to="/user">
         <StyledButton variant="contained">View the request status</StyledButton>
       </StyledLink>
       <StyledLink to="/">
@@ -250,9 +251,9 @@ const SuccessForm = (props) => {
 };
 
 const BookingScreen = (props) => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const { roomId } = state; // ? Not sure if it works ?
-  const userId = -1;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
     startTime: "",
@@ -310,6 +311,13 @@ const BookingScreen = (props) => {
 
   const sendRequest = async () => {
     try {
+      const userId = await getUserId();
+      console.log({
+        userId: userId,
+        roomId: roomId,
+        ...userInputForm,
+        ...userInputForm.info,
+      });
       const response = await requestAPI.sendBookingRequest({
         userId: userId,
         roomId: roomId,
@@ -317,7 +325,12 @@ const BookingScreen = (props) => {
         ...userInputForm.info,
       });
 
-      console.log(response);
+      if (response.status === "OK") {
+        alert("SUCCESSFULLY SEND BOOKING REQUEST");
+        navigate("/booking/success", { state: { roomId: roomId } });
+      } else {
+        console.error(response.message);
+      }
     } catch (error) {
       alert("ERROR: " + error);
     }
@@ -325,7 +338,7 @@ const BookingScreen = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userInputForm);
+    // console.log(userInputForm);
     userInputForm.startTime = new Date(userInputForm.startTime).toISOString();
     userInputForm.endTime = new Date(userInputForm.endTime).toISOString();
 
@@ -340,7 +353,7 @@ const BookingScreen = (props) => {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        console.log(res.data[0]);
+        // console.log(res.data[0]);
         let userInfo = res.data[0];
         return userInfo.userId;
       }
@@ -354,7 +367,7 @@ const BookingScreen = (props) => {
   }, [submitted]);
 
   useEffect(() => {
-    userId = getUserId(); // TODO: Get the user ID and init userId
+    console.log(roomId);
   }, []);
 
   return (
@@ -386,6 +399,7 @@ const BookingScreen = (props) => {
           />
         ) : (
           <SummaryAndConfirmForm
+            userId={getUserId()}
             roomId={roomId}
             userInput={userInputForm}
             switchStep={handleSwitchStep}

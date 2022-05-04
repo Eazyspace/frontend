@@ -8,14 +8,26 @@ class RequestClient {
     description,
     ...params
   }) => {
-    return await axios.post("/room/book", {
+    console.log({
       userId,
       roomId,
       startTime,
       endTime,
       description,
-      ...params,
     });
+    try {
+      let response = await axios.post("/room/book", {
+        userId,
+        roomId,
+        startTime,
+        endTime,
+        description,
+      });
+      
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
   getRequestList = async (floorId, status) => {
     try {
