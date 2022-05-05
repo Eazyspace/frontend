@@ -1,16 +1,17 @@
-import { Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import React, { Component, useState, useEffect } from "react";
 import styled from "styled-components";
 import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
 import "../utils/hideScrollbar.css";
 import "../utils/Animation.css";
-import { ezBlue, ezGreen, ezYellow, ezRed } from "../utils/colors";
+import { ezGreen, ezYellow, ezRed, ezBlack, ezGrey } from "../utils/colors";
 import Popup from "reactjs-popup";
 import ModalPopup from "./ModalPopup";
 import zIndex from "@mui/material/styles/zIndex";
 import RoomAvatar from "./RoomAvatar";
 import { useScrollLock } from "./scrollLock";
 import requestAPI from "../api/request";
+import userAPI from "../api/user";
 const Bigbox = styled.div`
   box-shadow: ${ezShadow2_high};
   overflow: scroll;
@@ -32,14 +33,14 @@ const FlatList = styled.button`
 export const Boundbox = styled.div`
   border-radius: 10px;
   background: ${(props) =>
-    props.variant == 1
+    props.variant === 2
       ? ezGreen
-      : props.variant == 2
+      : props.variant === 1
       ? ezYellow
-      : props.variant == 3
+      : props.variant === 3
       ? ezRed
       : ezGreen};
-  margin: ${(props) => (props.variant == "status" ? "1.3rem" : "0.5rem")};
+  margin: ${(props) => (props.variant === "status" ? "1.3rem" : "0.5rem")};
   width: 150px;
 `;
 var returnTime = (timeStart, timeEnd) => {
@@ -73,16 +74,13 @@ var returnTime = (timeStart, timeEnd) => {
   );
 };
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ userId }) => {
   const [showpopUp, setPopUp] = useState(false);
   const { lockScroll, unlockScroll } = useScrollLock();
   const [requestList, setRequest] = useState([]);
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const requestClient = requestAPI;
-
-  var dt, year, month, day, hour, minute, ampm;
 
   const showPopUp = (state, request) => {
     lockScroll();
@@ -90,9 +88,9 @@ const ProfileInfo = () => {
     setSelectedRequest(request);
     //console.log(selectedRequest);
   };
-  useEffect(() => {
-    // init command
-  }, []);
+  // useEffect(() => {
+  //   // init command
+  // }, []);
   // useCallBack
   useEffect(() => {
     fetchRequest();
@@ -100,7 +98,7 @@ const ProfileInfo = () => {
   const fetchRequest = async () => {
     setLoading(true);
     try {
-      const response = await requestClient.getRequestList({ userId: 1 });
+      const response = await requestAPI.getRequestList({ userId: userId });
       if (response.status === "OK") setRequest(response.data);
       // snackbar
       else console.error(response.message);
@@ -110,10 +108,24 @@ const ProfileInfo = () => {
     setLoading(false);
   };
 
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   return (
     <Bigbox className="example">
-      {requestList.map((request) => (
-        <FlatList onClick={() => showPopUp(true, request)}>
+      {requestList.map((request, i) => (
+        <FlatList key={i} onClick={() => showPopUp(true, request)}>
           <div style={{ margin: "0.5rem" }}>
             <RoomAvatar roomId={request.roomId}></RoomAvatar>
           </div>
@@ -125,7 +137,7 @@ const ProfileInfo = () => {
               margin: "1rem",
             }}
           >
-            <Typography textAlign={"start"} color={"#808080"}>
+            <Typography textAlign={"start"} color={ezGrey}>
               {returnTime(request.startTime, request.endTime)}
             </Typography>
             <Typography textAlign={"start"}>{request.description}</Typography>
@@ -135,20 +147,20 @@ const ProfileInfo = () => {
               variant="h5"
               margin={"0.5rem"}
               color={
-                request.status == 1
-                  ? "#fff"
-                  : request.status == 2
-                  ? "#000"
-                  : request.status == 3
-                  ? "#fff"
-                  : "#fff"
+                request.status === 2
+                  ? "white"
+                  : request.status === 1
+                  ? ezBlack
+                  : request.status === 3
+                  ? "white"
+                  : "white"
               }
             >
-              {request.status == 1
+              {request.status === 2
                 ? "Approved"
-                : request.status == 2
+                : request.status === 1
                 ? "Pending"
-                : request.status == 3
+                : request.status === 3
                 ? "Decline"
                 : "Approved"}
             </Typography>
