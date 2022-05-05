@@ -6,6 +6,9 @@ import {
   TextField,
   Toolbar,
   Typography,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
@@ -28,6 +31,8 @@ import { ezBlack, ezGrey } from "../utils/colors";
 import ProfileAvatar from "../components/ProfileAvatar";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RoomAvatar from "../components/RoomAvatar";
+import { useLocation, useNavigate } from "react-router-dom";
+import userAPI from "../api/user";
 
 const BookingForm = (props) => {
   const { step, switchStep, onSubmit, onChange, userInput } = props;
@@ -74,23 +79,21 @@ const BookingForm = (props) => {
             autoComplete="off"
             onChange={onChange}
           />
-          <TextField
-            label="Organization"
-            select
-            inputProps={{ name: "organization" }}
-            value={organization}
-            onChange={onChange}
-          >
-            <MenuItem key={1} value="VNXK">
-              VNXK
-            </MenuItem>
-            <MenuItem key={2} value="SAB">
-              SAB
-            </MenuItem>
-            <MenuItem key={3} value="FAC">
-              FAC
-            </MenuItem>
-          </TextField>
+          <FormControl fullWidth>
+            <InputLabel id="organization-select-label">Organization</InputLabel>
+            <Select
+              labelId="organization-select-label"
+              id="organization-select"
+              inputProps={{ name: "organization" }}
+              value={organization}
+              label="Organization"
+              onChange={onChange}
+            >
+              <MenuItem value="VNXK">VNXK</MenuItem>
+              <MenuItem value="SAB">SAB</MenuItem>
+              <MenuItem value="FAC">FAC</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             label="Number of attendants"
             required
@@ -140,7 +143,7 @@ const SummaryAndConfirmForm = (props) => {
         We made it! Here is a small recap.
       </Typography>
       <UserAndRoom>
-        <ProfileAvatar />
+        <ProfileAvatar name="LI" />
         <MoreHorizIcon sx={{ color: ezGrey }} />
         <RoomAvatar roomId={roomId} />
       </UserAndRoom>
@@ -188,7 +191,7 @@ const SummaryAndConfirmForm = (props) => {
               Organization
             </Typography>
             <Typography variant="body1" color={ezBlack}>
-              {eventName}
+              {organization}
             </Typography>
           </RowLine>
           <Divider />
@@ -237,7 +240,7 @@ const SuccessForm = (props) => {
         sx={{ fontSize: "100px" }}
         style={{ alignSelf: "center", color: "#FF8F79" }}
       />
-      <StyledLink to="/">
+      <StyledLink to="/user">
         <StyledButton variant="contained">View the request status</StyledButton>
       </StyledLink>
       <StyledLink to="/">
@@ -248,8 +251,9 @@ const SuccessForm = (props) => {
 };
 
 const BookingScreen = (props) => {
-  const userId = 1;
-  const roomId = 31;
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { roomId } = state;
   const [step, setStep] = useState(1);
   const [userInputForm, setUserInputForm] = useState({
     startTime: "",
@@ -261,6 +265,7 @@ const BookingScreen = (props) => {
       description: "",
     },
   });
+  const [userInfo, setUserInfo] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSwitchStep = (e) => {
@@ -308,13 +313,18 @@ const BookingScreen = (props) => {
   const sendRequest = async () => {
     try {
       const response = await requestAPI.sendBookingRequest({
-        userId: userId,
+        userId: userInfo.userId,
         roomId: roomId,
         ...userInputForm,
         ...userInputForm.info,
       });
 
-      console.log(response);
+      if (response.status === "OK") {
+        alert("SUCCESSFULLY SEND BOOKING REQUEST");
+        navigate("/booking/success", { state: { roomId: roomId } });
+      } else {
+        console.error(response.message);
+      }
     } catch (error) {
       alert("ERROR: " + error);
     }
@@ -322,7 +332,7 @@ const BookingScreen = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(userInputForm);
+    // console.log(userInputForm);
     userInputForm.startTime = new Date(userInputForm.startTime).toISOString();
     userInputForm.endTime = new Date(userInputForm.endTime).toISOString();
 
@@ -332,9 +342,28 @@ const BookingScreen = (props) => {
     setUserInputForm(userInputForm);
   };
 
+  const getUserInfo = async () => {
+    try {
+      let res = await userAPI.getAllUserInfo();
+
+      if (res.status === "OK") {
+        // console.log(res.data[0]);
+        let userInfo = res.data[0];
+        setUserInfo(userInfo);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     if (submitted) console.log("SEND REQUEST");
   }, [submitted]);
+
+  useEffect(() => {
+    // console.log("ROOM ID: " + roomId);
+    getUserInfo();
+  }, []);
 
   return (
     <StyledBookingScreen>
@@ -365,6 +394,7 @@ const BookingScreen = (props) => {
           />
         ) : (
           <SummaryAndConfirmForm
+            userInfo={userInfo}
             roomId={roomId}
             userInput={userInputForm}
             switchStep={handleSwitchStep}
