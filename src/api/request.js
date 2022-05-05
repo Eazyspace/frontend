@@ -23,15 +23,15 @@ class RequestClient {
         endTime,
         description,
       });
-      
+
       return response.data;
     } catch (error) {
       console.error(error);
     }
   };
-  getRequestList = async (floorId, status) => {
+  getRequestList = async ({ floorId, status, userId }) => {
     try {
-      let q = JSON.stringify({ floorId, status });
+      let q = JSON.stringify({ floorId, status, userId });
       let response = await axios.get("/request", { params: { q } });
 
       if (response.status === 200) return response.data;

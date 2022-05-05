@@ -265,7 +265,7 @@ const BookingScreen = (props) => {
       description: "",
     },
   });
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSwitchStep = (e) => {
