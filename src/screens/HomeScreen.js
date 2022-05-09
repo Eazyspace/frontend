@@ -24,7 +24,7 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    console.log(userAPI.getAllUserInfo());
+    console.log(userAPI.getAllUserInfo().data);
     if (!authAPI.checkLoggedIn()) navigate("/login");
   }, []);
 
