@@ -4,31 +4,35 @@ import { Typography,TextField,Button } from "@mui/material";
 import useWindowDimensions from "../components/Windowdimension"
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { ezBlue,ezGrey } from "../utils/colors";
 
 function RegisterScreen() {
   const { height, width } = useWindowDimensions();
   const [step, setStep]=useState(0)
   const [direct, setDirect]=useState(false)
-  console.log(step);
+  const [click , setClick]=useState(false);
+  console.log(width);
 
+  console.log(step);
   const nextStep=()=>{
     setDirect(true);
+    setClick(true);
     setStep(step+1)
   }
   const backStep=()=>{
     setDirect(false);
+    setClick(true);
     setStep(step-1);
   }
   const Regist1=()=>{
     return(
       <motion.div
-      initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
+      initial={(click&&direct)? {x:200, opacity:0} : (click&&!direct)? {x:-200, opacity:0} : {x:0,opacity:1}}
       animate={{ x: 0,opacity:1}}
       transition={{ duration: 0.5 }}
       >
-          <RegisterForm>
+          <RegisterForm onMouseEnter={()=>setClick(false)}>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your basic Info</Typography>
             <div style={{display:'flex',flexDirection:'column',justifyContent:'space-around',height:'25vh',marginLeft:'3rem',marginRight:'3rem'}}>
                 <TextField label="Full name" />
@@ -47,11 +51,11 @@ function RegisterScreen() {
   const Regist2=()=>{
     return(
       <motion.div
-             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
+             initial={(click&&direct)? {x:200, opacity:0} : (click&&!direct)? {x:-200, opacity:0} : {x:0,opacity:1}}
              animate={{ x: 0,opacity:1}}
              transition={{ duration:  0.5 }}
         >
-        <RegisterForm>
+        <RegisterForm onMouseEnter={()=>setClick(false)}>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your academic Info</Typography>
             <div style={{display:'flex',flexDirection:'column',justifyContent:'space-around',height:'35vh',marginLeft:'3rem',marginRight:'3rem'}}>
                 <TextField label="Student ID" />
@@ -79,11 +83,11 @@ function RegisterScreen() {
   const Regist3=()=>{
     return(
       <motion.div
-             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
+             initial={(click&&direct)? {x:200, opacity:0} : (click&&!direct)? {x:-200, opacity:0} : {x:0,opacity:1}}
              animate={{ x: 0,opacity:1}}
              transition={{ duration:  0.5 }}
         >
-        <RegisterForm>
+        <RegisterForm onMouseEnter={()=>setClick(false)}>
             <Typography variant="h4" textAlign={'center'} marginTop={'2vh'} >Enter your acount Info</Typography>
             <div style={{display:'flex',flexDirection:'column',justifyContent:'space-around',height:'35vh',marginLeft:'3rem',marginRight:'3rem'}}>
                 <TextField label="Username" />
@@ -108,12 +112,12 @@ function RegisterScreen() {
     )
   }
   const Regist4=()=>{
-   return( <motion.div
-             initial={direct? {x:200, opacity:0} :  {x:-200, opacity:0}}
+    return( <motion.div
+             initial={(click&&direct)? {x:200, opacity:0} : (click&&!direct)? {x:-200, opacity:0} : {x:0,opacity:1}}
              animate={{ x: 0,opacity:1}}
              transition={{ duration:  0.5 }}
         >
-         <RegisterForm>
+         <RegisterForm onMouseEnter={()=>setClick(false)}>
             <Typography variant="h5" textAlign={'center'} margin={'2vh'} >We have sent an activation link to your email v***@gmail.com. 
             Please activate in order to fully explore all of our features.</Typography>
           
