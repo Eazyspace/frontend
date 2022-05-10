@@ -84,8 +84,8 @@ const LoginScreen = () => {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        console.log(res.data[0]);
-        let userInfo = res.data[0];
+        console.log(res.data);
+        let userInfo = res.data;
 
         if (userInfo.role === 3) navigate("admin");
         else navigate("/");
@@ -114,6 +114,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (authAPI.checkLoggedIn()) navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
