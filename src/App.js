@@ -121,7 +121,6 @@ function App() {
         <Routes>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
-          {/* <Route path="/" element={<Header />}> */}
           <Route path="/" element={<HomeScreen />} />
           <Route
             exact

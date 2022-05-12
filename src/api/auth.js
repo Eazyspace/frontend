@@ -10,7 +10,7 @@ class AuthClient {
     });
     try {
       return await axios
-        .post("/user/login", {
+        .post(baseURL + "/user/login", {
           academicId: username,
           password: password,
         })

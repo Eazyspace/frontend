@@ -1,4 +1,7 @@
 import axios from "axios";
+
+const baseURL = "https://eazyspace-website.herokuapp.com";
+
 class RequestClient {
   sendBookingRequest = async ({
     userId,
@@ -16,7 +19,7 @@ class RequestClient {
       description,
     });
     try {
-      let response = await axios.post("/room/book", {
+      let response = await axios.post(baseURL + "/room/book", {
         userId,
         roomId,
         startTime,
@@ -32,7 +35,7 @@ class RequestClient {
   getRequestList = async ({ floorId, status, userId }) => {
     try {
       let q = JSON.stringify({ floorId, status, userId });
-      let response = await axios.get("/request", { params: { q } });
+      let response = await axios.get(baseURL + "/request", { params: { q } });
 
       if (response.status === 200) return response.data;
       else return response.message;
@@ -41,13 +44,13 @@ class RequestClient {
     }
   };
   approveRequest = async ({ requestId, responseNote }) => {
-    return await axios.post("/admin/accept-request", {
+    return await axios.post(baseURL + "/admin/accept-request", {
       requestId: requestId,
       responseNote: responseNote,
     });
   };
   declineRequest = async ({ requestId, responseNote }) => {
-    return await axios.post("/admin/decline-request", {
+    return await axios.post(baseURL + "/admin/decline-request", {
       requestId: requestId,
       responseNote: responseNote,
     });
