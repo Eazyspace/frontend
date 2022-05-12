@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ezBlue, ezGrey } from "../utils/colors";
 import Header from "../components/Header";
+import authAPI from "../api/auth";
 
 const Regist1 = ({
   click,
@@ -318,7 +319,23 @@ function RegisterScreen() {
     setUserInputForm({ ...userInputForm, [name]: value });
   };
   const handleSubmit = () => {
+    console.group("SUBMITTED");
     console.table(userInputForm);
+    console.groupEnd();
+
+    try {
+      let response = authAPI.registerNewAccount(userInputForm);
+
+      if (response.status === "OK") {
+        console.group("Successfully created account");
+        console.log(response.data);
+        console.groupEnd();
+
+        nextStep();
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return (
