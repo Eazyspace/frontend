@@ -17,9 +17,9 @@ function Header() {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        console.log(res.data[0]);
-        let userInfo = res.data[0];
-        // setUserName(userInfo.name);
+        console.log(res.data);
+        let userInfo = res.data;
+        setUserName(userInfo.name);
       }
     } catch (e) {
       console.error(e);

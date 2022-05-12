@@ -13,7 +13,14 @@ const StyledAvatar = styled(Avatar)`
 function ProfileAvatar({ name, ...props }) {
   return (
     <StyledAvatar {...props}>
-      <Typography variant="h5">{props.children}</Typography>
+      <Typography variant="h5">
+        {!name
+          ? props.children
+          : name
+              .split(" ")
+              .map((ele) => ele.charAt(0))
+              .join("")}
+      </Typography>
     </StyledAvatar>
   );
 }

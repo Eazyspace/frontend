@@ -122,6 +122,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           <Route path="/" element={<HomeScreen />} />
+          <Route path="user" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"
