@@ -1,4 +1,3 @@
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
@@ -123,7 +122,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<RegisterScreen />} />
+          <Route path="/" element={<HomeScreen />} />
           <Route
             exact
             path="booking"
