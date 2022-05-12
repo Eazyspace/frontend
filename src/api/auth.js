@@ -1,5 +1,7 @@
 const { default: axios } = require("axios");
 
+const baseURL = "https://eazyspace-website.herokuapp.com";
+
 class AuthClient {
   logIn = async (username, password) => {
     console.table({
@@ -49,11 +51,11 @@ class AuthClient {
     };
 
     console.group("API POST: Create an account");
-    console.log(data);
+    console.table(data);
     console.groupEnd();
 
     try {
-      let response = await axios.post("/user/sign-up", data);
+      let response = await axios.post(baseURL + "/user/sign-up", data);
 
       if (response.status === 200) return response.data;
     } catch (error) {

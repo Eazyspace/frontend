@@ -243,7 +243,7 @@ const Regist3 = ({
     </motion.div>
   );
 };
-const Regist4 = ({ click, setClick, direct }) => {
+const Regist4 = ({ click, setClick, direct, userInputForm }) => {
   return (
     <motion.div
       initial={
@@ -258,8 +258,8 @@ const Regist4 = ({ click, setClick, direct }) => {
     >
       <RegisterForm onMouseEnter={() => setClick(false)}>
         <Typography variant="h5" textAlign={"center"} margin={"2vh"}>
-          We have sent an activation link to your email v***@gmail.com. Please
-          activate in order to fully explore all of our features.
+          We have sent an activation link to your email {userInputForm.email}.
+          Please activate in order to fully explore all of our features.
         </Typography>
 
         <div
@@ -318,17 +318,17 @@ function RegisterScreen() {
 
     setUserInputForm({ ...userInputForm, [name]: value });
   };
-  const handleSubmit = () => {
-    console.group("SUBMITTED");
-    console.table(userInputForm);
-    console.groupEnd();
+  const handleSubmit = async () => {
+    // console.group("SUBMITTED");
+    // console.table(userInputForm);
+    // console.groupEnd();
 
     try {
-      let response = authAPI.registerNewAccount(userInputForm);
+      let response = await authAPI.registerNewAccount(userInputForm);
 
       if (response.status === "OK") {
         console.group("Successfully created account");
-        console.log(response.data);
+        console.table(response.data);
         console.groupEnd();
 
         nextStep();
@@ -407,7 +407,12 @@ function RegisterScreen() {
             onSubmit={handleSubmit}
           />
         ) : step === 3 ? (
-          <Regist4 click={click} setClick={setClick} direct={direct} />
+          <Regist4
+            click={click}
+            setClick={setClick}
+            direct={direct}
+            userInputForm={userInputForm}
+          />
         ) : (
           <div />
         )}
