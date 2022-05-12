@@ -1,5 +1,7 @@
 const { default: axios } = require("axios");
 
+const baseURL = "https://eazyspace-website.herokuapp.com";
+
 class AuthClient {
   logIn = async (username, password) => {
     console.table({
@@ -28,7 +30,37 @@ class AuthClient {
     sessionStorage.removeItem("jwtToken");
   };
   checkLoggedIn = () => {
-    return (sessionStorage.getItem("jwtToken") !== null);
+    return sessionStorage.getItem("jwtToken") !== null;
+  };
+  registerNewAccount = async ({
+    name,
+    phoneNumber,
+    academicId,
+    email,
+    faculty,
+    password,
+    ...params
+  }) => {
+    let data = {
+      academicId,
+      password,
+      name,
+      email,
+      faculty,
+      phoneNumber,
+    };
+
+    console.group("API POST: Create an account");
+    console.table(data);
+    console.groupEnd();
+
+    try {
+      let response = await axios.post(baseURL + "/user/sign-up", data);
+
+      if (response.status === 200) return response.data;
+    } catch (error) {
+      alert(error);
+    }
   };
 }
 

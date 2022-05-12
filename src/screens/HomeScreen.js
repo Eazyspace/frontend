@@ -30,7 +30,7 @@ const HomeScreen = () => {
 
   return (
     <HomeView>
-      <Header loggedIn={authAPI.checkLoggedIn()} />
+      <Header />
       <Content>
         <Navfloor>
           <TextField label="Search" />

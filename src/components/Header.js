@@ -7,8 +7,9 @@ import {
   StyledLink,
 } from "../components/Header.styled";
 import userAPI from "../api/user";
+import authAPI from "../api/auth";
 
-function Header({ loggedIn }) {
+function Header() {
   const [userName, setUserName] = useState("Log in");
 
   const getUserInfo = async () => {
@@ -26,15 +27,15 @@ function Header({ loggedIn }) {
   };
 
   useEffect(() => {
-    if (loggedIn === true) getUserInfo();
-  }, [loggedIn]);
+    if (authAPI.checkLoggedIn()) getUserInfo();
+  }, []);
 
   return (
     <Navbar>
       <StyledLink to="/">
         <HomeLogo variant="h1">EazySpace</HomeLogo>
       </StyledLink>
-      <StyledLink to={loggedIn ? "/user" : "/login"}>
+      <StyledLink to={authAPI.checkLoggedIn() ? "/user" : "/login"}>
         <UserTitleButton>
           <Typography variant="h5">{userName}</Typography>
         </UserTitleButton>

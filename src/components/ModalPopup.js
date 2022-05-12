@@ -40,7 +40,9 @@ var Timestr=(start,end)=>{
   var minute2  = dt2.getMinutes().toString().padStart(2, "0");
   return hour1+":"+ minute1+" - "+ hour2+":"+ minute2
 }
-
+var returnColor=(requestData)=>{
+   return requestData.status==1? "#fff": requestData.status==2 ?"#000" : requestData.status==3 ?"#fff": "#fff"
+}
 const ModalPopup=({requestData})=>{
     const { height, width } = useWindowDimensions();
     console.log(requestData.status)
@@ -49,12 +51,18 @@ const ModalPopup=({requestData})=>{
           <div style={{display:'flex',flexDirection:'column',margin:'2rem'}}>
              <Row variant="header">
                 <div style={{margin:'0.5rem'}}><ProfileAvatar></ProfileAvatar></div>
-                <Boundbox variant={requestData.status}><Typography variant='h5'margin={'0.5rem'} textAlign={'center'}>{requestData.status==1? "Approved": requestData.status==2 ?"Pending" : requestData.status==3 ?"Decline": "Approved"}</Typography></Boundbox>
-                <div style={{margin:'0.5rem'}}><RoomAvatar roomId={32} ></RoomAvatar></div>
+                <Boundbox variant={requestData.status}><Typography variant='h5'margin={'0.5rem'} textAlign={'center'}
+                 color={returnColor(requestData)}
+                >{requestData.status==1? "Approved": requestData.status==2 ?"Pending" : requestData.status==3 ?"Decline": "Approved"}</Typography></Boundbox>
+                <div style={{margin:'0.5rem'}}><RoomAvatar roomId={requestData.roomId} ></RoomAvatar></div>
              </Row>
              <div style={{display:'flex',flexDirection:'column',background:requestData.status==1? ezGreen: requestData.status==2 ?ezYellow : requestData.status==3 ?ezRed: ezGreen,borderRadius:'10px',marginBottom:'2rem',marginTop:'2rem'}}>
-                <Typography variant='h4' margin={'0.5rem'}>Response note</Typography>
-                <Typography variant='h5' margin={'0.5rem'}>{requestData.responseNote}</Typography>
+                <Typography variant='h4' margin={'0.5rem'}
+                  color={returnColor(requestData)}
+                >Response note</Typography>
+                <Typography variant='h5' margin={'0.5rem'}
+                 color={returnColor(requestData)}
+                >{requestData.responseNote}</Typography>
              </div>
              <Row>
                <Typography color={'#808080'}>Date</Typography>
