@@ -4,11 +4,15 @@ import {
   DialogContent,
   IconButton,
   Typography,
+  Box,
+  TextField,
+  CircularProgress,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import React, { useEffect, useState } from "react";
 import { HomeView, Content } from "./HomeScreen.styled";
 import {
+  ChangeAvatarButtonGroup,
   ProfileDialog,
   ProfileInf,
   ProfileTab,
@@ -16,17 +20,18 @@ import {
 } from "./ProfileScreen.styled";
 import useWindowDimensions from "../components/Windowdimension";
 import ProfileInfo from "../components/ProfileInfo";
+import ProfileAvatar from "../components/ProfileAvatar";
 import Header from "../components/Header";
 import userAPI from "../api/user";
-import ProfileAvatar from "../components/ProfileAvatar";
 import authAPI from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import { ezShadow1_low } from "../utils/shadows";
 
 const ProfileScreen = () => {
   const [userInfo, setUserInfo] = useState({ userId: 2 });
-  const [newAvatarFile, setNewAvatarFile] = useState(null);
+  const [newUploadedAvatar, setNewUploadedAvatar] = useState("");
   const [openEditAvatarDialog, setOpenEditAvatarDialog] = useState(false);
+  const [loadingNewAvatar, setLoadingNewAvatar] = useState(false);
   const { height } = useWindowDimensions();
   const navigate = useNavigate();
   // console.log(height);
@@ -50,7 +55,7 @@ const ProfileScreen = () => {
     reader.readAsDataURL(files[0]);
 
     reader.onload = (event) => {
-      console.log(event.target.result);
+      setNewUploadedAvatar(event.target.result);
     };
   };
   const handleSignOut = async (e) => {
@@ -60,6 +65,10 @@ const ProfileScreen = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const updateNewAvatarToUser = async () => {
+    // TODO: Call API to upload user avatar
   };
 
   useEffect(() => {
@@ -117,17 +126,65 @@ const ProfileScreen = () => {
         <StyledDialog
           open={openEditAvatarDialog}
           onBackdropClick={() => {
+            setNewUploadedAvatar("");
             setOpenEditAvatarDialog(false);
           }}
           scroll="body"
         >
-          <DialogContent>
-            <input
-              type="file"
-              value={newAvatarFile}
-              onChange={handleNewAvatarChange}
-            />
-          </DialogContent>
+          {loadingNewAvatar ? (
+            <DialogContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            </DialogContent>
+          ) : (
+            <DialogContent>
+              {newUploadedAvatar && (
+                <img
+                  src={newUploadedAvatar}
+                  style={{
+                    display: "block",
+                    maxWidth: "20em",
+                    maxHeight: "20em",
+                    width: "auto",
+                    height: "auto",
+                    alignSelf: "center",
+                  }}
+                  alt="Please upload a new file"
+                />
+              )}
+              <TextField type="file" onChange={handleNewAvatarChange} />
+              <ChangeAvatarButtonGroup>
+                <Button
+                  variant="text"
+                  style={{ flex: 1 }}
+                  onClick={() => {
+                    setNewUploadedAvatar("");
+                    setOpenEditAvatarDialog(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{ flex: 1 }}
+                  onClick={() => {
+                    setLoadingNewAvatar(true);
+                    updateNewAvatarToUser();
+                  }}
+                >
+                  Upload new avatar
+                </Button>
+              </ChangeAvatarButtonGroup>
+            </DialogContent>
+          )}
         </StyledDialog>
       )}
     </HomeView>

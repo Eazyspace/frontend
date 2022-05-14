@@ -44,3 +44,10 @@ export const StyledDialog = styled(Dialog)`
     border-radius: 12px;
   }
 `;
+
+export const ChangeAvatarButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1em;
+`;
