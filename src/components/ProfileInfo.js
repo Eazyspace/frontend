@@ -16,7 +16,6 @@ const Bigbox = styled.div`
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
   padding: 30px 10px;

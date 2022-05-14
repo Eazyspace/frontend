@@ -1,15 +1,19 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { HomeView, Content } from "./HomeScreen.styled";
-import { ProfileInf, ProfileTab } from "./ProfileScreen.styled";
+import { ProfileDialog, ProfileInf, ProfileTab } from "./ProfileScreen.styled";
 import useWindowDimensions from "../components/Windowdimension";
 import ProfileInfo from "../components/ProfileInfo";
 import Header from "../components/Header";
 import userAPI from "../api/user";
+import ProfileAvatar from "../components/ProfileAvatar";
+import authAPI from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const ProfileScreen = () => {
   const [userInfo, setUserInfo] = useState({ userId: 2 });
   const { height } = useWindowDimensions();
+  const navigate = useNavigate();
   // console.log(height);
   const getUserInfo = async () => {
     try {
@@ -25,6 +29,15 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleSignOut = async (e) => {
+    try {
+      await authAPI.logOut();
+      navigate("/login");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     getUserInfo();
   }, []);
@@ -34,7 +47,22 @@ const ProfileScreen = () => {
       <Header loggedIn />
       <Content contents={height * 0.9}>
         <ProfileTab contents={height * 0.2}>
-          <Typography textAlign={"center"}>{userInfo.name}'s avatar</Typography>
+          <ProfileDialog>
+            <ProfileAvatar
+              name={userInfo.name}
+              sx={{
+                alignSelf: "center",
+                height: "4em",
+                width: "4em",
+              }}
+            />
+            <Typography variant="h5" sx={{ alignSelf: "center" }}>
+              {userInfo.name}
+            </Typography>
+          </ProfileDialog>
+          <Button variant="outlined" color="error" onClick={handleSignOut}>
+            Sign out
+          </Button>
         </ProfileTab>
         <ProfileInf>
           <ProfileInfo userInfo={userInfo}></ProfileInfo>

@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { ezBlue } from "./utils/colors";
+import { ezBlue, ezRed } from "./utils/colors";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
@@ -79,6 +79,9 @@ var theme = createTheme({
   palette: {
     primary: {
       main: ezBlue,
+    },
+    error: {
+      main: ezRed,
     },
   },
   components: {
