@@ -1,3 +1,4 @@
+import { Dialog } from "@mui/material";
 import styled from "styled-components";
 import { ezShadow2_high } from "../utils/shadows";
 
@@ -27,4 +28,19 @@ export const ProfileInf = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5rem;
+`;
+
+export const StyledDialog = styled(Dialog)`
+  & .MuiDialogContent-root {
+    min-width: 333px;
+    padding: 40px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1em;
+  }
+  & .MuiDialog-paper {
+    border-radius: 12px;
+  }
 `;
