@@ -8,7 +8,7 @@ import {
   RegisterLink,
   BrandAndMotto,
 } from "./LoginScreen.styled";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import Brand from "../components/Brand";
 import authAPI from "../api/auth";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,29 @@ const LoginForm = ({
   onLogIn,
   onAccountIsInvalid,
 }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleLogInClick = async (e) => {
+    setLoading(true);
+    await onLogIn(e);
+    setLoading(false);
+  };
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          minWidth: "20em",
+          display: "flex",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+
   return (
     <StyledLoginForm>
       <LoginTitle>Welcome back!</LoginTitle>
@@ -31,7 +54,7 @@ const LoginForm = ({
         onChange={onChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            onLogIn(e);
+            handleLogInClick(e);
           }
         }}
         error={onAccountIsInvalid}
@@ -44,12 +67,12 @@ const LoginForm = ({
         onChange={onChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            onLogIn(e);
+            handleLogInClick(e);
           }
         }}
         error={onAccountIsInvalid}
       />
-      <Button variant="contained" onClick={onLogIn}>
+      <Button variant="contained" onClick={handleLogInClick}>
         Log in
       </Button>
       <RegisterLine>
