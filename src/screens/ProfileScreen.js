@@ -7,6 +7,7 @@ import {
   Box,
   TextField,
   CircularProgress,
+  FormHelperText,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import React, { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ const ProfileScreen = () => {
   const [userInfo, setUserInfo] = useState({ userId: 2 });
   const [newUploadedAvatar, setNewUploadedAvatar] = useState("");
   const [openEditAvatarDialog, setOpenEditAvatarDialog] = useState(false);
+  const [warnNoAvatarUploaded, setWarnNoAvatarUploaded] = useState(false);
   const [loadingNewAvatar, setLoadingNewAvatar] = useState(false);
   const { height } = useWindowDimensions();
   const navigate = useNavigate();
@@ -57,6 +59,8 @@ const ProfileScreen = () => {
     reader.onload = (event) => {
       setNewUploadedAvatar(event.target.result);
     };
+
+    if (warnNoAvatarUploaded) setWarnNoAvatarUploaded(false);
   };
   const handleSignOut = async (e) => {
     try {
@@ -68,7 +72,25 @@ const ProfileScreen = () => {
   };
 
   const updateNewAvatarToUser = async () => {
-    // TODO: Call API to upload user avatar
+    if (!newUploadedAvatar) {
+      setWarnNoAvatarUploaded(true);
+    } else {
+      setLoadingNewAvatar(true);
+      setWarnNoAvatarUploaded(false);
+      try {
+        let res = await userAPI.setNewAvatar(newUploadedAvatar);
+
+        if (res.status === "OK") {
+          console.log(res.data);
+          setNewUploadedAvatar(null);
+          setOpenEditAvatarDialog(false);
+          getUserInfo();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      setLoadingNewAvatar(false);
+    }
   };
 
   useEffect(() => {
@@ -103,10 +125,11 @@ const ProfileScreen = () => {
             >
               <ProfileAvatar
                 name={userInfo.name}
+                srcSet={userInfo.avatar}
                 sx={{
                   alignSelf: "center",
-                  height: "4em",
-                  width: "4em",
+                  height: "6em",
+                  width: "6em",
                 }}
               />
             </Badge>
@@ -160,13 +183,22 @@ const ProfileScreen = () => {
                   alt="Please upload a new file"
                 />
               )}
-              <TextField type="file" onChange={handleNewAvatarChange} />
+              <TextField
+                id="new-avatar"
+                type="file"
+                onChange={handleNewAvatarChange}
+                error={warnNoAvatarUploaded}
+              />
+              {warnNoAvatarUploaded && (
+                <FormHelperText error>No file detected</FormHelperText>
+              )}
               <ChangeAvatarButtonGroup>
                 <Button
                   variant="text"
                   style={{ flex: 1 }}
                   onClick={() => {
-                    setNewUploadedAvatar("");
+                    setNewUploadedAvatar(null);
+                    setWarnNoAvatarUploaded(false);
                     setOpenEditAvatarDialog(false);
                   }}
                 >
@@ -175,10 +207,7 @@ const ProfileScreen = () => {
                 <Button
                   variant="contained"
                   style={{ flex: 1 }}
-                  onClick={() => {
-                    setLoadingNewAvatar(true);
-                    updateNewAvatarToUser();
-                  }}
+                  onClick={updateNewAvatarToUser}
                 >
                   Upload new avatar
                 </Button>
