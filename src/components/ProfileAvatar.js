@@ -5,7 +5,6 @@ import { ezShadow1_low } from "../utils/shadows";
 const StyledAvatar = styled(Avatar)`
   &.MuiAvatar-root {
     background-color: orange;
-    padding: 10px;
     box-shadow: ${ezShadow1_low};
   }
 `;
