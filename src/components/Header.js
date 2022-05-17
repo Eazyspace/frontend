@@ -7,8 +7,9 @@ import {
   StyledLink,
 } from "../components/Header.styled";
 import userAPI from "../api/user";
+import authAPI from "../api/auth";
 
-function Header({ loggedIn }) {
+function Header() {
   const [userName, setUserName] = useState("Log in");
 
   const getUserInfo = async () => {
@@ -16,9 +17,9 @@ function Header({ loggedIn }) {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        console.log(res.data[0]);
-        let userInfo = res.data[0];
-        // setUserName(userInfo.name);
+        console.log(res.data);
+        let userInfo = res.data;
+        setUserName(userInfo.name);
       }
     } catch (e) {
       console.error(e);
@@ -26,15 +27,15 @@ function Header({ loggedIn }) {
   };
 
   useEffect(() => {
-    if (loggedIn === true) getUserInfo();
-  }, [loggedIn]);
+    if (authAPI.checkLoggedIn()) getUserInfo();
+  }, []);
 
   return (
     <Navbar>
       <StyledLink to="/">
         <HomeLogo variant="h1">EazySpace</HomeLogo>
       </StyledLink>
-      <StyledLink to={loggedIn ? "/user" : "/login"}>
+      <StyledLink to={authAPI.checkLoggedIn() ? "/user" : "/login"}>
         <UserTitleButton>
           <Typography variant="h5">{userName}</Typography>
         </UserTitleButton>

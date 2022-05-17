@@ -1,8 +1,7 @@
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { ezBlue } from "./utils/colors";
+import { ezBlue, ezRed } from "./utils/colors";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RegisterScreen from "./screens/RegisterScreen";
 import BookingScreen from "./screens/BookingScreen";
@@ -81,6 +80,9 @@ var theme = createTheme({
     primary: {
       main: ezBlue,
     },
+    error: {
+      main: ezRed,
+    },
   },
   components: {
     MuiButton: {
@@ -118,12 +120,12 @@ var theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
-          {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<HomeScreen/>} />
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="user" element={<ProfileScreen />} />
           <Route
             exact
             path="booking"

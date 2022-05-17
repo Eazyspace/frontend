@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import authAPI from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import userAPI from "../api/user";
+
 var domain = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -23,18 +24,17 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    console.log(userAPI.getAllUserInfo().data);
+    // console.log(userAPI.getAllUserInfo().data);
     if (!authAPI.checkLoggedIn()) navigate("/login");
   }, []);
 
   return (
     <HomeView>
-      <Header loggedIn={authAPI.checkLoggedIn()} />
+      <Header />
       <Content>
         <Navfloor>
           <TextField label="Search" />
           <div
-            
             style={{ maxHeight: "70vh", overflow: "scroll", marginTop: "2em" }}
           >
             {domain.map((flr) => (

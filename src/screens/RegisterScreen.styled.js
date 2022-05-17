@@ -10,7 +10,7 @@ export const StyledRegisterScreen = styled.div`
   overflow-x: hidden;
   overflow-y: hidden;
 `;
-export const RegisterForm=styled.div`
+export const RegisterForm = styled.div`
   width: 30vw;
   height: 60vh;
   margin-top: 15vh;
@@ -18,24 +18,21 @@ export const RegisterForm=styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-`
-export const RegisterContent=styled.div`
+  border-radius: 12px;
+`;
+export const RegisterContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-export const Stepcircle=styled.div`
+`;
+export const Stepcircle = styled.div`
   border-radius: 50%;
   width: 3vh;
   height: 3vh;
-  background:  ${props => props.contents};
-
-
-`
-export const Stepbar=styled.div`
+  background: ${(props) => props.contents};
+`;
+export const Stepbar = styled.div`
   width: 10vw;
   height: 1vh;
-  background:  ${props => props.contents};
-
-
-`
+  background: ${(props) => props.contents};
+`;

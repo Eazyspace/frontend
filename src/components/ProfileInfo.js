@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ezShadow2_high, ezShadow2_low } from "../utils/shadows";
 import "../utils/hideScrollbar.css";
@@ -7,28 +7,30 @@ import "../utils/Animation.css";
 import { ezGreen, ezYellow, ezRed, ezBlack, ezGrey } from "../utils/colors";
 import Popup from "reactjs-popup";
 import ModalPopup from "./ModalPopup";
-import zIndex from "@mui/material/styles/zIndex";
 import RoomAvatar from "./RoomAvatar";
 import { useScrollLock } from "./scrollLock";
 import requestAPI from "../api/request";
-import userAPI from "../api/user";
+
 const Bigbox = styled.div`
   box-shadow: ${ezShadow2_high};
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
+  padding: 30px 10px;
+  border-radius: 12px;
 `;
 const FlatList = styled.button`
   box-shadow: ${ezShadow2_low};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background: fixed;
   border: none;
   margin: 1rem;
+  border-radius: 12px;
 `;
 export const Boundbox = styled.div`
   border-radius: 10px;
@@ -52,9 +54,9 @@ var returnTime = (timeStart, timeEnd) => {
   var day1 = dt.getDate().toString().padStart(2, "0");
   var hour1 = dt.getHours().toString().padStart(2, "0");
   var minute1 = dt.getMinutes().toString().padStart(2, "0");
-  var year2 = dt2.getFullYear();
-  var month2 = (dt2.getMonth() + 1).toString().padStart(2, "0");
-  var day2 = dt2.getDate().toString().padStart(2, "0");
+  // var year2 = dt2.getFullYear();
+  // var month2 = (dt2.getMonth() + 1).toString().padStart(2, "0");
+  // var day2 = dt2.getDate().toString().padStart(2, "0");
   var hour2 = dt2.getHours().toString().padStart(2, "0");
   var minute2 = dt2.getMinutes().toString().padStart(2, "0");
   return (
@@ -74,9 +76,9 @@ var returnTime = (timeStart, timeEnd) => {
   );
 };
 
-const ProfileInfo = ({ userId }) => {
+const ProfileInfo = ({ userInfo }) => {
   const [showpopUp, setPopUp] = useState(false);
-  const { lockScroll, unlockScroll } = useScrollLock();
+  const { lockScroll } = useScrollLock();
   const [requestList, setRequest] = useState([]);
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
@@ -94,11 +96,15 @@ const ProfileInfo = ({ userId }) => {
   // useCallBack
   useEffect(() => {
     fetchRequest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const fetchRequest = async () => {
     setLoading(true);
     try {
-      const response = await requestAPI.getRequestList({ userId: userId });
+      const response = await requestAPI.getRequestList({
+        userId: userInfo.userId,
+      });
       if (response.status === "OK") setRequest(response.data);
       // snackbar
       else console.error(response.message);
@@ -174,7 +180,7 @@ const ProfileInfo = ({ userId }) => {
         overlayStyle={{ background: "rgba(0,0,0,0.1)", zIndex: 1100 }}
         className="popup-content"
       >
-        <ModalPopup requestData={selectedRequest} />
+        <ModalPopup requestData={selectedRequest} userInfo={userInfo} />
       </Popup>
     </Bigbox>
   );

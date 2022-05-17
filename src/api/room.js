@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const baseURL = "https://eazyspace-website.herokuapp.com";
+
 class RoomClient {
   async getListRoom({
     roomId,
@@ -18,7 +20,7 @@ class RoomClient {
         roomWidth,
         capacity,
       });
-      let response = await axios.get(`/room`, { params: { q } });
+      let response = await axios.get(`${baseURL}/room`, { params: { q } });
       if (response.status === 200) {
         return response.data;
       } else return response.message;
