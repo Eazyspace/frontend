@@ -62,6 +62,10 @@ function RequestCard({
   request: { requestId, roomId, userId, eventName, startTime, endTime },
   onClickCard,
 }) {
+  let remainingDays = Math.round(
+    Math.abs((new Date() - new Date(startTime)) / (24 * 60 * 60 * 1000))
+  );
+
   return (
     <StyledRequestCard
       onClick={() => {
@@ -72,14 +76,9 @@ function RequestCard({
       <Grid container rowSpacing={1} columnSpacing={2}>
         <Grid item xs="auto">
           <DeadlineChip
-            label={
-              Math.round(
-                Math.abs(
-                  (new Date() - new Date(startTime)) / (24 * 60 * 60 * 1000)
-                )
-              ).toString() + " days"
-            }
+            label={`${remainingDays} days`}
             size="small"
+            days={remainingDays}
           />
         </Grid>
         <Grid
@@ -94,7 +93,10 @@ function RequestCard({
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h4" noWrap sx={{ textAlign: "left" }}>
-            {!eventName ? "NẺD VS WJBU: DAWN OF THE LAME" : eventName}
+            {/* 
+            // ? Event name here ? 
+            */}
+            {!eventName ? "(No event name)" : eventName}
           </Typography>
         </Grid>
         <Grid
@@ -102,9 +104,14 @@ function RequestCard({
           xs="auto"
           sx={{ display: "flex", gap: 2, alignItems: "center" }}
         >
-          <ProfileAvatar sx={{ width: 20, height: 20 }}>H</ProfileAvatar>
+          <ProfileAvatar sx={{ width: 20, height: 20, padding: 1 }}>
+            U{userId}
+          </ProfileAvatar>
           <Typography variant="p" sx={{ margin: "auto 0px" }}>
-            Vu Duc Huy
+            {/* 
+            // ? User name here ? 
+            */}
+            User ID {userId}
           </Typography>
         </Grid>
         <Grid item xs="auto">
@@ -120,7 +127,10 @@ function RequestCard({
             variant="p"
             sx={{ margin: "auto 0px", fontWeight: "bold" }}
           >
-            Council of Wibus
+            {/* 
+            // ? Organization name here ? 
+            */}
+            (No organization name)
           </Typography>
         </Grid>
       </Grid>
@@ -138,7 +148,7 @@ function MainContent({
 }) {
   return (
     <StyledMainContent openedDrawer={openedDrawer}>
-      <Typography variant="h2" color="primary">
+      <Typography variant="h2" sx={{ color: ezBlack }}>
         Room requests
       </Typography>
       <Grid container spacing={2}>
@@ -173,13 +183,13 @@ function MainContent({
           </Typography>
         </Box>
       ) : !loadingRequestList ? (
-        requestList.map((req) => (
-          <Grid container item spacing={2}>
-            <Grid item key={req.requestId}>
-              <RequestCard request={req} onClickCard={onShowRequestDetail} />
+        <Grid container item spacing={2}>
+          {requestList.map((ele, i) => (
+            <Grid item key={i} sx={{ width: "100%" }}>
+              <RequestCard request={ele} onClickCard={onShowRequestDetail} />
             </Grid>
-          </Grid>
-        ))
+          ))}
+        </Grid>
       ) : (
         <Box
           sx={{
@@ -234,6 +244,7 @@ function AdminScreen() {
     await loadRequestList(newFloorId, status);
 
     setLoadingRequestList(false);
+    setStatus(1);
   };
   // Filter request list by status
   const changeStatus = async (newStatus) => {
@@ -258,19 +269,20 @@ function AdminScreen() {
   const handleResponseNoteChange = (e) => {
     setResponseNote(e.target.value);
   };
-  const handleResponseSubmit = (e) => {
+  const handleResponseSubmit = async (e) => {
     if (e.target.name === "approve") {
-      requestAPI.approveRequest({
+      let res = await requestAPI.approveRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
     } else if (e.target.name === "decline") {
-      requestAPI.declineRequest({
+      let res = await requestAPI.declineRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
     }
     setOpenRequestDetail(false);
+    loadRequestList();
   };
 
   // Fetch data from API
@@ -303,9 +315,10 @@ function AdminScreen() {
 
       if (response) {
         if (response.status === "OK") {
-          console.log("Request list got from API: ");
+          console.group("Request list got from API: ");
           console.table(response.data);
           setRequestList(response.data);
+          console.groupEnd();
         } else {
           setRequestList(null);
           console.error(response.message);
@@ -453,13 +466,16 @@ function AdminScreen() {
         <StyledDialog
           open={openRequestDetail}
           onBackdropClick={() => {
+            setResponseNote("");
             setOpenRequestDetail(false);
           }}
           scroll="body"
         >
           <DialogContent>
             <UserAndRoom>
-              <ProfileAvatar>H</ProfileAvatar>
+              <ProfileAvatar sx={{ padding: "1em" }}>
+                U{currentRequest.userId}
+              </ProfileAvatar>
               <MoreHorizRounded sx={{ color: ezGrey }} />
               <RoomAvatar roomId={currentRequest.roomId} />
             </UserAndRoom>
@@ -532,8 +548,11 @@ function AdminScreen() {
                     Event name
                   </Typography>
                   <Typography variant="body1" color={ezBlack} noWrap>
+                    {/* 
+                    // ? Event name here ? 
+                    */}
                     {!currentRequest.eventName
-                      ? "NẺD VS WJBU: DAWN OF THE LAME"
+                      ? "(unknown)"
                       : currentRequest.eventName}
                   </Typography>
                 </RowLine>
@@ -565,7 +584,12 @@ function AdminScreen() {
                     Number of attendants
                   </Typography>
                   <Typography variant="body1" color={ezBlack}>
-                    {currentRequest.numOfAttendants}
+                    {/* 
+                    // ? numOfAttendants here ? 
+                    */}
+                    {!currentRequest.numOfAttendants
+                      ? "(unknown)"
+                      : currentRequest.numOfAttendants}
                   </Typography>
                 </RowLine>{" "}
               </Grid>
@@ -578,7 +602,9 @@ function AdminScreen() {
                     Description
                   </Typography>
                   <Typography variant="body1" color={ezBlack}>
-                    {currentRequest.description}
+                    {!currentRequest.description
+                      ? "(no description)"
+                      : currentRequest.description}
                   </Typography>
                 </DescriptionField>
               </Grid>
