@@ -9,7 +9,7 @@ import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
 import AdminScreen from "./screens/admin/AdminScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-
+import "./utils/hideScrollbar.css";
 var theme = createTheme({
   typography: {
     fontFamily: [
@@ -123,7 +123,7 @@ function App() {
           <Route path="login" element={<LoginScreen />} />
           <Route path="register" element={<RegisterScreen />} />
           {/* <Route path="/" element={<Header />}> */}
-          <Route path="/" element={<RegisterScreen />} />
+          <Route path="/" element={<HomeScreen/>} />
           <Route
             exact
             path="booking"

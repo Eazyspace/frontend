@@ -12,7 +12,7 @@ const Inf = ({ RoomInfo: roomInfo }) => {
 
   return (
     <InfoForm>
-      <Typography variant="h2" flex={1}>
+      <Typography variant="h2" style={{alignSelf:'center',marginBottom:'2rem'}}>
         {"Room " + (roomInfo?.roomId || "")}
       </Typography>
       <Rowline>
@@ -29,16 +29,20 @@ const Inf = ({ RoomInfo: roomInfo }) => {
         <Typography variant="h5">{"Capacity:"}</Typography>
         <Typography variant="h5">{roomInfo?.maxCapacity}</Typography>
       </Rowline>
-      <Typography variant="h5">{"Description:"}</Typography>
-      <Typography variant="body1" width={410}>
-        {roomInfo.description}
-      </Typography>
+      <div style={{width:'80%',alignSelf:'center',marginBottom:'2rem'}}>
+        <Typography variant="h5">{"Description:"}</Typography>
+      </div>
+      <div style={{width:'80%',alignSelf:'center'}}>
+        <Typography variant="body1" width={410}>
+          {roomInfo.description}
+        </Typography>
+      </div>
       <ButtonChoose
-        style={{ position: "fixed", bottom: 0 }}
+        style={{ position: "fixed", bottom: 10,width:'15vw',alignSelf:'center' }}
         variant="contained"
         onClick={handleBookThisRoom}
       >
-        Book This Room
+       <Typography>Book this Room</Typography>
       </ButtonChoose>
     </InfoForm>
   );
