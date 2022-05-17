@@ -69,7 +69,7 @@ const Room=({FloorNum})=>{
                    
                 </Grid>
            </Grid>
-           <Grid xs={0} sm={0} md={7} height={'100%'} alignItems={'flex-end'} >
+           <Grid xs={0} sm={0} md={7} height={'100%'}  >
              <Inf RoomInfo={RoomInf}/>
            </Grid>
        </Grid>

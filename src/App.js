@@ -8,7 +8,7 @@ import BookingScreen from "./screens/BookingScreen";
 import { ezShadow1_low } from "./utils/shadows";
 import AdminScreen from "./screens/admin/AdminScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-
+import "./utils/hideScrollbar.css";
 var theme = createTheme({
   typography: {
     fontFamily: [
