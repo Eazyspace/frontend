@@ -33,8 +33,8 @@ export const StyledAdminScreen = styled(Box)`
 export const StyledAppBar = styled(AppBar)`
   height: ${appBarHeight}px;
   z-index: 999;
-  background-color: white;
-  color: ${ezBlue};
+  background-color: ${ezBlue};
+  color: white;
 `;
 export const OpeningDrawerButton = styled(IconButton)`
   align-self: flex-start;

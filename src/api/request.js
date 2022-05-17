@@ -29,16 +29,25 @@ class RequestClient {
 
       return response.data;
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
   getRequestList = async ({ floorId, status, userId }) => {
     try {
-      let q = JSON.stringify({ floorId, status, userId });
-      let response = await axios.get(baseURL + "/request", { params: { q } });
+      let q = JSON.stringify({
+        floorId,
+        status,
+        userId,
+      });
+      let response = await axios.get(`${baseURL}/request`, { params: { q } });
 
       if (response.status === 200) return response.data;
-      else return response.message;
+      // ! On Postman, it responses. Here it returns 404
+      else
+        return {
+          status: "[Hard code] NOT_OK",
+          message: "[Hard code] Error code 404",
+        };
     } catch (e) {
       console.error(e);
     }

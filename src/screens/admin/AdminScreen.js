@@ -47,6 +47,16 @@ import {
 } from "./AdminScreen.styled";
 import { ezBlack, ezGrey } from "../../utils/colors";
 import requestAPI from "../../api/request";
+import userAPI from "../../api/user";
+import { useNavigate } from "react-router-dom";
+import { ezShadow1_low } from "../../utils/shadows";
+
+// Enum
+const statusList = {
+  1: "Pending",
+  2: "Approved",
+  3: "Declined",
+};
 
 function RequestCard({
   request: { requestId, roomId, userId, eventName, startTime, endTime },
@@ -84,7 +94,7 @@ function RequestCard({
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h4" noWrap sx={{ textAlign: "left" }}>
-            NẺD VS WJBU: DAWN OF THE LAME
+            {!eventName ? "NẺD VS WJBU: DAWN OF THE LAME" : eventName}
           </Typography>
         </Grid>
         <Grid
@@ -118,7 +128,6 @@ function RequestCard({
   );
 }
 
-const statusList = ["Pending", "Approved", "Declined"];
 function MainContent({
   openedDrawer,
   requestList,
@@ -133,76 +142,119 @@ function MainContent({
         Room requests
       </Typography>
       <Grid container spacing={2}>
-        {statusList.map((ele, i) => (
-          <Grid item key={i + 1}>
+        {Object.entries(statusList).map(([key, value]) => (
+          <Grid item key={parseInt(key)}>
             <StatusChip
-              label={ele}
-              variant={i + 1 === status ? "filled" : "outlined"}
+              label={value}
+              // eslint-disable-next-line eqeqeq
+              variant={key == status ? "filled" : "outlined"}
               color="primary"
               clickable
               onClick={() => {
-                console.log("Approved filter");
-                onChangeStatus(i + 1);
+                // eslint-disable-next-line eqeqeq
+                if (key != status) onChangeStatus(key);
               }}
             />
           </Grid>
         ))}
       </Grid>
-      <Grid container item spacing={2}>
-        {!loadingRequestList ? (
-          requestList.map((req) => (
+      {!requestList ? (
+        <Box
+          sx={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5" sx={{ color: ezGrey }}>
+            No requests
+          </Typography>
+        </Box>
+      ) : !loadingRequestList ? (
+        requestList.map((req) => (
+          <Grid container item spacing={2}>
             <Grid item key={req.requestId}>
               <RequestCard request={req} onClickCard={onShowRequestDetail} />
             </Grid>
-          ))
-        ) : (
-          <Grid item justifySelf="center" alignSelf="center">
-            <CircularProgress />
           </Grid>
-        )}
-      </Grid>
+        ))
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </StyledMainContent>
   );
 }
 
 function AdminScreen() {
+  /** LOCAL STATES */
   const [openedDrawer, setOpenedDrawer] = useState(true);
-  const [floorList, setFloorList] = useState([]);
+  const [openRequestDetail, setOpenRequestDetail] = useState(false);
   const [currentFloorId, setCurrentFloorId] = useState(1);
+  const [status, setStatus] = useState(1);
+  // Loaders' states
   const [loading, setLoading] = useState(true);
   const [loadingRequestList, setLoadingRequestList] = useState(false);
+  // Data-related states
+  const [adminInfo, setAdminInfo] = useState(null);
   const [requestList, setRequestList] = useState([]);
-  const [status, setStatus] = useState(1);
-  const [openRequestDetail, setOpenRequestDetail] = useState(false);
+  const [floorList, setFloorList] = useState([]);
   const [currentRequest, setCurrentRequest] = useState(null);
+  // Controlled component
   const [responseNote, setResponseNote] = useState("");
+  // Other hooks
+  const navigate = useNavigate();
 
+  /** EVENT HANDLERS */
+  // Drawer openers
   const openingDrawer = () => {
     setOpenedDrawer(true);
   };
   const closingDrawer = () => {
     setOpenedDrawer(false);
   };
-  const changeFloor = (floorId) => {
+
+  // Filter request list by Floor
+  const changeFloor = async (newFloorId) => {
     setLoadingRequestList(true);
-    console.log(`Set floor ID to ${floorId}`);
-    setCurrentFloorId(floorId);
-    getRequestList(floorId, status);
+
+    console.log(`Set floor ID to ${newFloorId}`);
+    setCurrentFloorId(newFloorId);
+    await loadRequestList(newFloorId, status);
+
     setLoadingRequestList(false);
   };
-  const changeStatus = (newStatus) => {
-    // setLoadingRequestList(true);
+  // Filter request list by status
+  const changeStatus = async (newStatus) => {
+    setLoadingRequestList(true);
+
     console.log(`Set status to ${newStatus}`);
     setStatus(newStatus);
-    getRequestList(currentFloorId, newStatus);
-    // setLoadingRequestList(false);
+    await loadRequestList(currentFloorId, newStatus);
+
+    setLoadingRequestList(false);
   };
+
+  // Show popup dialog for a request's detail
   const handleOnShowRequestDetail = (requestId) => {
     console.log("Clicked on a request card!");
     console.table(requestList.find((ele) => ele.requestId === requestId));
     setCurrentRequest(requestList.find((ele) => ele.requestId === requestId));
     setOpenRequestDetail(true);
   };
+
+  // Controlling input-component
   const handleResponseNoteChange = (e) => {
     setResponseNote(e.target.value);
   };
@@ -220,8 +272,19 @@ function AdminScreen() {
     }
     setOpenRequestDetail(false);
   };
-  // API calls
-  const getFloorList = async () => {
+
+  // Fetch data from API
+  const loadAdminInfo = async () => {
+    try {
+      let response = await userAPI.getAllUserInfo();
+
+      if (response.status === "OK") setAdminInfo(response.data);
+      else console.warn(response.message);
+    } catch (er) {
+      console.error(er);
+    }
+  };
+  const loadFloorList = async () => {
     try {
       const response = await floorAPI.getAllFloors();
 
@@ -233,30 +296,43 @@ function AdminScreen() {
       console.error(error);
     }
   };
-  const getRequestList = async (floorId, status) => {
+  const loadRequestList = async (floorId, status) => {
     try {
-      let response = await requestAPI.getRequestList(floorId, status);
+      console.log(`Get request list: Floor ${floorId} + Status ${status}`);
+      let response = await requestAPI.getRequestList({ floorId, status });
 
-      if (response.status === "OK") {
-        console.log("Request list got from API: ");
-        console.table(response.data);
-        setRequestList(response.data);
-      } else console.error(response.message);
+      if (response) {
+        if (response.status === "OK") {
+          console.log("Request list got from API: ");
+          console.table(response.data);
+          setRequestList(response.data);
+        } else {
+          setRequestList(null);
+          console.error(response.message);
+        }
+      } else {
+        setRequestList(null);
+        console.log("No response");
+      }
     } catch (error) {
-      console.error(error.message);
+      setRequestList(null);
+      console.error(error);
     }
   };
 
+  // Loading all necessary data
   useEffect(() => {
     setLoading(true);
     setLoadingRequestList(true);
-    getFloorList();
-    getRequestList(currentFloorId, status);
+    loadAdminInfo();
+    loadFloorList();
+    loadRequestList(currentFloorId, status);
     setLoading(false);
     setLoadingRequestList(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Loader
   if (loading)
     return (
       <Box
@@ -280,10 +356,21 @@ function AdminScreen() {
             component="div"
             sx={{ flexGrow: 1 }}
             style={{ padding: "15px 0px" }}
+            onClick={() => {
+              navigate("/admin");
+            }}
           >
-            EazySpace
+            EazySpace Admin
           </Typography>
-          <Button sx={{ backgroundColor: "transparent" }}>Login</Button>
+          <Button
+            sx={{
+              backgroundColor: "transparent",
+              color: "white",
+              padding: "10px 15px",
+            }}
+          >
+            {adminInfo !== null ? adminInfo.name : "Log in"}
+          </Button>
         </Toolbar>
       </StyledAppBar>
       {floorList.length > 0 ? (
@@ -329,7 +416,10 @@ function AdminScreen() {
             aria-label="open-drawer"
             onClick={openingDrawer}
             open={openedDrawer}
-            sx={{ ...(openedDrawer && { display: "none" }) }}
+            sx={{
+              ...(openedDrawer && { display: "none" }),
+              boxShadow: ezShadow1_low,
+            }}
           >
             <ArrowForwardIosRounded />
           </OpeningDrawerButton>
@@ -442,8 +532,9 @@ function AdminScreen() {
                     Event name
                   </Typography>
                   <Typography variant="body1" color={ezBlack} noWrap>
-                    {/* {currentRequest.eventName} */}
-                    NẺD VS WJBU: DAWN OF THE LAME
+                    {!currentRequest.eventName
+                      ? "NẺD VS WJBU: DAWN OF THE LAME"
+                      : currentRequest.eventName}
                   </Typography>
                 </RowLine>
               </Grid>
@@ -459,7 +550,7 @@ function AdminScreen() {
                           Organization
                         </Typography>
                         <Typography variant="body1" color={ezBlack}>
-                          {currentRequest.eventName}
+                          {currentRequest.organization}
                         </Typography>
                       </RowLine>
                     </Grid>
