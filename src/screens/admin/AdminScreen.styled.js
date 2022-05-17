@@ -17,6 +17,7 @@ import {
   ezGreyLight,
   ezRed,
   ezRed_blurred,
+  ezYellow,
 } from "../../utils/colors";
 import "../../utils/shadows";
 import { ezShadow1_low } from "../../utils/shadows";
@@ -33,8 +34,8 @@ export const StyledAdminScreen = styled(Box)`
 export const StyledAppBar = styled(AppBar)`
   height: ${appBarHeight}px;
   z-index: 999;
-  background-color: white;
-  color: ${ezBlue};
+  background-color: ${ezBlue};
+  color: white;
 `;
 export const OpeningDrawerButton = styled(IconButton)`
   align-self: flex-start;
@@ -105,6 +106,7 @@ export const StyledMainContent = styled.main`
 /** REQUEST CARD */
 export const StyledRequestCard = styled(Button)`
   &.MuiButton-root {
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -118,7 +120,11 @@ export const StyledRequestCard = styled(Button)`
 `;
 export const DeadlineChip = styled(Chip)`
   &.MuiChip-root {
-    background-color: orange;
+    background-color: ${(props) => {
+      if (props.remainingDays < 3) return ezRed;
+      else if (props.remainingDays < 7) return ezYellow;
+      else return ezGreen;
+    }};
     color: white;
     padding: 15px 5px;
     font-weight: 500;

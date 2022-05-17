@@ -110,7 +110,7 @@ const LoginScreen = () => {
         console.log(res.data);
         let userInfo = res.data;
 
-        if (userInfo.role === 3) navigate("admin");
+        if (userInfo.role === 3) navigate("/admin");
         else navigate("/");
       }
     } else {
