@@ -10,18 +10,23 @@ class RequestClient {
     startTime,
     endTime,
     description,
+    eventName,
     ...params
   }) => {
-    console.log({
+    console.group("API: sendBookingRequest(), /room/book");
+    console.table({
       userId,
+      eventName,
       roomId,
       startTime,
       endTime,
       description,
     });
+    console.groupEnd();
     try {
       let response = await axios.post(baseURL + "/room/book", {
         userId,
+        eventName,
         roomId,
         startTime,
         endTime,
@@ -30,7 +35,7 @@ class RequestClient {
 
       return response.data;
     } catch (error) {
-      alert(error);
+      alert(error.message);
     }
   };
   getRequestList = async ({ floorId, status, userId }) => {

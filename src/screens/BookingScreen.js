@@ -130,7 +130,7 @@ const BookingForm = (props) => {
 };
 
 const SummaryAndConfirmForm = (props) => {
-  const { roomId, userInput, switchStep, onSubmit } = props;
+  const { userInfo, roomId, userInput, switchStep, onSubmit } = props;
   const {
     startTime,
     endTime,
@@ -143,9 +143,22 @@ const SummaryAndConfirmForm = (props) => {
         We made it! Here is a small recap.
       </Typography>
       <UserAndRoom>
-        <ProfileAvatar name="LI" />
+        <ProfileAvatar
+          name={userInfo.name}
+          src={userInfo.avatar}
+          sx={{
+            width: "4rem",
+            height: "4rem",
+          }}
+        />
         <MoreHorizIcon sx={{ color: ezGrey }} />
-        <RoomAvatar roomId={roomId} />
+        <RoomAvatar
+          roomId={roomId}
+          sx={{
+            width: "2rem",
+            height: "2rem",
+          }}
+        />
       </UserAndRoom>
       <RowLine>
         <Typography variant="body1" color={ezGrey}>
@@ -226,26 +239,39 @@ const SummaryAndConfirmForm = (props) => {
   );
 };
 
-const SuccessForm = (props) => {
+const SuccessForm = () => {
   return (
     <StyledForm>
       <SuccessTitle>
-        <h3>Congratulations</h3>
-        <h4>
+        <Typography variant="h3" sx={{ width: "100%", textAlign: "center" }}>
+          Congratulations
+        </Typography>
+        <Typography variant="body1">
           You have successfully sent a booking request! <br />
           Please give us some time to process.
-        </h4>
+        </Typography>
       </SuccessTitle>
       <AccessAlarmRoundedIcon
-        sx={{ fontSize: "100px" }}
+        sx={{ fontSize: "10rem" }}
         style={{ alignSelf: "center", color: "#FF8F79" }}
       />
-      <StyledLink to="/user">
-        <StyledButton variant="contained">View the request status</StyledButton>
-      </StyledLink>
-      <StyledLink to="/">
-        <StyledButton variant="text">Back to browsing rooms</StyledButton>
-      </StyledLink>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 15,
+        }}
+      >
+        <StyledLink to="/user">
+          <StyledButton variant="contained">
+            View the request status
+          </StyledButton>
+        </StyledLink>
+        <StyledLink to="/">
+          <StyledButton variant="text">Back to browsing rooms</StyledButton>
+        </StyledLink>
+      </div>
     </StyledForm>
   );
 };
@@ -311,6 +337,7 @@ const BookingScreen = (props) => {
   };
 
   const sendRequest = async () => {
+    console.group("sendRequest()");
     try {
       const response = await requestAPI.sendBookingRequest({
         userId: userInfo.userId,
@@ -319,27 +346,30 @@ const BookingScreen = (props) => {
         ...userInputForm.info,
       });
 
-      if (response.status === "OK") {
-        alert("SUCCESSFULLY SEND BOOKING REQUEST");
+      if (response && response.status === "OK") {
+        console.log("SUCCESSFULLY SEND BOOKING REQUEST");
+        console.groupEnd();
         navigate("/booking/success", { state: { roomId: roomId } });
       } else {
-        console.error(response.message);
+        console.error(response);
+        console.groupEnd();
       }
     } catch (error) {
-      alert("ERROR: " + error);
+      console.error(error);
+      console.groupEnd();
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(userInputForm);
+    console.log(userInputForm);
     userInputForm.startTime = new Date(userInputForm.startTime).toISOString();
     userInputForm.endTime = new Date(userInputForm.endTime).toISOString();
 
     setSubmitted(true);
 
     sendRequest();
-    setUserInputForm(userInputForm);
+    // setUserInputForm(userInputForm);
   };
 
   const getUserInfo = async () => {
@@ -347,8 +377,7 @@ const BookingScreen = (props) => {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        // console.log(res.data[0]);
-        let userInfo = res.data[0];
+        let userInfo = res.data;
         setUserInfo(userInfo);
       }
     } catch (e) {

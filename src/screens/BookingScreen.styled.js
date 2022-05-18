@@ -70,6 +70,7 @@ export const AdditionalInformation = styled.div`
 export const SuccessTitle = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 20px;
 `;
 
 export const RowLine = styled.div`
