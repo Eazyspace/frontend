@@ -9,6 +9,8 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Box,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
@@ -24,6 +26,7 @@ import {
   UserAndRoom,
   ContentSection,
   DescriptionField,
+  DateTimePickersGroup,
 } from "./BookingScreen.styled";
 import AccessAlarmRoundedIcon from "@mui/icons-material/AccessAlarmRounded";
 import requestAPI from "../api/request";
@@ -33,6 +36,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import RoomAvatar from "../components/RoomAvatar";
 import { useLocation, useNavigate } from "react-router-dom";
 import userAPI from "../api/user";
+import Header from "../components/Header";
 
 const BookingForm = (props) => {
   const { step, switchStep, onSubmit, onChange, userInput } = props;
@@ -52,22 +56,22 @@ const BookingForm = (props) => {
           : ""}
       </FormTitle>
       {step === 1 ? (
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <input
+        <DateTimePickersGroup>
+          <TextField
             type="datetime-local"
             name="startTime"
             value={startTime}
             required
             onChange={onChange}
           />
-          <input
+          <TextField
             type="datetime-local"
             name="endTime"
             value={endTime}
             required
             onChange={onChange}
           />
-        </div>
+        </DateTimePickersGroup>
       ) : step === 2 ? (
         <AdditionalInformation>
           <TextField
@@ -130,7 +134,7 @@ const BookingForm = (props) => {
 };
 
 const SummaryAndConfirmForm = (props) => {
-  const { roomId, userInput, switchStep, onSubmit } = props;
+  const { userInfo, roomId, userInput, switchStep, onSubmit } = props;
   const {
     startTime,
     endTime,
@@ -143,9 +147,22 @@ const SummaryAndConfirmForm = (props) => {
         We made it! Here is a small recap.
       </Typography>
       <UserAndRoom>
-        <ProfileAvatar name="LI" />
+        <ProfileAvatar
+          name={userInfo.name}
+          src={userInfo.avatar}
+          sx={{
+            width: "4rem",
+            height: "4rem",
+          }}
+        />
         <MoreHorizIcon sx={{ color: ezGrey }} />
-        <RoomAvatar roomId={roomId} />
+        <RoomAvatar
+          roomId={roomId}
+          sx={{
+            width: "2rem",
+            height: "2rem",
+          }}
+        />
       </UserAndRoom>
       <RowLine>
         <Typography variant="body1" color={ezGrey}>
@@ -226,26 +243,39 @@ const SummaryAndConfirmForm = (props) => {
   );
 };
 
-const SuccessForm = (props) => {
+const SuccessForm = () => {
   return (
     <StyledForm>
       <SuccessTitle>
-        <h3>Congratulations</h3>
-        <h4>
+        <Typography variant="h3" sx={{ width: "100%", textAlign: "center" }}>
+          Congratulations
+        </Typography>
+        <Typography variant="body1">
           You have successfully sent a booking request! <br />
           Please give us some time to process.
-        </h4>
+        </Typography>
       </SuccessTitle>
       <AccessAlarmRoundedIcon
-        sx={{ fontSize: "100px" }}
+        sx={{ fontSize: "10rem" }}
         style={{ alignSelf: "center", color: "#FF8F79" }}
       />
-      <StyledLink to="/user">
-        <StyledButton variant="contained">View the request status</StyledButton>
-      </StyledLink>
-      <StyledLink to="/">
-        <StyledButton variant="text">Back to browsing rooms</StyledButton>
-      </StyledLink>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 15,
+        }}
+      >
+        <StyledLink to="/user">
+          <StyledButton variant="contained">
+            View the request status
+          </StyledButton>
+        </StyledLink>
+        <StyledLink to="/">
+          <StyledButton variant="text">Back to browsing rooms</StyledButton>
+        </StyledLink>
+      </div>
     </StyledForm>
   );
 };
@@ -266,8 +296,9 @@ const BookingScreen = (props) => {
     },
   });
   const [userInfo, setUserInfo] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  /** EVENT HANDLERS */
   const handleSwitchStep = (e) => {
     let value = e.target.value;
     console.log(userInputForm);
@@ -276,17 +307,23 @@ const BookingScreen = (props) => {
         case 1: {
           let { startTime, endTime } = userInputForm;
 
-          if (startTime !== "" && endTime !== "") setStep(step + 1);
-          else alert("ERROR: No datetime");
+          if (!startTime || !endTime)
+            alert("Please choose a start time and an end time");
+          else if (new Date(startTime).getTime() >= new Date(endTime).getTime())
+            alert("The start time cannot be later than the end time");
+          else setStep(step + 1);
 
           break;
         }
         case 2: {
-          let { eventName, numOfAttendants, description } = userInputForm;
+          let { eventName, numOfAttendants, description } = userInputForm.info;
 
-          if (eventName !== "" && numOfAttendants !== "" && description !== "")
-            setStep(step + 1);
-          else alert("ERROR: No info");
+          if (!eventName) alert("Please enter event name");
+          else if (!numOfAttendants)
+            alert("Please enter the number of attendants");
+          else if (!description)
+            alert("Please explain your event in the description");
+          else setStep(step + 1);
 
           break;
         }
@@ -301,45 +338,54 @@ const BookingScreen = (props) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
-    if (name === "startTime" || name === "endTime")
-      setUserInputForm({ ...userInputForm, [name]: value });
+    if (name === "startTime")
+      setUserInputForm({ ...userInputForm, startTime: value, endTime: value });
+    else if (name === "endTime")
+      setUserInputForm({ ...userInputForm, endTime: value });
     else
       setUserInputForm({
         ...userInputForm,
         info: { ...userInputForm.info, [name]: value },
       });
   };
+  const handleSubmit = async (e) => {
+    setLoading(true);
 
+    console.log(userInputForm);
+    if (await sendRequest())
+      navigate("/booking/success", { state: { roomId: roomId } });
+    else alert("Cannot submit form");
+
+    setLoading(false);
+  };
+
+  /** UTILS */
   const sendRequest = async () => {
+    console.group("sendRequest()");
     try {
       const response = await requestAPI.sendBookingRequest({
         userId: userInfo.userId,
         roomId: roomId,
         ...userInputForm,
         ...userInputForm.info,
+        startTime: new Date(userInputForm.startTime).toISOString(),
+        endTime: new Date(userInputForm.endTime).toISOString(),
       });
 
-      if (response.status === "OK") {
-        alert("SUCCESSFULLY SEND BOOKING REQUEST");
-        navigate("/booking/success", { state: { roomId: roomId } });
+      if (response && response.status === "OK") {
+        console.log("SUCCESSFULLY SEND BOOKING REQUEST");
+        console.groupEnd();
+        return true;
       } else {
-        console.error(response.message);
+        console.error(response);
+        console.groupEnd();
+        return false;
       }
     } catch (error) {
-      alert("ERROR: " + error);
+      console.error(error);
+      console.groupEnd();
+      return false;
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // console.log(userInputForm);
-    userInputForm.startTime = new Date(userInputForm.startTime).toISOString();
-    userInputForm.endTime = new Date(userInputForm.endTime).toISOString();
-
-    setSubmitted(true);
-
-    sendRequest();
-    setUserInputForm(userInputForm);
   };
 
   const getUserInfo = async () => {
@@ -347,8 +393,7 @@ const BookingScreen = (props) => {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        // console.log(res.data[0]);
-        let userInfo = res.data[0];
+        let userInfo = res.data;
         setUserInfo(userInfo);
       }
     } catch (e) {
@@ -357,31 +402,37 @@ const BookingScreen = (props) => {
   };
 
   useEffect(() => {
-    if (submitted) console.log("SEND REQUEST");
-  }, [submitted]);
-
-  useEffect(() => {
-    // console.log("ROOM ID: " + roomId);
+    console.log("BOOKING ROOM " + roomId);
     getUserInfo();
   }, []);
 
+  if (loading)
+    return (
+      <StyledBookingScreen>
+        <div style={{ width: "100%" }}>
+          <Header />
+        </div>
+        <ContentSection>
+          <Box
+            sx={{
+              display: "flex",
+              height: "100%",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        </ContentSection>
+      </StyledBookingScreen>
+    );
+
   return (
     <StyledBookingScreen>
-      <AppBar>
-        <Toolbar>
-          <Typography
-            variant="h3"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            style={{ padding: "15px 0px" }}
-          >
-            EazySpace
-          </Typography>
-          <Button sx={{ backgroundColor: "transparent", color: "white" }}>
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <div style={{ width: "100%" }}>
+        <Header />
+      </div>
       <ContentSection>
         {props.success ? (
           <SuccessForm />
