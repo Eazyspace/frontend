@@ -18,7 +18,7 @@ export const StyledBookingScreen = styled.div`
 export const ContentSection = styled.div`
   width: 100vw;
   height: 100vh;
-  margin-top: 4.4rem;
+  margin-top: 0;
   overflow-y: auto;
   display: flex;
   justify-content: center;
@@ -28,7 +28,7 @@ export const ContentSection = styled.div`
 export const StyledForm = styled.form`
   min-width: 333px;
   max-width: 600px;
-  margin-top: ${(props) => (props.variant === "summary" ? `10em` : "0em")};
+  /* margin-top: ${(props) => (props.variant === "summary" ? `10em` : "0em")}; */
   padding: 20px;
   border-radius: 12px;
   display: flex;
@@ -42,6 +42,15 @@ export const FormTitle = styled.h3`
   font-family: "Montserrat";
   text-align: center;
   margin: 0;
+`;
+
+export const DateTimePickersGroup = styled.div`
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 export const ButtonGroup = styled.div`
