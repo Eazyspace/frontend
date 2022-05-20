@@ -1,39 +1,9 @@
-import React, { useState, useEffect } from "react";
 import { Drawer, Grid, Typography } from "@mui/material";
-import styled from "styled-components";
-import Inf from "../Inf";
+import React, { useEffect, useState } from "react";
 import roomAPI from "../../api/room";
-import BackdropLoading from "../utils/backdrop-loading";
-import { ezBlue } from "../../utils/colors";
-const ButtonBox = styled.button`
-  height: 80px;
-  width: 200px;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background: #fff;
-  box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
-  &:hover {
-    color: #fff;
-    background: #1f75ff;
-  }
-`;
-
-const ActiveButtonBox = styled(ButtonBox)`
-  color: #fff;
-  background: ${ezBlue};
-`;
-const Info = styled.div`
-  flex: ${(props) => (props.variant == "info" ? 2 : 3)};
-  align-items: center;
-`;
-//   height: 800px;
-
-const RoomContent = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
+import BackdropLoading from "../BackdropLoading";
+import { Inf } from "../Inf/Inf";
+import { ActiveButtonBox, ButtonBox, Info, RoomContent } from "./Room.styled";
 
 const Room = ({ floorNum }) => {
   const [roomList, setRoomList] = useState([]);

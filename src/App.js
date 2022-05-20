@@ -1,14 +1,15 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import { ezBlue, ezRed } from "./utils/colors";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import RegisterScreen from "./screens/RegisterScreen";
-import BookingScreen from "./screens/BookingScreen";
-import { ezShadow1_low } from "./utils/shadows";
-import AdminScreen from "./screens/admin/AdminScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import AdminScreen from "./pages/AdminScreen/AdminScreen";
+import BookingScreen from "./pages/BookingScreen/BookingScreen";
+import HomeScreen from "./pages/HomeScreen/HomeScreen";
+import LoginScreen from "./pages/LoginScreen/LoginScreen";
+import ProfileScreen from "./pages/ProfileScreen/ProfileScreen";
+import RegisterScreen from "./pages/RegisterScreen/RegisterScreen";
+import { ezBlue, ezRed } from "./utils/colors";
 import "./utils/hideScrollbar.css";
+import { ezShadow1_low } from "./utils/shadows";
+
 var theme = createTheme({
   typography: {
     fontFamily: [
