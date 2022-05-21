@@ -48,7 +48,6 @@ import {
   StyledMainContent,
   StyledRequestCard,
   UserAndRoom,
-  VerticalLine,
 } from "./AdminScreen.styled";
 
 // Enum
@@ -96,7 +95,7 @@ function RequestCard({
             {/* 
             // ? Event name here ? 
             */}
-            {!eventName ? "(No event name)" : eventName}
+            {!eventName ? "(No event name)" : `"${eventName}" event`}
           </Typography>
         </Grid>
         <Grid
@@ -114,10 +113,10 @@ function RequestCard({
             User ID {userId}
           </Typography>
         </Grid>
-        <Grid item xs="auto">
+        {/* <Grid item xs="auto">
           <VerticalLine />
-        </Grid>
-        <Grid
+        </Grid> */}
+        {/* <Grid
           item
           xs={7}
           alignSelf="center"
@@ -127,12 +126,9 @@ function RequestCard({
             variant="p"
             sx={{ margin: "auto 0px", fontWeight: "bold" }}
           >
-            {/* 
-            // ? Organization name here ? 
-            */}
             (No organization name)
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </StyledRequestCard>
   );
@@ -561,7 +557,7 @@ function AdminScreen() {
               <Grid item>
                 <Divider />
               </Grid>
-              {currentRequest.hasOwnProperty("organization") &&
+              {/* {currentRequest.hasOwnProperty("organization") &&
                 currentRequest.organization !== "" && (
                   <>
                     <Grid item>
@@ -578,7 +574,7 @@ function AdminScreen() {
                       <Divider />
                     </Grid>
                   </>
-                )}
+                )} */}
               <Grid item>
                 <RowLine>
                   <Typography variant="body1" color={ezGrey}>

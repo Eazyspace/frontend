@@ -153,13 +153,13 @@ const Regist2 = ({
             error={!userValidInput.faculty}
             value={userInputForm.faculty}
           />
-          <TextField
+          {/* <TextField
             label="Club/Organization"
             name="organization"
             onChange={onChange}
             error={!userValidInput.organization}
             value={userInputForm.organization}
-          />
+          /> */}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
@@ -321,7 +321,7 @@ function RegisterScreen() {
     academicId: "",
     email: "",
     faculty: "",
-    organization: "",
+    //// organization: "",
     // Regist3
     username: "",
     password: "",
@@ -336,7 +336,7 @@ function RegisterScreen() {
     academicId: true,
     email: true,
     faculty: true,
-    organization: true,
+    //// organization: true, 
     // Regist3
     username: true,
     password: true,

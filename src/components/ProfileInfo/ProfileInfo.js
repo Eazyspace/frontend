@@ -44,7 +44,7 @@ var returnTime = (timeStart, timeEnd) => {
 const ProfileInfo = ({ userInfo }) => {
   const [showpopUp, setPopUp] = useState(false);
   const { lockScroll } = useScrollLock();
-  const [requestList, setRequest] = useState([]);
+  const [requestList, setRequestList] = useState([]);
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -67,7 +67,7 @@ const ProfileInfo = ({ userInfo }) => {
       const response = await requestAPI.getRequestList({
         userId: userInfo.userId,
       });
-      if (response.status === "OK") setRequest(response.data);
+      if (response.status === "OK") setRequestList(response.data);
       // snackbar
       else console.error(response.message);
     } catch (error) {
