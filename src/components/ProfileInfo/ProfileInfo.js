@@ -67,6 +67,7 @@ const ProfileInfo = ({ userInfo }) => {
       const response = await requestAPI.getRequestList({
         userId: userInfo.userId,
       });
+      console.log(response)
       if (response.status === "OK") setRequestList(response.data);
       // snackbar
       else console.error(response.message);

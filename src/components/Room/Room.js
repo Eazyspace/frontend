@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react";
 import roomAPI from "../../api/room";
 import BackdropLoading from "../BackdropLoading";
 import { Inf } from "../Inf/Inf";
-import { ActiveButtonBox, ButtonBox, Info, RoomContent } from "./Room.styled";
+import { ActiveButtonBox, ButtonBox, Info, RoomContent } from "./room.styled";
 
 const Room = ({ floorNum }) => {
   const [roomList, setRoomList] = useState([]);
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
   const [selectedRoom, setSelectedRoom] = useState(null);
-
   useEffect(() => {
     // init command
   }, []);
   // useCallBack
   useEffect(() => {
+    setRoomList([]);
     fetchRoomList();
   }, [floorNum]);
 
@@ -23,9 +23,12 @@ const Room = ({ floorNum }) => {
     setLoading(true);
     try {
       const response = await roomAPI.getListRoom({ floorId: floorNum });
+      console.log(response);
       if (response.status === "OK") setRoomList(response.data);
       // snackbar
-      else console.error(response.message);
+      else{
+        console.error(response.message);
+      }
     } catch (error) {
       console.error(error.message);
     }

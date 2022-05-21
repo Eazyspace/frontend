@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import authAPI from "../../api/auth";
 import Header from "../../components/Header/Header";
-import { ezBlue, ezGrey } from "../../utils/colors";
+import { ezBlue, ezGrey, ezRed } from "../../utils/colors";
 import {
   RegisterContent,
   RegisterForm,
@@ -27,6 +27,7 @@ const Regist1 = ({
   userInputForm,
   userValidInput,
   nextStep,
+  valid,
 }) => {
   return (
     <motion.div
@@ -78,6 +79,8 @@ const Regist1 = ({
             value={userInputForm.phoneNumber}
             required
           />
+          {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
+            Not enough information</Typography>}
         </div>
         <Button
           variant="contained"
@@ -99,6 +102,7 @@ const Regist2 = ({
   userValidInput,
   nextStep,
   backStep,
+  valid
 }) => {
   return (
     <motion.div
@@ -158,6 +162,8 @@ const Regist2 = ({
             error={!userValidInput.organization}
             value={userInputForm.organization}
           /> */}
+           {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
+            Not enough information</Typography>}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
@@ -188,6 +194,7 @@ const Regist3 = ({
   userValidInput,
   backStep,
   onSubmit,
+  valid
 }) => {
   return (
     <motion.div
@@ -241,6 +248,8 @@ const Regist3 = ({
             error={!userValidInput.passwordConfirm}
             value={userInputForm.passwordConfirm}
           />
+           {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
+            Not enough information or password too short/wrong confirm password</Typography>}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
@@ -257,6 +266,7 @@ const Regist3 = ({
           >
             <Typography>Finish</Typography>
           </Button>
+          
         </div>
       </RegisterForm>
     </motion.div>
@@ -299,6 +309,7 @@ const Regist4 = ({ click, setClick, direct, userInputForm }) => {
 
 function RegisterScreen() {
   const [step, setStep] = useState(0);
+  const [isValid, setValid]= useState(true);
   const [direct, setDirect] = useState(false);
   const [click, setClick] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -335,9 +346,48 @@ function RegisterScreen() {
 
   // console.log(step);
   const nextStep = () => {
-    setDirect(true);
-    setClick(true);
-    setStep(step + 1);
+    const namevalid=userInputForm.name!==""? true: false;
+    const dobvalid=userInputForm.birthday!==""?true:false;
+    const phonevalid=userInputForm.phoneNumber!==""?true:false;
+    const idvalid=userInputForm.academicId!==""?true:false;
+    const emailvalid=userInputForm.email!==""?true:false;
+    const falvalid=userInputForm.faculty!==""?true:false;
+    const usernamevalid=userInputForm.username!==""?true:false;
+    const passwordvalid=userInputForm.password!==""&&userInputForm.password.length>=8?true:false;
+    const passwordconfirmvalid=userInputForm.passwordConfirm!==""
+    &&userInputForm.passwordConfirm===userInputForm.password                         
+    ?true:false;
+
+    switch(step){
+      case 0:
+        if(namevalid&&dobvalid&&phonevalid){
+          setDirect(true);
+          setClick(true);
+          setStep(step + 1);
+          setValid(true);
+        }
+        else setValid(false);
+        break;
+      case 1:
+        if(idvalid&&emailvalid&&falvalid){
+          setDirect(true);
+          setClick(true);
+          setStep(step + 1);
+          setValid(true);
+        }
+        else setValid(false);
+      case 2: 
+        if(usernamevalid&&passwordvalid&&passwordconfirmvalid){
+          setDirect(true);
+          setClick(true);
+          setStep(step + 1);
+          setValid(true);
+        }
+        else setValid(false);
+      default:
+        break;
+
+    }
   };
   const backStep = () => {
     setDirect(false);
@@ -450,6 +500,7 @@ function RegisterScreen() {
               userInputForm={userInputForm}
               userValidInput={userValidInput}
               nextStep={nextStep}
+              valid={isValid}
             />
           ) : step === 1 ? (
             <Regist2
@@ -461,6 +512,7 @@ function RegisterScreen() {
               userValidInput={userValidInput}
               nextStep={nextStep}
               backStep={backStep}
+              valid={isValid}
             />
           ) : step === 2 ? (
             <Regist3
@@ -472,6 +524,7 @@ function RegisterScreen() {
               userValidInput={userValidInput}
               backStep={backStep}
               onSubmit={handleSubmit}
+              valid={isValid}
             />
           ) : step === 3 ? (
             <Regist4

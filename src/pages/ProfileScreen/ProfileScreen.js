@@ -29,7 +29,7 @@ import {
 } from "./ProfileScreen.styled";
 
 const ProfileScreen = () => {
-  const [userInfo, setUserInfo] = useState({ userId: 2 });
+  const [userInfo, setUserInfo] = useState(null);
   const [newUploadedAvatar, setNewUploadedAvatar] = useState("");
   const [openEditAvatarDialog, setOpenEditAvatarDialog] = useState(false);
   const [warnNoAvatarUploaded, setWarnNoAvatarUploaded] = useState(false);
@@ -42,7 +42,7 @@ const ProfileScreen = () => {
       let res = await userAPI.getAllUserInfo();
 
       if (res.status === "OK") {
-        // console.log(res.data);
+        console.log(res.data);
         let userInfo = res.data;
         setUserInfo(userInfo);
       }
@@ -124,8 +124,8 @@ const ProfileScreen = () => {
               }}
             >
               <ProfileAvatar
-                name={userInfo.name}
-                srcSet={userInfo.avatar}
+                name={userInfo?.name}
+                srcSet={userInfo?.avatar}
                 sx={{
                   alignSelf: "center",
                   height: "6em",
@@ -134,7 +134,7 @@ const ProfileScreen = () => {
               />
             </Badge>
             <Typography variant="h6" sx={{ alignSelf: "center" }}>
-              {userInfo.name}
+              {userInfo?.name}
             </Typography>
           </ProfileDialog>
           <Button variant="outlined" color="error" onClick={handleSignOut}>

@@ -6,6 +6,7 @@ export const InfoForm = styled.div`
   margin-top: 7em;
   flex-direction: column;
   justify-content: stretch;
+  width:30vw;
   height: 70%;
 `;
 
@@ -14,7 +15,7 @@ export const Rowline = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
-  margin-bottom: 15vh;
+  margin-bottom: 5vh;
   align-self: center;
 `;
 export const ButtonChoose = styled(Button)`
