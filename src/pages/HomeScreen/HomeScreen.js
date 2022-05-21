@@ -60,7 +60,7 @@ const HomeScreen = () => {
                   onClick={() => handleSetFloor(flr.floorId)}
                 >
                   <Typography variant="h5">
-                    {flr !== 0 ? "Floor " + flr.floorId : "Ground"}
+                    {flr.floorName}
                   </Typography>
                 </FloorBtn>
               </div>
