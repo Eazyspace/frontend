@@ -10,12 +10,12 @@ const Room = ({ floorNum }) => {
   const [loading, setLoading] = useState(true);
   // useState(initialValue)
   const [selectedRoom, setSelectedRoom] = useState(null);
-
   useEffect(() => {
     // init command
   }, []);
   // useCallBack
   useEffect(() => {
+    setRoomList([]);
     fetchRoomList();
   }, [floorNum]);
 
@@ -26,7 +26,9 @@ const Room = ({ floorNum }) => {
       console.log(response);
       if (response.status === "OK") setRoomList(response.data);
       // snackbar
-      else console.error(response.message);
+      else{
+        console.error(response.message);
+      }
     } catch (error) {
       console.error(error.message);
     }

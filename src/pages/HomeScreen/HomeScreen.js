@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authAPI from "../../api/auth";
 import floorAPI from "../../api/floor";
-
+import"../../utils/hideScrollbar.css";
 import Header from "../../components/Header/Header";
 import Room from "../../components/Room/Room";
 import { ezBlue } from "../../utils/colors";
@@ -25,7 +25,6 @@ const HomeScreen = () => {
   };
   const fetchFloor = async () => {
     const response = await floorAPI.getAllFloors();
-    console.log(response.data)
     setFloorData(response.data)
   };
 
@@ -44,12 +43,14 @@ const HomeScreen = () => {
           <TextField label="Search" />
           <div
             style={{ maxHeight: "70vh", overflow: "scroll", marginTop: "2em" }}
+            className="example"
           >
-            {floorData.map((flr) => (
+            {floorData?.map((flr) => (
               <div
                 style={{
                   display: "block",
                 }}
+                key={flr.floorId}
               >
                 <FloorBtn
                   style={{
