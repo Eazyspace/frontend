@@ -4,10 +4,6 @@ import {
   Box,
   CircularProgress,
   Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -40,7 +36,12 @@ const BookingForm = (props) => {
   const {
     startTime,
     endTime,
-    info: { eventName, organization, numOfAttendants, description },
+    info: {
+      eventName,
+      // organization,
+      numOfAttendants,
+      description,
+    },
   } = userInput;
 
   return (
@@ -80,7 +81,7 @@ const BookingForm = (props) => {
             autoComplete="off"
             onChange={onChange}
           />
-          <FormControl fullWidth>
+          {/* <FormControl fullWidth>
             <InputLabel id="organization-select-label">Organization</InputLabel>
             <Select
               labelId="organization-select-label"
@@ -94,7 +95,7 @@ const BookingForm = (props) => {
               <MenuItem value="SAB">SAB</MenuItem>
               <MenuItem value="FAC">FAC</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
           <TextField
             label="Number of attendants"
             required
@@ -135,7 +136,12 @@ const SummaryAndConfirmForm = (props) => {
   const {
     startTime,
     endTime,
-    info: { eventName, organization, numOfAttendants, description },
+    info: {
+      eventName,
+      // organization,
+      numOfAttendants,
+      description,
+    },
   } = userInput;
 
   return (
@@ -198,7 +204,7 @@ const SummaryAndConfirmForm = (props) => {
         </Typography>
       </RowLine>
       <Divider />
-      {organization !== "" && (
+      {/* {organization !== "" && (
         <>
           <RowLine>
             <Typography variant="body1" color={ezGrey}>
@@ -210,7 +216,7 @@ const SummaryAndConfirmForm = (props) => {
           </RowLine>
           <Divider />
         </>
-      )}
+      )} */}
       <RowLine>
         <Typography variant="body1" color={ezGrey}>
           Number of participants
@@ -287,7 +293,7 @@ const BookingScreen = (props) => {
     endTime: "",
     info: {
       eventName: "",
-      organization: "",
+      // organization: "",
       numOfAttendants: "",
       description: "",
     },

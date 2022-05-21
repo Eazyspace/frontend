@@ -82,8 +82,6 @@ const Regist1 = ({
         <Button
           variant="contained"
           style={{ marginLeft: "3rem", marginRight: "3rem" }}
-          component={Link}
-          to="/"
           onClick={() => nextStep()}
         >
           <Typography>Next</Typography>
@@ -153,20 +151,18 @@ const Regist2 = ({
             error={!userValidInput.faculty}
             value={userInputForm.faculty}
           />
-          <TextField
+          {/* <TextField
             label="Club/Organization"
             name="organization"
             onChange={onChange}
             error={!userValidInput.organization}
             value={userInputForm.organization}
-          />
+          /> */}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => backStep()}
           >
             <Typography>Back</Typography>
@@ -174,8 +170,6 @@ const Regist2 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => nextStep()}
           >
             <Typography>Next</Typography>
@@ -252,8 +246,6 @@ const Regist3 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => backStep()}
           >
             <Typography>Back</Typography>
@@ -261,8 +253,6 @@ const Regist3 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => onSubmit()}
           >
             <Typography>Finish</Typography>
@@ -321,7 +311,7 @@ function RegisterScreen() {
     academicId: "",
     email: "",
     faculty: "",
-    organization: "",
+    //// organization: "",
     // Regist3
     username: "",
     password: "",
@@ -336,7 +326,7 @@ function RegisterScreen() {
     academicId: true,
     email: true,
     faculty: true,
-    organization: true,
+    //// organization: true, 
     // Regist3
     username: true,
     password: true,

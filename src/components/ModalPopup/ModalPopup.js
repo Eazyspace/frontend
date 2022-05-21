@@ -118,12 +118,12 @@ const ModalPopup = ({ requestData, userInfo }) => {
           </Typography>
           <Typography variant="body1">{requestData.eventName}</Typography>
         </Row>
-        <Row>
+        {/* <Row>
           <Typography variant="body1" sx={{ color: ezGrey }}>
             Organization
           </Typography>
           <Typography variant="body1">{requestData.organizationId}</Typography>
-        </Row>
+        </Row> */}
         <div
           style={{
             display: "flex",

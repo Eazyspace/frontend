@@ -48,7 +48,6 @@ import {
   StyledMainContent,
   StyledRequestCard,
   UserAndRoom,
-  VerticalLine,
 } from "./AdminScreen.styled";
 
 // Enum
@@ -96,7 +95,7 @@ function RequestCard({
             {/* 
             // ? Event name here ? 
             */}
-            {!eventName ? "(No event name)" : eventName}
+            {!eventName ? "(No event name)" : `"${eventName}" event`}
           </Typography>
         </Grid>
         <Grid
@@ -114,10 +113,10 @@ function RequestCard({
             User ID {userId}
           </Typography>
         </Grid>
-        <Grid item xs="auto">
+        {/* <Grid item xs="auto">
           <VerticalLine />
-        </Grid>
-        <Grid
+        </Grid> */}
+        {/* <Grid
           item
           xs={7}
           alignSelf="center"
@@ -127,12 +126,9 @@ function RequestCard({
             variant="p"
             sx={{ margin: "auto 0px", fontWeight: "bold" }}
           >
-            {/* 
-            // ? Organization name here ? 
-            */}
             (No organization name)
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </StyledRequestCard>
   );
@@ -393,9 +389,11 @@ function AdminScreen() {
             <Grid
               container
               direction="column"
+              justifyContent="flex-start"
               sx={{
                 height: "100%",
-                padding: `${appBarHeight - 45}px 10px 10px 10px`,
+                marginTop: `${appBarHeight + 3}px`,
+                padding: `5px 10px`,
               }}
             >
               <Grid item xs={1} />
@@ -405,7 +403,7 @@ function AdminScreen() {
                     <ArrowBackIosNewRounded />
                   </IconButton>
                 </DrawerHeader>
-                <TextField label="Search" size="small" />
+                {/* <TextField label="Search" size="small" /> */}
                 <FloorList>
                   {floorList.map(({ floorId, floorName }) => (
                     <FloorButton
@@ -561,7 +559,7 @@ function AdminScreen() {
               <Grid item>
                 <Divider />
               </Grid>
-              {currentRequest.hasOwnProperty("organization") &&
+              {/* {currentRequest.hasOwnProperty("organization") &&
                 currentRequest.organization !== "" && (
                   <>
                     <Grid item>
@@ -578,7 +576,7 @@ function AdminScreen() {
                       <Divider />
                     </Grid>
                   </>
-                )}
+                )} */}
               <Grid item>
                 <RowLine>
                   <Typography variant="body1" color={ezGrey}>

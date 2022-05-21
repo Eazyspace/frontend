@@ -53,6 +53,11 @@ export const StyledDrawer = styled(Drawer)`
     width: ${drawerWidth}px;
     box-sizing: border-box;
   }
+  &::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 `;
 export const DrawerHeader = styled.div`
   display: flex;
@@ -68,6 +73,7 @@ export const FloorList = styled.div`
 `;
 export const FloorButton = styled(Button)`
   &.MuiButton-root {
+    min-width: ${drawerWidth + 10}px;
     padding: 10px 20px;
     border-radius: 10px;
     border: none;
