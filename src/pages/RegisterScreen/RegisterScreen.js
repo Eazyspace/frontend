@@ -82,8 +82,6 @@ const Regist1 = ({
         <Button
           variant="contained"
           style={{ marginLeft: "3rem", marginRight: "3rem" }}
-          component={Link}
-          to="/"
           onClick={() => nextStep()}
         >
           <Typography>Next</Typography>
@@ -165,8 +163,6 @@ const Regist2 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => backStep()}
           >
             <Typography>Back</Typography>
@@ -174,8 +170,6 @@ const Regist2 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => nextStep()}
           >
             <Typography>Next</Typography>
@@ -252,8 +246,6 @@ const Regist3 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => backStep()}
           >
             <Typography>Back</Typography>
@@ -261,8 +253,6 @@ const Regist3 = ({
           <Button
             variant="contained"
             style={{ marginLeft: "3rem", marginRight: "3rem", width: "50vw" }}
-            component={Link}
-            to="/"
             onClick={() => onSubmit()}
           >
             <Typography>Finish</Typography>

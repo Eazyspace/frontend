@@ -389,9 +389,11 @@ function AdminScreen() {
             <Grid
               container
               direction="column"
+              justifyContent="flex-start"
               sx={{
                 height: "100%",
-                padding: `${appBarHeight - 45}px 10px 10px 10px`,
+                marginTop: `${appBarHeight + 3}px`,
+                padding: `5px 10px`,
               }}
             >
               <Grid item xs={1} />
@@ -401,7 +403,7 @@ function AdminScreen() {
                     <ArrowBackIosNewRounded />
                   </IconButton>
                 </DrawerHeader>
-                <TextField label="Search" size="small" />
+                {/* <TextField label="Search" size="small" /> */}
                 <FloorList>
                   {floorList.map(({ floorId, floorName }) => (
                     <FloorButton
