@@ -6,6 +6,7 @@ export const InfoForm = styled.div`
   margin-top: 7em;
   flex-direction: column;
   justify-content: stretch;
+  width:30vw;
   height: 70%;
 `;
 
