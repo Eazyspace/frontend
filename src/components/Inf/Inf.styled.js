@@ -14,7 +14,7 @@ export const Rowline = styled.div`
   flex-direction: row;
   justify-content: space-between;
   width: 80%;
-  margin-bottom: 15vh;
+  margin-bottom: 5vh;
   align-self: center;
 `;
 export const ButtonChoose = styled(Button)`

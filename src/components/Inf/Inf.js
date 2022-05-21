@@ -36,7 +36,7 @@ export const Inf = ({ RoomInfo: roomInfo }) => {
         <Typography variant="h5">{"Description:"}</Typography>
       </div>
       <div style={{ width: "80%", alignSelf: "center" }}>
-        <Typography variant="body1" width={410}>
+        <Typography variant="body1" width={'25vw'}>
           {roomInfo.description}
         </Typography>
       </div>
@@ -44,7 +44,7 @@ export const Inf = ({ RoomInfo: roomInfo }) => {
         style={{
           position: "fixed",
           bottom: 10,
-          width: "15vw",
+          width: "23vw",
           alignSelf: "center",
         }}
         variant="contained"
