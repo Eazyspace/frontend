@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import roomAPI from "../../api/room";
 import BackdropLoading from "../BackdropLoading";
 import { Inf } from "../Inf/Inf";
-import { ActiveButtonBox, ButtonBox, Info, RoomContent } from "./room.styled";
+import { ActiveButtonBox, ButtonBox, Info, RoomContent } from "./Room.styled";
 
 const Room = ({ floorNum }) => {
   const [roomList, setRoomList] = useState([]);
