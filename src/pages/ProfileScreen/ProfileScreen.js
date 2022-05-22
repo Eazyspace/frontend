@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authAPI from "../../api/auth";
 import userAPI from "../../api/user";
+import BackdropLoading from "../../components/BackdropLoading";
 import Header from "../../components/Header/Header";
 import ProfileAvatar from "../../components/ProfileAvatar/ProfileAvatar";
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
@@ -34,6 +35,7 @@ const ProfileScreen = () => {
   const [openEditAvatarDialog, setOpenEditAvatarDialog] = useState(false);
   const [warnNoAvatarUploaded, setWarnNoAvatarUploaded] = useState(false);
   const [loadingNewAvatar, setLoadingNewAvatar] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { height } = useWindowDimensions();
   const navigate = useNavigate();
   // console.log(height);
@@ -94,8 +96,12 @@ const ProfileScreen = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getUserInfo();
+    setLoading(false);
   }, []);
+
+  if (loading) return <BackdropLoading />;
 
   return (
     <HomeView>

@@ -57,7 +57,9 @@ const ProfileInfo = ({ userInfo }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchRequest();
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,9 +67,9 @@ const ProfileInfo = ({ userInfo }) => {
     setLoading(true);
     try {
       const response = await requestAPI.getRequestList({
-        userId: userInfo.userId,
+        userId: userInfo?.userId,
       });
-      console.log(response)
+      console.log(response);
       if (response.status === "OK") setRequestList(response.data);
       // snackbar
       else console.error(response.message);
