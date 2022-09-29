@@ -78,8 +78,20 @@ const Regist1 = ({
             value={userInputForm.phoneNumber}
             required
           />
-          {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
-            Not enough information</Typography>}
+          {valid ? (
+            <></>
+          ) : (
+            <Typography
+              style={{
+                color: ezRed,
+                marginTop: "0.5rem",
+                marginLeft: "0.5rem",
+              }}
+              variant={"caption"}
+            >
+              Not enough information
+            </Typography>
+          )}
         </div>
         <Button
           variant="contained"
@@ -101,7 +113,7 @@ const Regist2 = ({
   userValidInput,
   nextStep,
   backStep,
-  valid
+  valid,
 }) => {
   return (
     <motion.div
@@ -161,8 +173,20 @@ const Regist2 = ({
             error={!userValidInput.organization}
             value={userInputForm.organization}
           /> */}
-           {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
-            Not enough information</Typography>}
+          {valid ? (
+            <></>
+          ) : (
+            <Typography
+              style={{
+                color: ezRed,
+                marginTop: "0.5rem",
+                marginLeft: "0.5rem",
+              }}
+              variant={"caption"}
+            >
+              Not enough information
+            </Typography>
+          )}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
@@ -193,7 +217,7 @@ const Regist3 = ({
   userValidInput,
   backStep,
   onSubmit,
-  valid
+  valid,
 }) => {
   return (
     <motion.div
@@ -247,8 +271,21 @@ const Regist3 = ({
             error={!userValidInput.passwordConfirm}
             value={userInputForm.passwordConfirm}
           />
-           {valid? <></>:<Typography style={{color:ezRed,marginTop:'0.5rem',marginLeft:'0.5rem'}} variant={"caption"}>
-            Not enough information or password too short/wrong confirm password</Typography>}
+          {valid ? (
+            <></>
+          ) : (
+            <Typography
+              style={{
+                color: ezRed,
+                marginTop: "0.5rem",
+                marginLeft: "0.5rem",
+              }}
+              variant={"caption"}
+            >
+              Not enough information or password too short/wrong confirm
+              password
+            </Typography>
+          )}
         </div>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Button
@@ -265,7 +302,6 @@ const Regist3 = ({
           >
             <Typography>Finish</Typography>
           </Button>
-          
         </div>
       </RegisterForm>
     </motion.div>
@@ -308,7 +344,7 @@ const Regist4 = ({ click, setClick, direct, userInputForm }) => {
 
 function RegisterScreen() {
   const [step, setStep] = useState(0);
-  const [isValid, setValid]= useState(true);
+  const [isValid, setValid] = useState(true);
   const [direct, setDirect] = useState(false);
   const [click, setClick] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -336,7 +372,7 @@ function RegisterScreen() {
     academicId: true,
     email: true,
     faculty: true,
-    //// organization: true, 
+    //// organization: true,
     // Regist3
     username: true,
     password: true,
@@ -345,47 +381,50 @@ function RegisterScreen() {
 
   // console.log(step);
   const nextStep = () => {
-    const namevalid=userInputForm.name!==""? true: false;
-    const dobvalid=userInputForm.birthday!==""?true:false;
-    const phonevalid=userInputForm.phoneNumber!==""?true:false;
-    const idvalid=userInputForm.academicId!==""?true:false;
-    const emailvalid=userInputForm.email!==""?true:false;
-    const falvalid=userInputForm.faculty!==""?true:false;
-    const usernamevalid=userInputForm.username!==""?true:false;
-    const passwordvalid=userInputForm.password!==""&&userInputForm.password.length>=8?true:false;
-    const passwordconfirmvalid=userInputForm.passwordConfirm!==""
-    &&userInputForm.passwordConfirm===userInputForm.password                         
-    ?true:false;
+    const namevalid = userInputForm.name !== "" ? true : false;
+    const dobvalid = userInputForm.birthday !== "" ? true : false;
+    const phonevalid = userInputForm.phoneNumber !== "" ? true : false;
+    const idvalid = userInputForm.academicId !== "" ? true : false;
+    const emailvalid = userInputForm.email !== "" ? true : false;
+    const falvalid = userInputForm.faculty !== "" ? true : false;
+    const usernamevalid = userInputForm.username !== "" ? true : false;
+    const passwordvalid =
+      userInputForm.password !== "" && userInputForm.password.length >= 8
+        ? true
+        : false;
+    const passwordconfirmvalid =
+      userInputForm.passwordConfirm !== "" &&
+      userInputForm.passwordConfirm === userInputForm.password
+        ? true
+        : false;
 
-    switch(step){
+    switch (step) {
       case 0:
-        if(namevalid&&dobvalid&&phonevalid){
+        if (namevalid && dobvalid && phonevalid) {
           setDirect(true);
           setClick(true);
           setStep(step + 1);
           setValid(true);
-        }
-        else setValid(false);
+        } else setValid(false);
         break;
       case 1:
-        if(idvalid&&emailvalid&&falvalid){
+        if (idvalid && emailvalid && falvalid) {
           setDirect(true);
           setClick(true);
           setStep(step + 1);
           setValid(true);
-        }
-        else setValid(false);
-      case 2: 
-        if(usernamevalid&&passwordvalid&&passwordconfirmvalid){
+        } else setValid(false);
+        break;
+      case 2:
+        if (usernamevalid && passwordvalid && passwordconfirmvalid) {
           setDirect(true);
           setClick(true);
           setStep(step + 1);
           setValid(true);
-        }
-        else setValid(false);
+        } else setValid(false);
+        break;
       default:
         break;
-
     }
   };
   const backStep = () => {

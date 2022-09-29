@@ -10,7 +10,7 @@ export const Inf = ({ RoomInfo: roomInfo }) => {
   const handleBookThisRoom = () => {
     navigate(`/booking`, { state: { roomId: roomInfo.roomId } });
   };
-  console.log(roomInfo)
+  console.log(roomInfo);
 
   return (
     <InfoForm>
@@ -38,42 +38,44 @@ export const Inf = ({ RoomInfo: roomInfo }) => {
         <Typography variant="h5">{"Description:"}</Typography>
       </div>
       <div style={{ width: "80%", alignSelf: "center" }}>
-        <Typography variant="body1" width={'25vw'}>
+        <Typography variant="body1" width={"25vw"}>
           {roomInfo.description}
         </Typography>
       </div>
-      {
-        roomInfo?.status ==1 ?
+      {roomInfo?.status === 1 ? (
         <ButtonChoose
-        style={{
-          position: "fixed",
-          bottom: 10,
-          width: "23vw",
-          alignSelf: "center",
-        }}
-        variant="contained"
-        onClick={handleBookThisRoom}
-      >
-        <Typography>Book this Room</Typography>
-      </ButtonChoose> : 
-      //  <Typography 
-      //  style={{
-      //   position: "fixed",
-      //   bottom: 10,
-      //   width: "23vw",
-      //   textAlign:"center",
-      //   color:'red'
-      //   }}>Room is not available</Typography>
-      <Typography
-      style={{ alignSelf: "center",
-               marginBottom: "2rem",
-               position: "fixed",
-               bottom: 10, 
-               color:ezRed}}
-    >
-      {"Room is not available"}
-      </Typography>
-      }
+          style={{
+            position: "fixed",
+            bottom: 10,
+            width: "23vw",
+            alignSelf: "center",
+          }}
+          variant="contained"
+          onClick={handleBookThisRoom}
+        >
+          <Typography>Book this Room</Typography>
+        </ButtonChoose>
+      ) : (
+        //  <Typography
+        //  style={{
+        //   position: "fixed",
+        //   bottom: 10,
+        //   width: "23vw",
+        //   textAlign:"center",
+        //   color:'red'
+        //   }}>Room is not available</Typography>
+        <Typography
+          style={{
+            alignSelf: "center",
+            marginBottom: "2rem",
+            position: "fixed",
+            bottom: 10,
+            color: ezRed,
+          }}
+        >
+          {"Room is not available"}
+        </Typography>
+      )}
     </InfoForm>
   );
 };

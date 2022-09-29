@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authAPI from "../../api/auth";
 import floorAPI from "../../api/floor";
-import"../../utils/hideScrollbar.css";
 import Header from "../../components/Header/Header";
 import Room from "../../components/Room/Room";
 import { ezBlue } from "../../utils/colors";
+import "../../utils/hideScrollbar.css";
 import {
   Content,
   FloorBtn,
@@ -15,17 +15,16 @@ import {
   Roomfloor,
 } from "./HomeScreen.styled";
 
-var domain = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const HomeScreen = () => {
   const navigate = useNavigate();
   const [floorNum, setFloorNum] = useState(1);
-  const [floorData,setFloorData]=useState([])
+  const [floorData, setFloorData] = useState([]);
   const handleSetFloor = (flr) => {
     setFloorNum(flr);
   };
   const fetchFloor = async () => {
     const response = await floorAPI.getAllFloors();
-    setFloorData(response.data)
+    setFloorData(response.data);
   };
 
   useEffect(() => {
@@ -60,9 +59,7 @@ const HomeScreen = () => {
                   key={flr.floorId}
                   onClick={() => handleSetFloor(flr.floorId)}
                 >
-                  <Typography variant="h5">
-                    {flr.floorName}
-                  </Typography>
+                  <Typography variant="h5">{flr.floorName}</Typography>
                 </FloorBtn>
               </div>
             ))}

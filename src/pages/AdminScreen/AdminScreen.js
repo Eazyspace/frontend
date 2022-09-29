@@ -268,12 +268,12 @@ function AdminScreen() {
   const handleResponseSubmit = async (e) => {
     if (e.target.name === "approve") {
       // TODO: Signal
-      let res = await requestAPI.approveRequest({
+      await requestAPI.approveRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
     } else if (e.target.name === "decline") {
-      let res = await requestAPI.declineRequest({
+      await requestAPI.declineRequest({
         requestId: currentRequest.requestId,
         responseNote: responseNote,
       });
