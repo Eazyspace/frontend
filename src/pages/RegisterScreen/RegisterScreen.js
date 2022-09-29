@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import authAPI from "../../api/auth";
 import Header from "../../components/Header/Header";
 import { ezBlue, ezGrey, ezRed } from "../../utils/colors";

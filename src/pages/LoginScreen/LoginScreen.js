@@ -15,7 +15,7 @@ import {
 } from "./LoginScreen.styled";
 
 const LoginForm = ({
-  username,
+  academicId,
   password,
   onChange,
   onLogIn,
@@ -48,9 +48,9 @@ const LoginForm = ({
     <StyledLoginForm>
       <LoginTitle>Welcome back!</LoginTitle>
       <TextField
-        label="Username"
-        name="username"
-        value={username}
+        label="Academic ID"
+        name="academicId"
+        value={academicId}
         onChange={onChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -84,14 +84,14 @@ const LoginForm = ({
 };
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState("");
+  const [academicId, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [accountIsInvalid, setAccountIsInvalid] = useState(false);
   const navigate = useNavigate();
 
   const logIn = async () => {
     console.group("Log in account");
-    let res = await authAPI.logIn(username, password);
+    let res = await authAPI.logIn(academicId, password);
     console.log(res);
     console.groupEnd();
     if (res.status === "OK") {
@@ -122,7 +122,7 @@ const LoginScreen = () => {
   const handleChangeInput = (e) => {
     let target = e.target;
     switch (target.name) {
-      case "username": {
+      case "academicId": {
         setUsername(target.value);
         break;
       }
@@ -147,7 +147,7 @@ const LoginScreen = () => {
         <Motto>Gathering has never been easier</Motto>
       </BrandAndMotto>
       <LoginForm
-        username={username}
+        academicId={academicId}
         password={password}
         onChange={handleChangeInput}
         onLogIn={handleOnLogIn}

@@ -3,15 +3,15 @@ const { default: axios } = require("axios");
 const baseURL = "https://eazyspace-website.herokuapp.com";
 
 class AuthClient {
-  logIn = async (username, password) => {
+  logIn = async (academicId, password) => {
     console.table({
-      academicId: username,
+      academicId: academicId,
       password: password,
     });
     try {
       return await axios
         .post(baseURL + "/user/login", {
-          academicId: username,
+          academicId: academicId,
           password: password,
         })
         .then((res) => {
